@@ -8,7 +8,7 @@ MultiMoveNetCreate(data, intwindow, mindate, maxdate, netwindow, overlap,
   nextonly = FALSE)
 }
 \arguments{
-\item{data}{A 6 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, the date of capture and infomration to define multiplex network layers. The "Layers" column can consist of any unique identifiers (e.g. if layers representing movements by males and females are used then they could be represented by "M" and "F" or 1 and 2). If the user wants a layer per individual then the "Layers" column can simply be a copy of the individual ID column/}
+\item{data}{A 6 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, the date of capture and infomration to define multiplex network layers. The "Layers" column can consist of any unique identifiers (e.g. if layers representing movements by males and females are used then they could be represented by "M" and "F" or 1 and 2). If the user wants a layer per individual then the "Layers" column can simply be a copy of the individual ID column.}
 
 \item{intwindow}{The maximum period of time (in days) between two co-captures (i.e. if intwindow = 10 then two individuals captured 10 days apart could be considered co-captured but two indivviduals captured 11 days apart couldn't)}
 
