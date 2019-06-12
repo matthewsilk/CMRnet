@@ -1,5 +1,6 @@
 
 #'cmrNodeswap
+#'
 #'This function conducts network permutations of CMRnet objects, acting as a wrapper for the rmperm() function in the R package sna
 #'Conducts node-swap randomisations for CMRnet outputs
 #'
@@ -36,11 +37,16 @@ cmrNodeswap<-function(cmrnet,n.rand,multi=FALSE){
 
   if(multi==FALSE){
     nets<-cmrnet[[2]]
+    ne<-cmrnet[[3]]
     rnets<-list()
     for( r in 1:dim(nets)[3]){
       rnets[[r]]<-array(NA,dim=c(dim(nets)[1],dim(nets)[2],n.rand))
       for( i in 1:n.rand){
-        rnets[[r]][,,i]<-sna::rmperm(nets[,,r])
+        tmp_rnet<-nets[which(ne[,r+1]==1),which(ne[,r+1]==1),r]
+        tmp_rnet<-sna::rmperm(tmp_rnet)
+        tmp_rnet2<-array(0,dim(rnets[[r]])[1:2])
+        tmp_rnet2[which(ne[,r+1]==1),which(ne[,r+1]==1)]<-tmp_rnet
+        rnets[[r]][,,i]<-tmp_rnet2
       }
       rownames(rnets[[r]])<-colnames(rnets[[r]])<-rownames(nets[,,r])
     }
@@ -48,13 +54,18 @@ cmrNodeswap<-function(cmrnet,n.rand,multi=FALSE){
   }
   if(multi==TRUE){
     nets<-cmrnet[[2]]
+    ne<-cmrnet[[3]]
     rnets<-list()
     for( r in 1:length(nets)){
       rnets[[r]]<-list()
       for(s in 1:dim(nets[[r]])[3]){
         rnets[[r]][[s]]<-array(NA,dim=c(dim(nets[[r]])[1],dim(nets[[r]])[2],n.rand))
         for( i in 1:n.rand){
-          rnets[[r]][[s]][,,i]<-sna::rmperm(nets[[r]][,,s])
+          tmp_rnet<-nets[[r]][which(ne[,r,s]==1),which(ne[,r,s]==1),s]
+          tmp_rnet<-sna::rmperm(tmp_rnet)
+          tmp_rnet2<-array(0,dim(rnets[[r]])[1:2])
+          tmp_rnet2[which(ne[,r,s]==1),which(ne[,r,s]==1)]<-tmp_rnet
+          rnets[[r]][[s]][,,i]<-tmp_rnet2
         }
         rownames(rnets[[r]][[s]])<-colnames(rnets[[r]][[s]])<-rownames(nets[[r]][,,s])
       }

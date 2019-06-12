@@ -2,9 +2,7 @@
 % Please edit documentation in R/CMRnodeswap.R
 \name{cmrNodeswap}
 \alias{cmrNodeswap}
-\title{cmrNodeswap
-This function conducts network permutations of CMRnet objects, acting as a wrapper for the rmperm() function in the R package sna
-Conducts node-swap randomisations for CMRnet outputs}
+\title{cmrNodeswap}
 \usage{
 cmrNodeswap(cmrnet, n.rand, multi = FALSE)
 }
@@ -16,7 +14,6 @@ cmrNodeswap(cmrnet, n.rand, multi = FALSE)
 \item{multi}{(TRUE/FALSE). Indicates whether the input object is a monolayer network (from DynamicNetCreate or MoveNetCreate) or multiplex network (MultiMoveNetCreate)}
 }
 \description{
-cmrNodeswap
 This function conducts network permutations of CMRnet objects, acting as a wrapper for the rmperm() function in the R package sna
 Conducts node-swap randomisations for CMRnet outputs
 }

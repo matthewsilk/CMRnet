@@ -2,8 +2,7 @@
 % Please edit documentation in R/CMRdatastreamspatswap.R
 \name{cmrperm.spat}
 \alias{cmrperm.spat}
-\title{cmrperm.soc
-An internal function that operate within the DatastreamPermSpat function}
+\title{cmrperm.soc}
 \usage{
 cmrperm.spat(D, same.time, time.restrict, same.id, n.swaps, n.rand,
   n.burnin, warn.thresh)
@@ -28,7 +27,6 @@ cmrperm.spat(D, same.time, time.restrict, same.id, n.swaps, n.rand,
 \item{spat.restrict}{Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that individuals can only be swapped with those captued within a fixed distance}
 }
 \description{
-cmrperm.soc
 An internal function that operate within the DatastreamPermSpat function
 }
 \examples{

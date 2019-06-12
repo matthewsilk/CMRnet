@@ -2,9 +2,7 @@
 % Please edit documentation in R/MultiplexMoveNetCr.R
 \name{MultiMoveNetCreate}
 \alias{MultiMoveNetCreate}
-\title{MultiMoveNetCreate
-This function creates dynamic, directed, multiplex movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals. Multiplex networks connect locations that individuals have moved between within a particular interaction window with different layers being defined by the user
-The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user}
+\title{MultiMoveNetCreate}
 \usage{
 MultiMoveNetCreate(data, intwindow, mindate, maxdate, netwindow, overlap,
   nextonly = FALSE)
@@ -25,9 +23,7 @@ MultiMoveNetCreate(data, intwindow, mindate, maxdate, netwindow, overlap,
 \item{nextonly}{(TRUE/FALSE). Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to FALSE}
 }
 \description{
-MultiMoveNetCreate
-This function creates dynamic, directed, multiplex movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals. Multiplex networks connect locations that individuals have moved between within a particular interaction window with different layers being defined by the user
-The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user
+This function creates dynamic, directed, multiplex movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals. Multiplex networks connect locations that individuals have moved between within a particular interaction window with different layers being defined by the user. The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user
 }
 \examples{
 data(cmr_dat2)

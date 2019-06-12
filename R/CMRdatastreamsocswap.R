@@ -1,4 +1,5 @@
 #'cmrperm.soc
+#'
 #'An internal function that operate within the DatastreamPermSoc function
 #'
 #'@param D The input dataset to be randomised

@@ -1,5 +1,6 @@
 
 #'DatastreamPermSoc
+#'
 #'This function creates randomised social networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or spatial windows)
 #'
 #'@param data A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture

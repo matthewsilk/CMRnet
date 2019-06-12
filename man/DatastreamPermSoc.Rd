@@ -2,8 +2,7 @@
 % Please edit documentation in R/CMRdatastreamperm_soc.R
 \name{DatastreamPermSoc}
 \alias{DatastreamPermSoc}
-\title{DatastreamPermSoc
-This function creates randomised social networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or spatial windows)}
+\title{DatastreamPermSoc}
 \usage{
 DatastreamPermSoc(data, intwindow, mindate, maxdate, netwindow, overlap,
   spacewindow, same.time, time.restrict, same.spat, spat.restrict, n.swaps,
@@ -39,7 +38,6 @@ DatastreamPermSoc(data, intwindow, mindate, maxdate, netwindow, overlap,
 \item{n.burnin}{The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand}
 }
 \description{
-DatastreamPermSoc
 This function creates randomised social networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or spatial windows)
 }
 \examples{

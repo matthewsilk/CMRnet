@@ -1,7 +1,8 @@
 
 #'MoveNetCreate
-#'This function creates dynamic, directed movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals. Networks connect locations that individuals have moved between within a particular interaction window
-#'The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user
+#'
+#'This function creates dynamic, directed movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals. Networks connect locations that individuals have moved between within a particular interaction window. The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user
+#'
 #'@param data A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture
 #'@param intwindow The maximum period of time (in days) between two co-captures (i.e. if intwindow = 10 then two individuals captured 10 days apart could be considered co-captured but two indivviduals captured 11 days apart couldn't)
 #'@param mindate The start date ("YYYY-MM-DD") of the study (i.e. when you want to build networks from)
@@ -135,7 +136,7 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
     #end loop over ts/Ws
   }
 
-  NODE.EXIST<-data.frame(ids,NODE.EXIST)
+  NODE.EXIST<-data.frame(locs,NODE.EXIST)
 
   results<-list(EDGES,NET,NODE.EXIST)
 

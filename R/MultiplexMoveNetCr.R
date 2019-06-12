@@ -1,8 +1,9 @@
 
 #'MultiMoveNetCreate
-#'This function creates dynamic, directed, multiplex movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals. Multiplex networks connect locations that individuals have moved between within a particular interaction window with different layers being defined by the user
-#'The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user
-#'@param data A 6 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, the date of capture and infomration to define multiplex network layers. The "Layers" column can consist of any unique identifiers (e.g. if layers representing movements by males and females are used then they could be represented by "M" and "F" or 1 and 2). If the user wants a layer per individual then the "Layers" column can simply be a copy of the individual ID column/
+#'
+#'This function creates dynamic, directed, multiplex movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals. Multiplex networks connect locations that individuals have moved between within a particular interaction window with different layers being defined by the user. The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user
+#'
+#'@param data A 6 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, the date of capture and infomration to define multiplex network layers. The "Layers" column can consist of any unique identifiers (e.g. if layers representing movements by males and females are used then they could be represented by "M" and "F" or 1 and 2). If the user wants a layer per individual then the "Layers" column can simply be a copy of the individual ID column.
 #'@param intwindow The maximum period of time (in days) between two co-captures (i.e. if intwindow = 10 then two individuals captured 10 days apart could be considered co-captured but two indivviduals captured 11 days apart couldn't)
 #'@param mindate The start date ("YYYY-MM-DD") of the study (i.e. when you want to build networks from)
 #'@param maxdate The end date ("YYYY-MM-DD") of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.
@@ -107,7 +108,7 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
   EDGES[[ts]][,2,]<-E2
   }
 
-  NODE.EXIST<-matrix(0,nr=n.locs,nc=Ws)
+  NODE.EXIST<-array(0,dim=c(n.locs,Ws,n.layers))
 
   #Less than ends
   for (ts in 1:Ws){
@@ -118,13 +119,7 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
     D3$layer<-factor(D3$layer,levels=levels(D2$layer))
     n.Caps2<-length(D3$id)
 
-    #loop through IDs and record whether each one was recorded
-    #in this time period with a binary response
-    for (i in 1:n.locs){
 
-      ifelse(locs[i]%in%D3$loc>0,NODE.EXIST[i,ts]<-NODE.EXIST[i,ts]+1,NODE.EXIST[i,ts]<-NODE.EXIST[i,ts])
-
-    }
 
     for(ls in 1:n.layers){
 
@@ -133,6 +128,14 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
       D4$loc<-factor(D4$loc,levels=levels(D3$loc))
       D4$layer<-factor(D4$layer,levels=levels(D3$layer))
       n.Caps2<-length(D4$id)
+
+      #loop through IDs and record whether each one was recorded
+      #in this time period/layer with a binary response
+      for (i in 1:n.locs){
+
+        ifelse(locs[i]%in%D4$loc>0,NODE.EXIST[i,ts,ls]<-NODE.EXIST[i,ts,ls]+1,NODE.EXIST[i,ts,ls]<-NODE.EXIST[i,ts,ls])
+
+      }
 
       for (i in 1:n.Caps2){
         range<-seq(D4$Jdays[i],D4$Jdays[i]+X)
@@ -161,7 +164,7 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
     #end loop over ts/Ws
   }
 
-  NODE.EXIST<-data.frame(ids,NODE.EXIST)
+  rownames(NODE.EXIST)<-locs
 
   results<-list(EDGES,NET,NODE.EXIST)
 

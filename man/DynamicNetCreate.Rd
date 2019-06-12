@@ -2,9 +2,7 @@
 % Please edit documentation in R/DynNetCr2.R
 \name{DynamicNetCreate}
 \alias{DynamicNetCreate}
-\title{DynamicNetCreate
-This function creates dynamic social networks from capture-mark-recapture datasets using information on co-capture
-The time period for each network, together with the temporal and spatial restrictions on the co-capture window can be defined by the user}
+\title{DynamicNetCreate}
 \usage{
 DynamicNetCreate(data, intwindow, mindate, maxdate, netwindow, overlap,
   spacewindow)
@@ -25,7 +23,6 @@ DynamicNetCreate(data, intwindow, mindate, maxdate, netwindow, overlap,
 \item{spacewindow}{The maximum distance between locations that can be classed as a co-capture (calculated using the coordinate system provided in in the input dataset). Best used when multiple capture locations occur very close together}
 }
 \description{
-DynamicNetCreate
 This function creates dynamic social networks from capture-mark-recapture datasets using information on co-capture
 The time period for each network, together with the temporal and spatial restrictions on the co-capture window can be defined by the user
 }

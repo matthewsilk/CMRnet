@@ -2,8 +2,7 @@
 % Please edit documentation in R/CMRdatastreamsocswap.R
 \name{cmrperm.soc}
 \alias{cmrperm.soc}
-\title{cmrperm.soc
-An internal function that operate within the DatastreamPermSoc function}
+\title{cmrperm.soc}
 \usage{
 cmrperm.soc(D, locmat, same.time, time.restrict, same.spat, spat.restrict,
   n.swaps, n.rand, n.burnin)
@@ -28,7 +27,6 @@ cmrperm.soc(D, locmat, same.time, time.restrict, same.spat, spat.restrict,
 \item{n.burnin}{The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand}
 }
 \description{
-cmrperm.soc
 An internal function that operate within the DatastreamPermSoc function
 }
 \examples{

@@ -2,8 +2,7 @@
 % Please edit documentation in R/CMRdatastreamperm_spat.R
 \name{DatastreamPermSpat}
 \alias{DatastreamPermSpat}
-\title{DatastreamPermSpat
-This function creates randomised movement networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or individual ID-based restrictions)}
+\title{DatastreamPermSpat}
 \usage{
 DatastreamPermSpat(data, intwindow, mindate, maxdate, netwindow, overlap,
   nextonly = FALSE, same.time, time.restrict, same.id, n.swaps, n.rand,
@@ -37,7 +36,6 @@ DatastreamPermSpat(data, intwindow, mindate, maxdate, netwindow, overlap,
 \item{n.burnin}{The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand}
 }
 \description{
-DatastreamPermSpat
 This function creates randomised movement networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or individual ID-based restrictions)
 }
 \examples{
