@@ -9,6 +9,7 @@
 #'@param spat.restrict Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that individuals can only be swapped with those captued within a fixed distance
 #'@param n.swaps The number of swaps between each random network being extracted (e.g. n.swaps = 10 would equate to 10 swaps taking place between each random network being saved)
 #'@param n.rand The number of randomised networks to be generated
+#'@param burnin (TRUE/FALSE) Whether burnin is required
 #'@param n.burnin The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand
 #'@param warn.thresh The number of times no matches are found (i.e. constraints on randomisations are too restrictive) before the function is stopped and an error message returned
 #'
@@ -31,17 +32,19 @@
 #'n.burnin=100
 #'warn.thresh=100
 #'
-#'Rs<-DatastreamPermSpat(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.id,n.swaps,n.rand,n.burnin,warn.thresh)
+#'Rs<-DatastreamPermSpat(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,same.time,time.restrict,same.id,n.swaps,n.rand,burnin=TRUE,n.burnin,warn.thresh)
 
 #'@export
 
-cmrperm.spat<-function(D,same.time,time.restrict,same.id,n.swaps,n.rand,n.burnin,warn.thresh){
+cmrperm.spat<-function(D,same.time,time.restrict,same.id,n.swaps,n.rand,burnin,n.burnin,warn.thresh){
 
   D.rand<-list()
 
   warns<-0
 
   ctr<-1
+
+  if(burnin==FALSE){n.burnin<-0}
 
   for(sw in 1:(n.rand*n.swaps+n.burnin)){
     tmp1<-sample(1:nrow(D),1)

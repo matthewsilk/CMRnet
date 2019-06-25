@@ -6,7 +6,7 @@
 \usage{
 DatastreamPermSpat(data, intwindow, mindate, maxdate, netwindow, overlap,
   nextonly = FALSE, same.time, time.restrict, same.id, n.swaps, n.rand,
-  n.burnin, warn.thresh)
+  burnin, n.burnin, warn.thresh, iter)
 }
 \arguments{
 \item{data}{A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture}
@@ -33,7 +33,15 @@ DatastreamPermSpat(data, intwindow, mindate, maxdate, netwindow, overlap,
 
 \item{n.rand}{The number of randomised networks to be generated}
 
+\item{burnin}{(TRUE/FALSE) Whether burnin is required}
+
 \item{n.burnin}{The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand}
+
+\item{warn.thresh}{The number of times no matches are found (i.e. constraints on randomisations are too restrictive) before the function is stopped and an error message returned}
+
+\item{iter}{(TRUE/FALSE) Whether iterative randomisations are being used. If TRUE then D.rand is also returned}
+
+\item{nextonly}{(TRUE/FALSE). Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to FALSE}
 }
 \description{
 This function creates randomised movement networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or individual ID-based restrictions)
@@ -55,5 +63,5 @@ n.rand=100
 n.burnin=100
 warn.thresh=100
 
-Rs<-DatastreamPermSpat(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.id,n.swaps,n.rand,n.burnin,warn.thresh)
+Rs<-DatastreamPermSpat(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.id,n.swaps,n.rand,burnin=TRUE,n.burnin,warn.thresh,nextonly=TRUE,iter=FALSE)
 }

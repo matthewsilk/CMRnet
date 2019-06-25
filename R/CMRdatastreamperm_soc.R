@@ -16,10 +16,12 @@
 #'@param spat.restrict Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that individuals can only be swapped with those captued within a fixed distance
 #'@param n.swaps The number of swaps between each random network being extracted (e.g. n.swaps = 10 would equate to 10 swaps taking place between each random network being saved)
 #'@param n.rand The number of randomised networks to be generated
+#'@param burnin (TRUE/FALSE) Whether burnin is required
 #'@param n.burnin The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand
+#'@param iter (TRUE/FALSE) Whether iterative randomisations are being used. If TRUE then D.rand is also returned
 #'
 
-#'@output A list of length 3 with elements corresponding to 1) Randomised edgelist list: a list of with the same number of elements at the number of network windows, with each element containing an array of the randomised edgelists, 2) Randomised adjacency matrix list: a list of with the same number of elements at the number of network windows, with each element containing an array of the randomised adjacency matrices, and 3) a matrix identifying whether an individual was present in each network window.
+#'@output If iter==TRUE then a list of length 3 with elements corresponding to 1) The randomised dataset (for feeding back into the next permutation), 2) Randomised adjacency matrix list: a list of with the same number of elements at the number of network windows, with each element containing an array of the randomised adjacency matrices, and 3) a matrix identifying whether an individual was present in each network window. If iter==FALSE then a list of length 2 with elements corresponding to 1) Randomised adjacency matrix list: a list of with the same number of elements at the number of network windows, with each element containing an array of the randomised adjacency matrices, and 2) a matrix identifying whether an individual was present in each network window. The edge list is not provided due to to the memory that providing this and the list of matrix arrays would require.
 
 #'@examples
 #'data(cmr_dat)
@@ -39,11 +41,11 @@
 #'n.rand=100
 #'n.burnin=100
 #'
-#'Rs<-DatastreamPermSoc(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,n.burnin)
+#'Rs<-DatastreamPermSoc(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin=TRUE,n.burnin,iter=FALSE)
 
 #'@export
 
-DatastreamPermSoc<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,n.burnin){
+DatastreamPermSoc<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin,n.burnin,iter){
 
   require(chron)
   require(DescTools)
@@ -101,29 +103,9 @@ DatastreamPermSoc<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spa
 
   n.caps<-length(D2[,1])
 
-  EDGES<-list()
   NET<-list()
 
-  e1<-seq((n.ids-1),0,-1)
-  E1<-rep(ids[1],e1[1])
-  for(i in 2:(n.ids)){
-    E1<-c(as.character(E1),rep(as.character(ids[i]),e1[i]))
-  }
-
-  E1<-factor(E1,levels=levels(ids))
-
-  E2<-ids[2:length(ids)]
-  for(i in 3:n.ids){
-    E2<-c(as.character(E2),as.character(ids[i:length(ids)]))
-  }
-
-  E2<-factor(E2,levels=levels(ids))
-
   for(ts in 1:Ws){
-    EDGES[[ts]]<-array(0,dim=c(((n.ids-1)*(n.ids))/2,3,n.rand))
-    EDGES[[ts]][,1,]<-E1
-    EDGES[[ts]][,2,]<-E2
-
     NET[[ts]]<-array(0,dim=c(n.ids,n.ids,n.rand))
     colnames(NET[[ts]])<-ids
     rownames(NET[[ts]])<-ids
@@ -131,8 +113,25 @@ DatastreamPermSoc<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spa
 
   NODE.EXIST<-matrix(0,nr=n.ids,nc=Ws)
 
+  rands.out<-list()
+
   #Less than ends
   for (ts in 1:Ws){
+
+    e1<-seq((n.ids-1),0,-1)
+    E1<-rep(ids[1],e1[1])
+    for(i in 2:(n.ids)){
+      E1<-c(as.character(E1),rep(as.character(ids[i]),e1[i]))
+    }
+    E1<-factor(E1,levels=levels(ids))
+    E2<-ids[2:length(ids)]
+    for(i in 3:n.ids){
+      E2<-c(as.character(E2),as.character(ids[i:length(ids)]))
+    }
+    E2<-factor(E2,levels=levels(ids))
+    EDGES<-array(0,dim=c(((n.ids-1)*(n.ids))/2,3,n.rand))
+    EDGES[,1,]<-E1
+    EDGES[,2,]<-E2
 
     D3<-D2[which(D2$Jdays>=starts[ts]&D2$Jdays<ends[ts]),]
     D3$id<-factor(D3$id,levels=levels(D2$id))
@@ -146,7 +145,9 @@ DatastreamPermSoc<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spa
       #print(paste(ts,"-",i,"-tickB"))
     }
 
-    rands<-cmrperm.soc(D=D3,locmat=locmat2,same.time=same.time,time.restrict=time.restrict,same.spat=same.spat,spat.restrict=spat.restrict,n.swaps=n.swaps,n.rand=n.rand,n.burnin=n.burnin)
+    rands<-cmrperm.soc(D=D3,locmat=locmat2,same.time=same.time,time.restrict=time.restrict,same.spat=same.spat,spat.restrict=spat.restrict,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin)
+
+    if(iter==TRUE){rands.out[[ts]]<-as.data.frame(rands[[1]][,1:5])}
 
     for(r in 1:length(rands)){
 
@@ -160,7 +161,7 @@ DatastreamPermSoc<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spa
         MATCH<-twomatch[-which(twomatch==i)]
 
         for (j in 1:length(MATCH)){
-          EDGES[[ts]][which(EDGES[[ts]][,1,r]%in%as.numeric(D3$id[i])==TRUE&EDGES[[ts]][,2,r]%in%as.numeric(D3$id[MATCH[j]])==TRUE),3,r]<-EDGES[[ts]][which(EDGES[[ts]][,1,r]%in%as.numeric(D3$id[i])==TRUE&EDGES[[ts]][,2,r]%in%as.numeric(D3$id[MATCH[j]])==TRUE),3,r]+1
+          EDGES[which(EDGES[,1,r]%in%as.numeric(D3$id[i])==TRUE&EDGES[,2,r]%in%as.numeric(D3$id[MATCH[j]])==TRUE),3,r]<-EDGES[which(EDGES[,1,r]%in%as.numeric(D3$id[i])==TRUE&EDGES[,2,r]%in%as.numeric(D3$id[MATCH[j]])==TRUE),3,r]+1
         }
 
       }
@@ -168,9 +169,9 @@ DatastreamPermSoc<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spa
       ##and now turn the edge list into an association matrix as well to put network in double format
       NET.rows<-as.numeric(factor(rownames(NET[[ts]]),levels=levels(D$id)))
 
-      for (i in 1:length(EDGES[[ts]][,3,r])){
-        NET[[ts]][which(NET.rows%in%EDGES[[ts]][i,1,r]==TRUE),which(NET.rows%in%EDGES[[ts]][i,2,r]==TRUE),r]<-NET[[ts]][which(NET.rows%in%EDGES[[ts]][i,1,r]==TRUE),which(NET.rows%in%EDGES[[ts]][i,2,r]==TRUE),r]+EDGES[[ts]][i,3,r]
-        NET[[ts]][which(NET.rows%in%EDGES[[ts]][i,2,r]==TRUE),which(NET.rows%in%EDGES[[ts]][i,1,r]==TRUE),ts]<-NET[[ts]][which(NET.rows%in%EDGES[[ts]][i,2,r]==TRUE),which(NET.rows%in%EDGES[[ts]][i,1,r]==TRUE),ts]+EDGES[[ts]][i,3,r]
+      for (i in 1:length(EDGES[,3,r])){
+        NET[[ts]][which(NET.rows%in%EDGES[i,1,r]==TRUE),which(NET.rows%in%EDGES[i,2,r]==TRUE),r]<-NET[[ts]][which(NET.rows%in%EDGES[i,1,r]==TRUE),which(NET.rows%in%EDGES[i,2,r]==TRUE),r]+EDGES[i,3,r]
+        NET[which(NET.rows%in%EDGES[i,2,r]==TRUE),which(NET.rows%in%EDGES[i,1,r]==TRUE),ts]<-NET[[ts]][which(NET.rows%in%EDGES[i,2,r]==TRUE),which(NET.rows%in%EDGES[i,1,r]==TRUE),ts]+EDGES[i,3,r]
       }
 
     } #end r loop over randomisations
@@ -180,7 +181,13 @@ DatastreamPermSoc<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spa
 
   NODE.EXIST<-data.frame(ids,NODE.EXIST)
 
-  results<-list(EDGES,NET,NODE.EXIST)
+  rands.out2<-do.call("rbind", rands.out)
+
+  if(iter==FALSE){results<-list(NET,NODE.EXIST)}
+  if(iter==TRUE){
+    rands.out2<-do.call("rbind", rands.out)
+    results<-list(rands.out2,NET,NODE.EXIST)
+  }
 
   return(results)
 

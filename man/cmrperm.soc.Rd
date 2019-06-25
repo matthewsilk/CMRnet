@@ -5,7 +5,7 @@
 \title{cmrperm.soc}
 \usage{
 cmrperm.soc(D, locmat, same.time, time.restrict, same.spat, spat.restrict,
-  n.swaps, n.rand, n.burnin)
+  n.swaps, n.rand, burnin, n.burnin)
 }
 \arguments{
 \item{D}{The input dataset to be randomised}
@@ -23,6 +23,8 @@ cmrperm.soc(D, locmat, same.time, time.restrict, same.spat, spat.restrict,
 \item{n.swaps}{The number of swaps between each random network being extracted (e.g. n.swaps = 10 would equate to 10 swaps taking place between each random network being saved)}
 
 \item{n.rand}{The number of randomised networks to be generated}
+
+\item{burnin}{(TRUE/FALSE) Whether burnin is required}
 
 \item{n.burnin}{The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand}
 }
@@ -47,5 +49,5 @@ n.swaps=10
 n.rand=100
 n.burnin=100
 
-Rs<-DatastreamPermSoc(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,n.burnin)
+Rs<-DatastreamPermSoc(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin=TRUE,n.burnin)
 }

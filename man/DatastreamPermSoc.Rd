@@ -6,7 +6,7 @@
 \usage{
 DatastreamPermSoc(data, intwindow, mindate, maxdate, netwindow, overlap,
   spacewindow, same.time, time.restrict, same.spat, spat.restrict, n.swaps,
-  n.rand, n.burnin)
+  n.rand, burnin, n.burnin, iter)
 }
 \arguments{
 \item{data}{A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture}
@@ -35,7 +35,11 @@ DatastreamPermSoc(data, intwindow, mindate, maxdate, netwindow, overlap,
 
 \item{n.rand}{The number of randomised networks to be generated}
 
+\item{burnin}{(TRUE/FALSE) Whether burnin is required}
+
 \item{n.burnin}{The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand}
+
+\item{iter}{(TRUE/FALSE) Whether iterative randomisations are being used. If TRUE then D.rand is also returned}
 }
 \description{
 This function creates randomised social networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or spatial windows)
@@ -58,5 +62,5 @@ n.swaps=10
 n.rand=100
 n.burnin=100
 
-Rs<-DatastreamPermSoc(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,n.burnin)
+Rs<-DatastreamPermSoc(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin=TRUE,n.burnin,iter=FALSE)
 }
