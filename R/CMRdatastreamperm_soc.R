@@ -96,7 +96,7 @@ DatastreamPermSoc<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spa
   locs<-sort(unique(D2$loc))
   n.locs<-length(locs)
 
-  locdat<-aggregate(D[,2:4],by=list(D$loc),unique)[,2:4]
+  locdat<-aggregate(D2[,2:4],by=list(D2$loc),unique)[,2:4]
   locmat<-as.matrix(dist(locdat[,2:3]))
   locmat2<-locmat<spat.restrict
   rownames(locmat2)<-colnames(locmat2)<-locs

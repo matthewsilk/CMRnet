@@ -76,7 +76,7 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
   n.locs<-length(locs)
 
   #calculate distance matrix between locations
-  locdat<-aggregate(D[,2:4],by=list(D$loc),unique)[,2:4]
+  locdat<-aggregate(D2[,2:4],by=list(D2$loc),unique)[,2:4]
   locmat<-as.matrix(dist(locdat[,2:3]))
   locmat2<-locmat<=spacewindow
   rownames(locmat2)<-colnames(locmat2)<-locs
