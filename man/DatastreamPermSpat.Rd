@@ -11,15 +11,15 @@ DatastreamPermSpat(data, intwindow, mindate, maxdate, netwindow, overlap,
 \arguments{
 \item{data}{A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture}
 
-\item{intwindow}{The maximum period of time (in days) between two co-captures (i.e. if intwindow = 10 then two individuals captured 10 days apart could be considered co-captured but two indivviduals captured 11 days apart couldn't)}
+\item{intwindow}{The maximum period of time (in days) between two co-captures (i.e. if \code{intwindow = 10} then two individuals captured 10 days apart could be considered co-captured but two individuals captured 11 days apart couldn't)}
 
-\item{mindate}{The start date ("YYYY-MM-DD") of the study (i.e. when you want to build networks from)}
+\item{mindate}{The start date (format = \code{"YYYY-MM-DD"}) of the study (i.e. when you want to build networks from)}
 
-\item{maxdate}{The end date ("YYYY-MM-DD") of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.}
+\item{maxdate}{The end date (format = \code{"YYYY-MM-DD"}) of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.}
 
-\item{netwindow}{The period of time over which each network is built in months (i.e. netwindow=12 would correspond to yearly networks)}
+\item{netwindow}{The period of time over which each network is built in months (i.e. \code{netwindow=12} would correspond to yearly networks)}
 
-\item{overlap}{The amount of overlap between netwindows in months (i.e. overlap=2 would result in a second network window starting 2 months before the end of the first). Overlap=0 ensures no overlap between successive network windows}
+\item{overlap}{The amount of overlap between netwindows in months (i.e. \code{overlap=2} would result in a second network window starting 2 months before the end of the first). When \code{overlap=0}, there is no overlap between successive network windows}
 
 \item{nextonly}{(TRUE/FALSE).Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to false}
 
@@ -29,7 +29,7 @@ DatastreamPermSpat(data, intwindow, mindate, maxdate, netwindow, overlap,
 
 \item{same.id}{(TRUE/FALSE) Whether swaps should be restricted to only be between captures of the same individual}
 
-\item{n.swaps}{The number of swaps between each random network being extracted (e.g. n.swaps = 10 would equate to 10 swaps taking place between each random network being saved)}
+\item{n.swaps}{The number of swaps between each random network being extracted (e.g. \code{n.swaps = 10} would equate to 10 swaps taking place between each random network being saved)}
 
 \item{n.rand}{The number of randomised networks to be generated}
 
@@ -42,6 +42,19 @@ DatastreamPermSpat(data, intwindow, mindate, maxdate, netwindow, overlap,
 \item{iter}{(TRUE/FALSE) Whether iterative randomisations are being used. If TRUE then D.rand is also returned}
 
 \item{nextonly}{(TRUE/FALSE). Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to FALSE}
+}
+\value{
+If \code{iter=TRUE} then a list of length 3 is returned with elements corresponding to:
+\enumerate{
+   \item The randomised dataset (for feeding back into the next permutation)
+   \item Randomised adjacency matrix list: a list of with the same number of elements at the number of network windows, with each element containing an array of the randomised adjacency matrices
+   \item a matrix identifying whether a location was present (i.e. had at least one individual captured there) in each network window
+}
+If \code{iter=FALSE} then a list of length 2 is returned with elements corresponding to:
+\enumerate{
+   \item Randomised adjacency matrix list: a list of with the same number of elements at the number of network windows, with each element containing an array of the randomised adjacency matrices
+   \item A matrix identifying whether a location was present (i.e. had at least one individual captured there) in each network window. The edge list is not provided due to to the memory that providing this and the list of matrix arrays would require.
+}
 }
 \description{
 This function creates randomised movement networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or individual ID-based restrictions)

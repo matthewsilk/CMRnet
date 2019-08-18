@@ -28,8 +28,11 @@ cmrperm.spat(D, same.time, time.restrict, same.id, n.swaps, n.rand, burnin,
 
 \item{spat.restrict}{Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that individuals can only be swapped with those captued within a fixed distance}
 }
+\value{
+A randomised dataset with the same dimensions as the original input dataset
+}
 \description{
-An internal function that operate within the DatastreamPermSpat function
+An internal function that operate within CMRnet::DatastreamPermSpat
 }
 \examples{
 data(cmr_dat)

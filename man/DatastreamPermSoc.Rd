@@ -19,7 +19,7 @@ DatastreamPermSoc(data, intwindow, mindate, maxdate, netwindow, overlap,
 
 \item{netwindow}{The period of time (in months) over which each network is built(i.e. \code{netwindow=12} would correspond to yearly networks)}
 
-\item{overlap}{The amount of overlap between networks in months (i.e. \code{overlap=2} would result in a second network window starting 2 months before the end of the first). When overlap=0, there is no overlap between successive network windows}
+\item{overlap}{The amount of overlap between networks in months (i.e. \code{overlap=2} would result in a second network window starting 2 months before the end of the first). When \code{overlap=0}, there is no overlap between successive network windows}
 
 \item{spacewindow}{The maximum distance between locations that can be classed as a co-capture (calculated using the coordinate system provided in the input data). Best used when multiple capture locations occur very close together}
 

@@ -22,6 +22,9 @@ MultiMoveNetCreate(data, intwindow, mindate, maxdate, netwindow, overlap,
 
 \item{nextonly}{(TRUE/FALSE). Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to FALSE}
 }
+\value{
+A list of length 3 containing: 1) A list of edgelists (the same length as the number of network windows) containing the multiplex network for each of the netwindows as an array; 2) a list of adjacency matrices (the same length as the number of ntwork windows) containing the multiplex network for each of the netwindows as an array; 3) a matrix indicating which individuals occurred in each netwindow
+}
 \description{
 This function creates dynamic, directed, multiplex movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals. Multiplex networks connect locations that individuals have moved between within a particular interaction window with different layers being defined by the user. The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user
 }

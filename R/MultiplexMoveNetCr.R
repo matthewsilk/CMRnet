@@ -11,7 +11,7 @@
 #'@param overlap The amount of overlap between netwindows in months (i.e. overlap=2 would result in a second network window starting 2 months before the end of the first). Overlap=0 ensures no overlap between successive network windows
 #'@param nextonly (TRUE/FALSE). Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to FALSE
 
-#'@output A list of length 3 containing: 1) A list of edgelists (the same length as the number of network windows) containing the multiplex network for each of the netwindows as an array; 2) a list of adjacency matrices (the same length as the number of ntwork windows) containing the multiplex network for each of the netwindows as an array; 3) a matrix indicating which individuals occurred in each netwindow
+#'@return A list of length 3 containing: 1) A list of edgelists (the same length as the number of network windows) containing the multiplex network for each of the netwindows as an array; 2) a list of adjacency matrices (the same length as the number of ntwork windows) containing the multiplex network for each of the netwindows as an array; 3) a matrix indicating which individuals occurred in each netwindow
 
 #'@examples
 #'data(cmr_dat2)

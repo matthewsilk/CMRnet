@@ -13,6 +13,9 @@ cmrNodeswap(cmrnet, n.rand, multi = FALSE)
 
 \item{multi}{(TRUE/FALSE). Indicates whether the input object is a monolayer network (from DynamicNetCreate or MoveNetCreate) or multiplex network (MultiMoveNetCreate)}
 }
+\value{
+The randomised networks. If multi=FALSE then this consists of a list in which each element of the list corresponds to a particular network window and contains an array consisting of all of the randomised networks. If multi=TRUE then this consists of a nested list arrangement in which each element of the first list corresponds to a particular network window, and each element of the second list a layer of the multiplex for that network window . Each element of the second level contains an array consisting of all of the randommised versions of that layer in that network window
+}
 \description{
 This function conducts network permutations of CMRnet objects, acting as a wrapper for the rmperm() function in the R package sna
 Conducts node-swap randomisations for CMRnet outputs

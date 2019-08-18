@@ -7,7 +7,7 @@ Authors@R: c(
     person("Daniel", "Padfield", email = "d.padfield@exeter.ac.uk", role = c("aut"))
     )
 Maintainer: Matthew Silk <matthewsilk@outlook.com>
-Description: Construct and Analyse Social and Movement Networks from Spatio-temporally Referenced Capture-Mark Recapture Data
+Description: Construct and analyse social and movement networks from spatio-temporally referenced capture-mark recapture data.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

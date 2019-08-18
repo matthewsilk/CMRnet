@@ -28,8 +28,11 @@ cmrperm.soc(D, locmat, same.time, time.restrict, same.spat, spat.restrict,
 
 \item{n.burnin}{The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand}
 }
+\value{
+A randomised dataset with the same dimensions as the original input dataset
+}
 \description{
-An internal function that operate within the DatastreamPermSoc function
+An internal function that operate within CMRnet::DatastreamPermSoc
 }
 \examples{
 data(cmr_dat)

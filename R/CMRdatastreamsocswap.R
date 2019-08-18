@@ -1,6 +1,6 @@
 #'cmrperm.soc
 #'
-#'An internal function that operate within the DatastreamPermSoc function
+#'An internal function that operate within CMRnet::DatastreamPermSoc
 #'
 #'@param D The input dataset to be randomised
 #'@param locmat A distance matrix between the capture locations
@@ -14,7 +14,7 @@
 #'@param n.burnin The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand
 #'
 
-#'@output A randomised dataset with the same dimensions as the original input dataset
+#'@return A randomised dataset with the same dimensions as the original input dataset
 
 #'@examples
 #'data(cmr_dat)
@@ -51,8 +51,8 @@ cmrperm.soc<-function(D,locmat,same.time,time.restrict,same.spat,spat.restrict,n
     if(same.time==TRUE){
       tmpdays<-D$Jdays[tmp1]
     } else if(time.restrict!="n"){
-      tmpmaxT<-AddMonths(D$date[tmp1],time.restrict)
-      tmpminT<-AddMonths(D$date[tmp1],-time.restrict)
+      tmpmaxT<-DescTools::AddMonths(D$date[tmp1],time.restrict)
+      tmpminT<-DescTools::AddMonths(D$date[tmp1],-time.restrict)
       tmpdays<-julian(seq(as.Date(tmpminT),as.Date(tmpmaxT),by="day"),origin=as.Date("1970-01-01"))
     } else{
       tmpdays<-sort(unique(D$Jdays))

@@ -8,7 +8,7 @@
 #'@param mindate The start date (format = \code{"YYYY-MM-DD"}) of the study (i.e. when you want to build networks from)
 #'@param maxdate The end date (format = \code{"YYYY-MM-DD"}) of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.
 #'@param netwindow The period of time (in months) over which each network is built(i.e. \code{netwindow=12} would correspond to yearly networks)
-#'@param overlap The amount of overlap between networks in months (i.e. \code{overlap=2} would result in a second network window starting 2 months before the end of the first). When overlap=0, there is no overlap between successive network windows
+#'@param overlap The amount of overlap between networks in months (i.e. \code{overlap=2} would result in a second network window starting 2 months before the end of the first). When \code{overlap=0}, there is no overlap between successive network windows
 #'@param spacewindow The maximum distance between locations that can be classed as a co-capture (calculated using the coordinate system provided in the input data). Best used when multiple capture locations occur very close together
 #'@param same.time (TRUE/FALSE) Whether swaps should be restricted to only occur betwen individuals trapped on the same date or not
 #'@param time.restrict Provided as a number of months. Imposes time restrictions on when swaps can take place so that individuals can only be swapped with those a fixed time before or after being captured
@@ -140,7 +140,7 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
     }
     E2<-factor(E2,levels=levels(ids))
     EDGES<-array(0,dim=c(((n.ids-1)*(n.ids))/2,3,n.rand))
-    EDGES[,1,]<-E1()
+    EDGES[,1,]<-E1
     EDGES[,2,]<-E2
 
     D3<-D2[which(D2$Jdays>=starts[ts]&D2$Jdays<ends[ts]),]
@@ -155,7 +155,7 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
       #print(paste(ts,"-",i,"-tickB"))
     }
 
-    rands<-CMR::cmrperm.soc(D=D3,locmat=locmat2,same.time=same.time,time.restrict=time.restrict,same.spat=same.spat,spat.restrict=spat.restrict,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin)
+    rands<-CMRnet::cmrperm.soc(D=D3,locmat=locmat2,same.time=same.time,time.restrict=time.restrict,same.spat=same.spat,spat.restrict=spat.restrict,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin)
 
     if(iter==TRUE){rands.out[[ts]]<-as.data.frame(rands[[1]][,1:5])}
 

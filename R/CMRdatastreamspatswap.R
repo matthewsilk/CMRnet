@@ -1,6 +1,6 @@
 #'cmrperm.soc
 #'
-#'An internal function that operate within the DatastreamPermSpat function
+#'An internal function that operate within CMRnet::DatastreamPermSpat
 #'
 #'@param D The input dataset to be randomised
 #'@param same.time (TRUE/FALSE) Whether swaps should be restricted to only occur betwen individuals trapped on the same date or not
@@ -13,7 +13,7 @@
 #'@param n.burnin The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand
 #'@param warn.thresh The number of times no matches are found (i.e. constraints on randomisations are too restrictive) before the function is stopped and an error message returned
 #'
-#'@output A randomised dataset with the same dimensions as the original input dataset
+#'@return A randomised dataset with the same dimensions as the original input dataset
 #'
 #'@examples
 #'data(cmr_dat)
