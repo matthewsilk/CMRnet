@@ -4,12 +4,12 @@
 #'This function creates randomised social networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or spatial windows)
 #'
 #'@param data A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture
-#'@param intwindow The maximum period of time (in days) between two co-captures (i.e. if intwindow = 10 then two individuals captured 10 days apart could be considered co-captured but two indivviduals captured 11 days apart couldn't)
-#'@param mindate The start date ("YYYY-MM-DD") of the study (i.e. when you want to build networks from)
-#'@param maxdate The end date ("YYYY-MM-DD") of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.
-#'@param netwindow The period of time over which each network is built in months (i.e. netwindow=12 would correspond to yearly networks)
-#'@param overlap The amount of overlap between netwindows in months (i.e. overlap=2 would result in a second network window starting 2 months before the end of the first). Overlap=0 ensures no overlap between successive network windows
-#'@param spacewindow The maximum distance between locations that can be classed as a co-capture (calculated using the coordinate system provided in in the input dataset). Best used when multiple capture locations occur very close together
+#'@param intwindow The maximum period of time (in days) between two co-captures (i.e. if intwindow = 10 then two individuals captured 10 days apart could be considered co-captured but two individuals captured 11 days apart would not be)
+#'@param mindate The start date (format = "YYYY-MM-DD") of the study (i.e. when you want to build networks from)
+#'@param maxdate The end date (format = "YYYY-MM-DD") of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.
+#'@param netwindow The period of time (in months) over which each network is built(i.e. netwindow=12 would correspond to yearly networks)
+#'@param overlap The amount of overlap between networks in months (i.e. overlap=2 would result in a second network window starting 2 months before the end of the first). When overlap=0, there is no overlap between successive network windows
+#'@param spacewindow The maximum distance between locations that can be classed as a co-capture (calculated using the coordinate system provided in the input data). Best used when multiple capture locations occur very close together
 #'@param same.time (TRUE/FALSE) Whether swaps should be restricted to only occur betwen individuals trapped on the same date or not
 #'@param time.restrict Provided as a number of months. Imposes time restrictions on when swaps can take place so that individuals can only be swapped with those a fixed time before or after being captured
 #'@param same.spat (TRUE/FALSE) Whether swaps should be restricted to only occur between individuals trapped at the same location
@@ -19,19 +19,32 @@
 #'@param burnin (TRUE/FALSE) Whether burnin is required
 #'@param n.burnin The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand
 #'@param iter (TRUE/FALSE) Whether iterative randomisations are being used. If TRUE then D.rand is also returned
+#'@return If \code{iter=TRUE} then a list of length 3 with elements corresponding to: \cr
+#'\enumerate{
+#'    \item The randomised dataset (for feeding back into the next permutation)
+#'    \item Randomised adjacency matrix list: a list of with the same number of elements at the number of network windows, with each element containing an array of the randomised adjacency matrices
+#'    \item A matrix identifying whether an individual was present in each network window.
+#'}
 #'
-
-#'@output If iter==TRUE then a list of length 3 with elements corresponding to 1) The randomised dataset (for feeding back into the next permutation), 2) Randomised adjacency matrix list: a list of with the same number of elements at the number of network windows, with each element containing an array of the randomised adjacency matrices, and 3) a matrix identifying whether an individual was present in each network window. If iter==FALSE then a list of length 2 with elements corresponding to 1) Randomised adjacency matrix list: a list of with the same number of elements at the number of network windows, with each element containing an array of the randomised adjacency matrices, and 2) a matrix identifying whether an individual was present in each network window. The edge list is not provided due to to the memory that providing this and the list of matrix arrays would require.
-
+#'If \code{iter=FALSE} then a list of length 2 with elements corresponding to: \cr
+#'\enumerate{
+#'    \item Randomised adjacency matrix list: a list of with the same number of elements at the number of network windows, with each element containing an array of the randomised adjacency matrices
+#'    \item A matrix identifying whether an individual was present in each network window. The edge list is not provided due to to the memory that providing this and the list of matrix arrays would require.
+#'}
 #'@examples
-#'data(cmr_dat)
-#'mindate<-"2010-01-01"
-#'maxdate<-"2015-01-01"
-#'intwindow<-60
-#'netwindow<-12
-#'overlap<-0
-#'spacewindow<-0
-#'netdat<-DynamicNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,spacewindow=spacewindow)
+#' # load in data
+#' data(cmr_dat)
+#'
+#' # set parameters
+#' mindate<-"2010-01-01"
+#' maxdate<-"2015-01-01"
+#' intwindow<-60
+#' netwindow<-12
+#' overlap<-0
+#' spacewindow<-0
+#'
+#' # create network
+#' netdat<-DynamicNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,spacewindow=spacewindow)
 #'
 #'same.time=FALSE
 #'time.restrict=6
@@ -41,11 +54,11 @@
 #'n.rand=100
 #'n.burnin=100
 #'
-#'Rs<-DatastreamPermSoc(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin=TRUE,n.burnin,iter=FALSE)
+#'Rs <- DatastreamPermSoc(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin=TRUE,n.burnin,iter=FALSE)
 
 #'@export
 
-DatastreamPermSoc<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin,n.burnin,iter){
+DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overlap, spacewindow, same.time, time.restrict, same.spat, spat.restrict, n.swaps, n.rand, burnin, n.burnin, iter){
 
   require(chron)
   require(DescTools)
