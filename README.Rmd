@@ -1,0 +1,29 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# CMRnet
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+CMRnet can be used to construct social and movement networks from spatio-temporally referenced capture-mark recapture data.
+
+## Installation
+
+You can install the most up to date version of CMRnet from GitHub.
+
+```{r install, message=FALSE}
+# install CMRnet
+remotes::install_github("matthewsilk/CMRnet")
+```

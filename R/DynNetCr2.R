@@ -5,15 +5,18 @@
 #'The time period for each network, together with the temporal and spatial restrictions on the co-capture window can be defined by the user
 #'
 #'@param data A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture
-#'@param intwindow The maximum period of time (in days) between two co-captures (i.e. if intwindow = 10 then two individuals captured 10 days apart could be considered co-captured but two indivviduals captured 11 days apart couldn't)
-#'@param mindate The start date ("YYYY-MM-DD") of the study (i.e. when you want to build networks from)
-#'@param maxdate The end date ("YYYY-MM-DD") of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.
-#'@param netwindow The period of time over which each network is built in months (i.e. netwindow=12 would correspond to yearly networks)
-#'@param overlap The amount of overlap between netwindows in months (i.e. overlap=2 would result in a second network window starting 2 months before the end of the first). Overlap=0 ensures no overlap between successive network windows
-#'@param spacewindow The maximum distance between locations that can be classed as a co-capture (calculated using the coordinate system provided in in the input dataset). Best used when multiple capture locations occur very close together
-
-#'@output A list of length 3 containing: 1) the edgelist for the social network in each of the netwindows as an array; 2) the adjacency matrix for the social network in each of the netwindows as an array; 3) a matrix indicating which individuals occurred in each netwindow;
-
+#'@param intwindow The maximum period of time (in days) between two co-captures (i.e. if \code{intwindow = 10} then two individuals captured 10 days apart could be considered co-captured but two individuals captured 11 days apart couldn't)
+#'@param mindate The start date (format = \code{"YYYY-MM-DD"}) of the study (i.e. when you want to build networks from)
+#'@param maxdate The end date (format = \code{"YYYY-MM-DD"}) of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.
+#'@param netwindow The period of time over which each network is built in months (i.e. \code{netwindow=12} would correspond to yearly networks)
+#'@param overlap The amount of overlap between netwindows in months (i.e. \code{overlap = 2} would result in a second network window starting 2 months before the end of the first). When \code{overlap=0}, there is no overlap between successive network windows
+#'@param spacewindow The maximum distance between locations that can be classed as a co-capture (calculated using the coordinate system provided in in the input data). Best used when multiple capture locations occur very close together
+#'@return A list of length 3 containing: \cr
+#'\enumerate{
+#'    \item The edgelist for the social network in each of the netwindows as an array
+#'    \item The adjacency matrix for the social network in each of the netwindows as an array
+#'    \item A matrix indicating which individuals occurred in each netwindow
+#'}
 #'@examples
 #'data(cmr_dat)
 #'mindate<-"2010-01-01"

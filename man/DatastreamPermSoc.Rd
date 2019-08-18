@@ -11,15 +11,15 @@ DatastreamPermSoc(data, intwindow, mindate, maxdate, netwindow, overlap,
 \arguments{
 \item{data}{A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture}
 
-\item{intwindow}{The maximum period of time (in days) between two co-captures (i.e. if intwindow = 10 then two individuals captured 10 days apart could be considered co-captured but two individuals captured 11 days apart would not be)}
+\item{intwindow}{The maximum period of time (in days) between two co-captures (i.e. if \code{intwindow = 10} then two individuals captured 10 days apart could be considered co-captured but two individuals captured 11 days apart would not be)}
 
-\item{mindate}{The start date (format = "YYYY-MM-DD") of the study (i.e. when you want to build networks from)}
+\item{mindate}{The start date (format = \code{"YYYY-MM-DD"}) of the study (i.e. when you want to build networks from)}
 
-\item{maxdate}{The end date (format = "YYYY-MM-DD") of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.}
+\item{maxdate}{The end date (format = \code{"YYYY-MM-DD"}) of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.}
 
-\item{netwindow}{The period of time (in months) over which each network is built(i.e. netwindow=12 would correspond to yearly networks)}
+\item{netwindow}{The period of time (in months) over which each network is built(i.e. \code{netwindow=12} would correspond to yearly networks)}
 
-\item{overlap}{The amount of overlap between networks in months (i.e. overlap=2 would result in a second network window starting 2 months before the end of the first). When overlap=0, there is no overlap between successive network windows}
+\item{overlap}{The amount of overlap between networks in months (i.e. \code{overlap=2} would result in a second network window starting 2 months before the end of the first). When overlap=0, there is no overlap between successive network windows}
 
 \item{spacewindow}{The maximum distance between locations that can be classed as a co-capture (calculated using the coordinate system provided in the input data). Best used when multiple capture locations occur very close together}
 
@@ -31,7 +31,7 @@ DatastreamPermSoc(data, intwindow, mindate, maxdate, netwindow, overlap,
 
 \item{spat.restrict}{Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that individuals can only be swapped with those captued within a fixed distance}
 
-\item{n.swaps}{The number of swaps between each random network being extracted (e.g. n.swaps = 10 would equate to 10 swaps taking place between each random network being saved)}
+\item{n.swaps}{The number of swaps between each random network being extracted (e.g. \code{n.swaps = 10} would equate to 10 swaps taking place between each random network being saved)}
 
 \item{n.rand}{The number of randomised networks to be generated}
 

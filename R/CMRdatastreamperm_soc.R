@@ -4,17 +4,17 @@
 #'This function creates randomised social networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or spatial windows)
 #'
 #'@param data A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture
-#'@param intwindow The maximum period of time (in days) between two co-captures (i.e. if intwindow = 10 then two individuals captured 10 days apart could be considered co-captured but two individuals captured 11 days apart would not be)
-#'@param mindate The start date (format = "YYYY-MM-DD") of the study (i.e. when you want to build networks from)
-#'@param maxdate The end date (format = "YYYY-MM-DD") of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.
-#'@param netwindow The period of time (in months) over which each network is built(i.e. netwindow=12 would correspond to yearly networks)
-#'@param overlap The amount of overlap between networks in months (i.e. overlap=2 would result in a second network window starting 2 months before the end of the first). When overlap=0, there is no overlap between successive network windows
+#'@param intwindow The maximum period of time (in days) between two co-captures (i.e. if \code{intwindow = 10} then two individuals captured 10 days apart could be considered co-captured but two individuals captured 11 days apart would not be)
+#'@param mindate The start date (format = \code{"YYYY-MM-DD"}) of the study (i.e. when you want to build networks from)
+#'@param maxdate The end date (format = \code{"YYYY-MM-DD"}) of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.
+#'@param netwindow The period of time (in months) over which each network is built(i.e. \code{netwindow=12} would correspond to yearly networks)
+#'@param overlap The amount of overlap between networks in months (i.e. \code{overlap=2} would result in a second network window starting 2 months before the end of the first). When overlap=0, there is no overlap between successive network windows
 #'@param spacewindow The maximum distance between locations that can be classed as a co-capture (calculated using the coordinate system provided in the input data). Best used when multiple capture locations occur very close together
 #'@param same.time (TRUE/FALSE) Whether swaps should be restricted to only occur betwen individuals trapped on the same date or not
 #'@param time.restrict Provided as a number of months. Imposes time restrictions on when swaps can take place so that individuals can only be swapped with those a fixed time before or after being captured
 #'@param same.spat (TRUE/FALSE) Whether swaps should be restricted to only occur between individuals trapped at the same location
 #'@param spat.restrict Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that individuals can only be swapped with those captued within a fixed distance
-#'@param n.swaps The number of swaps between each random network being extracted (e.g. n.swaps = 10 would equate to 10 swaps taking place between each random network being saved)
+#'@param n.swaps The number of swaps between each random network being extracted (e.g. \code{n.swaps = 10} would equate to 10 swaps taking place between each random network being saved)
 #'@param n.rand The number of randomised networks to be generated
 #'@param burnin (TRUE/FALSE) Whether burnin is required
 #'@param n.burnin The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand
@@ -59,9 +59,6 @@
 #'@export
 
 DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overlap, spacewindow, same.time, time.restrict, same.spat, spat.restrict, n.swaps, n.rand, burnin, n.burnin, iter){
-
-  require(chron)
-  require(DescTools)
 
   D<-data
   names(D)<-c("id","loc","x","y","date")
@@ -109,8 +106,8 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
   locs<-sort(unique(D2$loc))
   n.locs<-length(locs)
 
-  locdat<-aggregate(D2[,2:4],by=list(D2$loc),unique)[,2:4]
-  locmat<-as.matrix(dist(locdat[,2:3]))
+  locdat<-stats::aggregate(D2[,2:4],by=list(D2$loc),unique)[,2:4]
+  locmat<-as.matrix(stats::dist(locdat[,2:3]))
   locmat2<-locmat<spat.restrict
   rownames(locmat2)<-colnames(locmat2)<-locs
 
@@ -143,7 +140,7 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
     }
     E2<-factor(E2,levels=levels(ids))
     EDGES<-array(0,dim=c(((n.ids-1)*(n.ids))/2,3,n.rand))
-    EDGES[,1,]<-E1
+    EDGES[,1,]<-E1()
     EDGES[,2,]<-E2
 
     D3<-D2[which(D2$Jdays>=starts[ts]&D2$Jdays<ends[ts]),]
@@ -158,7 +155,7 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
       #print(paste(ts,"-",i,"-tickB"))
     }
 
-    rands<-cmrperm.soc(D=D3,locmat=locmat2,same.time=same.time,time.restrict=time.restrict,same.spat=same.spat,spat.restrict=spat.restrict,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin)
+    rands<-CMR::cmrperm.soc(D=D3,locmat=locmat2,same.time=same.time,time.restrict=time.restrict,same.spat=same.spat,spat.restrict=spat.restrict,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin)
 
     if(iter==TRUE){rands.out[[ts]]<-as.data.frame(rands[[1]][,1:5])}
 
