@@ -33,8 +33,6 @@
 
 cmrNodeswap<-function(cmrnet,n.rand,multi=FALSE){
 
-  require(sna)
-
   if(multi==FALSE){
     nets<-cmrnet[[2]]
     ne<-cmrnet[[3]]

@@ -1,4 +1,3 @@
-
 #'DatastreamPermSoc
 #'
 #'This function creates randomised social networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or spatial windows)
@@ -121,7 +120,7 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
     rownames(NET[[ts]])<-ids
   }
 
-  NODE.EXIST<-matrix(0,nr=n.ids,nc=Ws)
+  NODE.EXIST<-matrix(0,nrow=n.ids,ncol=Ws)
 
   rands.out<-list()
 

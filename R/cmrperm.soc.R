@@ -60,7 +60,7 @@ cmrperm.soc<-function(D,locmat,same.time,time.restrict,same.spat,spat.restrict,n
     if(same.spat==TRUE){
       tmpsites<-D$loc[tmp1]
     } else if(spat.restrict!="n"){
-      tmpsites<-rownames(locmat2)[which(locmat[,which(colnames(locmat)==D$loc[tmp1])]==TRUE)]
+      tmpsites<-rownames(locmat)[which(locmat[,which(colnames(locmat)==D$loc[tmp1])]==TRUE)]
     } else{
       tmpsites<-sort(unique(D$loc))
     }

@@ -57,7 +57,7 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
   starts<-timeDate::julian(as.Date(starts),origin=as.Date("1970-01-01"))
   ends<-timeDate::julian(as.Date(ends),origin=as.Date("1970-01-01"))
 
-  #Provide warning message if the netwindows stop early
+  # Provide warning message if the netwindows stop early
   print(paste0("stopped",end-ends[length(ends)],"days early"))
 
   #Counts the number of windows over which networks are built
@@ -79,8 +79,8 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
   n.locs<-length(locs)
 
   #calculate distance matrix between locations
-  locdat<-aggregate(D2[,2:4],by=list(D2$loc),unique)[,2:4]
-  locmat<-as.matrix(dist(locdat[,2:3]))
+  locdat<-stats::aggregate(D2[,2:4],by=list(D2$loc),unique)[,2:4]
+  locmat<-as.matrix(stats::dist(locdat[,2:3]))
   locmat2<-locmat<=spacewindow
   rownames(locmat2)<-colnames(locmat2)<-locs
 
@@ -109,9 +109,9 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
   E2<-factor(E2,levels=levels(ids))
   EDGES[,2,]<-E2
 
-  NODE.EXIST<-matrix(0,nr=n.ids,nc=Ws)
+  NODE.EXIST<-matrix(0,nrow=n.ids,ncol=Ws)
 
-  EDGE.EXIST<-matrix(0,nr=length(EDGES[,1,1]),nc=Ws)
+  EDGE.EXIST<-matrix(0,nrow=length(EDGES[,1,1]),ncol=Ws)
 
   #Less than ends
   for (ts in 1:Ws){

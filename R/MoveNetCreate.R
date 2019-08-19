@@ -94,9 +94,9 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
   E2<-factor(E2,levels=levels(locs))
   EDGES[,2,]<-E2
 
-  NODE.EXIST<-matrix(0,nr=n.locs,nc=Ws)
+  NODE.EXIST<-matrix(0,nrow=n.locs,ncol=Ws)
 
-  EDGE.EXIST<-matrix(0,nr=length(EDGES[,1,1]),nc=Ws)
+  EDGE.EXIST<-matrix(0,nrow=length(EDGES[,1,1]),ncol=Ws)
 
   #Less than ends
   for (ts in 1:Ws){

@@ -1,4 +1,3 @@
-
 #'DatastreamPermSpat
 #'
 #'This function creates randomised movement networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or individual ID-based restrictions)
@@ -9,7 +8,6 @@
 #'@param maxdate The end date (format = \code{"YYYY-MM-DD"}) of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.
 #'@param netwindow The period of time over which each network is built in months (i.e. \code{netwindow=12} would correspond to yearly networks)
 #'@param overlap The amount of overlap between netwindows in months (i.e. \code{overlap=2} would result in a second network window starting 2 months before the end of the first). When \code{overlap=0}, there is no overlap between successive network windows
-#'@param nextonly (TRUE/FALSE).Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to false
 #'@param same.time (TRUE/FALSE) Whether swaps should be restricted to only occur betwen individuals trapped on the same date or not
 #'@param time.restrict Provided as a number of months. Imposes time restrictions on when swaps can take place so that individuals can only be swapped with those a fixed time before or after being captured
 #'@param same.id (TRUE/FALSE) Whether swaps should be restricted to only be between captures of the same individual
@@ -54,9 +52,6 @@
 #'@export
 
 DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonly=FALSE,same.time,time.restrict,same.id,n.swaps,n.rand,burnin,n.burnin,warn.thresh,iter){
-
-  require(chron)
-  require(DescTools)
 
   D<-data
   names(D)<-c("id","loc","x","y","date")
@@ -115,7 +110,7 @@ DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
     rownames(NET[[ts]])<-locs
   }
 
-  NODE.EXIST<-matrix(0,nr=n.ids,nc=Ws)
+  NODE.EXIST<-matrix(0,nrow=n.ids,ncol=Ws)
 
   rands.out<-list()
 
