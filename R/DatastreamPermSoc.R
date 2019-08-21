@@ -154,7 +154,7 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
       #print(paste(ts,"-",i,"-tickB"))
     }
 
-    rands<-CMRnet::cmrperm.soc(D=D3,locmat=locmat2,same.time=same.time,time.restrict=time.restrict,same.spat=same.spat,spat.restrict=spat.restrict,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin)
+    rands<-CMRnet::cmrPermSoc(D=D3,locmat=locmat2,same.time=same.time,time.restrict=time.restrict,same.spat=same.spat,spat.restrict=spat.restrict,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin)
 
     if(iter==TRUE){rands.out[[ts]]<-as.data.frame(rands[[1]][,1:5])}
 

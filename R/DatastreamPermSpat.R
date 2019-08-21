@@ -142,7 +142,7 @@ DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
       #print(paste(ts,"-",i,"-tickB"))
     }
 
-    rands<-cmrperm.spat(D=D3,same.time=same.time,time.restrict=time.restrict,same.id=same.id,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin,warn.thresh=warn.thresh)
+    rands<-cmrPermSpat(D=D3,same.time=same.time,time.restrict=time.restrict,same.id=same.id,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin,warn.thresh=warn.thresh)
 
     if(iter==TRUE){rands.out[[ts]]<-as.data.frame(rands[[1]][,1:5])}
 
