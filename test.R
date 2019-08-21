@@ -1,4 +1,12 @@
-# test of DatastreamPermSoc
+#-------------------#
+# testing CMRnet ####
+#-------------------#
+
+# install profvis if not present
+if('profvis' %in% installed.packages() == FALSE){install.packages('profvis')}
+
+# load profvis
+library(profvis)
 
 # load in data
 data(cmr_dat)
@@ -24,6 +32,19 @@ netdat <- DynamicNetCreate(
     overlap = overlap,
     spacewindow = spacewindow
   )
+
+# run profiling on DynamicNetCreate
+profvis({
+  netdat <- DynamicNetCreate(
+    data = cmr_dat,
+    intwindow = intwindow,
+    mindate = mindate,
+    maxdate = maxdate,
+    netwindow = netwindow,
+    overlap = overlap,
+    spacewindow = spacewindow
+  )
+})
 
 # movement networks
 movenetdat <- MoveNetCreate(
@@ -76,6 +97,29 @@ Rs <- DatastreamPermSoc(
     n.burnin,
     iter = FALSE
   )
+
+Rs <-
+  DatastreamPermSpat(
+    data = cmr_dat,
+    intwindow,
+    mindate,
+    maxdate,
+    netwindow,
+    overlap,
+    spacewindow,
+    same.time,
+    time.restrict,
+    same.id,
+    n.swaps,
+    n.rand,
+    burnin = TRUE,
+    n.burnin,
+    warn.thresh,
+    nextonly = TRUE,
+    iter = FALSE
+  )
+
+B <- cmrNodeswap(multimovenetdat, n.rand = 1000, multi = TRUE)
 
 # get the error:
 # Error in NET[which(NET.rows %in% EDGES[i, 2, r] == TRUE), which(NET.rows %in%  : incorrect number of subscripts
