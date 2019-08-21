@@ -29,6 +29,7 @@ A list of length 3 containing: 1) A list of edgelists (the same length as the nu
 This function creates dynamic, directed, multiplex movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals. Multiplex networks connect locations that individuals have moved between within a particular interaction window with different layers being defined by the user. The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user
 }
 \examples{
+\dontrun{
 data(cmr_dat2)
 mindate<-"2010-01-01"
 maxdate<-"2015-01-01"
@@ -36,5 +37,5 @@ intwindow<-60
 netwindow<-12
 overlap<-0
 multimovenetdat<-MultiMoveNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,nextonly=TRUE)
-
+}
 }

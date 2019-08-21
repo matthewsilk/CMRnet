@@ -59,6 +59,7 @@ If \code{iter=FALSE} then a list of length 2 with elements corresponding to: \cr
 This function creates randomised social networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or spatial windows)
 }
 \examples{
+\dontrun{
 # load in data
 data(cmr_dat)
 
@@ -82,4 +83,5 @@ n.rand=100
 n.burnin=100
 
 Rs <- DatastreamPermSoc(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin=TRUE,n.burnin,iter=FALSE)
+}
 }

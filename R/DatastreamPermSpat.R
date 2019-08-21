@@ -31,6 +31,7 @@
 #'    \item A matrix identifying whether a location was present (i.e. had at least one individual captured there) in each network window. The edge list is not provided due to to the memory that providing this and the list of matrix arrays would require.
 #'}
 #'@examples
+#'\dontrun{
 #'data(cmr_dat)
 #'mindate<-"2010-01-01"
 #'maxdate<-"2015-01-01"
@@ -48,6 +49,7 @@
 #'warn.thresh=100
 #'
 #'Rs<-DatastreamPermSpat(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.id,n.swaps,n.rand,burnin=TRUE,n.burnin,warn.thresh,nextonly=TRUE,iter=FALSE)
+#'}
 
 #'@export
 

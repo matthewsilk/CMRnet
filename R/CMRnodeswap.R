@@ -11,7 +11,7 @@
 #'@return The randomised networks. If multi=FALSE then this consists of a list in which each element of the list corresponds to a particular network window and contains an array consisting of all of the randomised networks. If multi=TRUE then this consists of a nested list arrangement in which each element of the first list corresponds to a particular network window, and each element of the second list a layer of the multiplex for that network window . Each element of the second level contains an array consisting of all of the randommised versions of that layer in that network window
 
 #'@examples
-#'data(cmr_dat)
+#'\dontrun{data(cmr_dat)
 #'mindate<-"2010-01-01"
 #'maxdate<-"2015-01-01"
 #'intwindow<-60
@@ -28,7 +28,7 @@
 #'overlap<-0
 #'multimovenetdat<-MultiMoveNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,nextonly=TRUE)
 #'B<-cmrNodeswap(multimovenetdat,n.rand=1000,multi=TRUE)
-#'
+#'}
 #'@export
 
 cmrNodeswap<-function(cmrnet,n.rand,multi=FALSE){

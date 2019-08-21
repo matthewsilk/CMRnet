@@ -14,6 +14,7 @@
 #'@return A list of length 3 containing: 1) A list of edgelists (the same length as the number of network windows) containing the multiplex network for each of the netwindows as an array; 2) a list of adjacency matrices (the same length as the number of ntwork windows) containing the multiplex network for each of the netwindows as an array; 3) a matrix indicating which individuals occurred in each netwindow
 
 #'@examples
+#'\dontrun{
 #'data(cmr_dat2)
 #'mindate<-"2010-01-01"
 #'maxdate<-"2015-01-01"
@@ -21,7 +22,7 @@
 #'netwindow<-12
 #'overlap<-0
 #'multimovenetdat<-MultiMoveNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,nextonly=TRUE)
-#'
+#'}
 #'@export
 
 MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonly=FALSE){
@@ -117,7 +118,7 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
   NODE.EXIST<-array(0,dim=c(n.locs,Ws,n.layers))
 
   # this is the longest step - set up a progress bar
-  pb <- progress::progress_bar$new(total = Ws, clear = FALSE)
+  pb <- progress::progress_bar$new(total = nrow(D2), clear = FALSE)
   pb$tick(0)
 
   #Less than ends
@@ -148,6 +149,9 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
       }
 
       for (i in 1:n.Caps2){
+
+        pb$tick()
+
         range<-seq(D4$Jdays[i],D4$Jdays[i]+X)
         timematch<-which(D4$Jdays%in%range==TRUE)
         idmatch<-which(D4$id%in%D4$id[i]==TRUE)
@@ -172,8 +176,7 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
     } #end loop over layers
 
     #end loop over ts/Ws
-    # time updates at the end of the set
-    pb$tick()
+
   }
 
   rownames(NODE.EXIST)<-locs

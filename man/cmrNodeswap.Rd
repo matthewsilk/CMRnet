@@ -21,7 +21,7 @@ This function conducts network permutations of CMRnet objects, acting as a wrapp
 Conducts node-swap randomisations for CMRnet outputs
 }
 \examples{
-data(cmr_dat)
+\dontrun{data(cmr_dat)
 mindate<-"2010-01-01"
 maxdate<-"2015-01-01"
 intwindow<-60
@@ -38,5 +38,5 @@ netwindow<-12
 overlap<-0
 multimovenetdat<-MultiMoveNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,nextonly=TRUE)
 B<-cmrNodeswap(multimovenetdat,n.rand=1000,multi=TRUE)
-
+}
 }

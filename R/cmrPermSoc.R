@@ -15,27 +15,6 @@
 #'
 
 #'@return A randomised dataset with the same dimensions as the original input dataset
-
-#'@examples
-#'data(cmr_dat)
-#'mindate<-"2010-01-01"
-#'maxdate<-"2015-01-01"
-#'intwindow<-60
-#'netwindow<-12
-#'overlap<-0
-#'spacewindow<-0
-#'netdat<-DynamicNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,spacewindow=spacewindow)
-#'
-#'same.time=FALSE
-#'time.restrict=6
-#'same.spat=FALSE
-#'spat.restrict="n"
-#'n.swaps=10
-#'n.rand=100
-#'n.burnin=100
-#'
-#'Rs<-DatastreamPermSoc(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin=TRUE,n.burnin)
-
 #'@export
 
 cmrPermSoc<-function(D,locmat,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin,n.burnin){

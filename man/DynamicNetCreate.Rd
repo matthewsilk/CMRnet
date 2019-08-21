@@ -35,6 +35,7 @@ This function creates dynamic social networks from capture-mark-recapture datase
 The time period for each network, together with the temporal and spatial restrictions on the co-capture window can be defined by the user
 }
 \examples{
+\dontrun{
 data(cmr_dat)
 mindate<-"2010-01-01"
 maxdate<-"2015-01-01"
@@ -43,5 +44,5 @@ netwindow<-12
 overlap<-0
 spacewindow<-0
 netdat<-DynamicNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,spacewindow=spacewindow)
-
+}
 }

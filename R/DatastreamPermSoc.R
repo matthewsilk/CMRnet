@@ -31,6 +31,7 @@
 #'    \item A matrix identifying whether an individual was present in each network window. The edge list is not provided due to to the memory that providing this and the list of matrix arrays would require.
 #'}
 #'@examples
+#'\dontrun{
 #' # load in data
 #' data(cmr_dat)
 #'
@@ -54,6 +55,7 @@
 #'n.burnin=100
 #'
 #'Rs <- DatastreamPermSoc(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin=TRUE,n.burnin,iter=FALSE)
+#'}
 
 #'@export
 

@@ -18,6 +18,7 @@
 #'    \item A matrix indicating which individuals occurred in each netwindow
 #'}
 #'@examples
+#'\dontrun{
 #'data(cmr_dat)
 #'mindate<-"2010-01-01"
 #'maxdate<-"2015-01-01"
@@ -26,7 +27,7 @@
 #'overlap<-0
 #'spacewindow<-0
 #'netdat<-DynamicNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,spacewindow=spacewindow)
-#'
+#'}
 #'@export
 
 DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spacewindow){
@@ -119,7 +120,7 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
   EDGE.EXIST<-matrix(0,nrow=length(EDGES[,1,1]),ncol=Ws)
 
   # this is the longest step - set up a progress bar
-  pb <- progress::progress_bar$new(total = Ws, clear = FALSE)
+  pb <- progress::progress_bar$new(total = nrow(D2), clear = FALSE)
   pb$tick(0)
 
   #Less than ends
@@ -139,6 +140,9 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
 
 
     for (i in 1:n.Caps2){
+
+      pb$tick()
+
       range<-seq(D3$Jdays[i]-X,D3$Jdays[i]+X)
       timematch<-which(D3$Jdays%in%range==TRUE)
       spacematch<-which(D3$loc%in%D3$loc[i]==TRUE)
@@ -161,8 +165,6 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
 
     #end loop over ts/Ws
 
-    # time updates at the end of the set
-    pb$tick()
   }
 
   NODE.EXIST<-data.frame(ids,NODE.EXIST)

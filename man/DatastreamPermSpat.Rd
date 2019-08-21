@@ -58,6 +58,7 @@ If \code{iter=FALSE} then a list of length 2 is returned with elements correspon
 This function creates randomised movement networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or individual ID-based restrictions)
 }
 \examples{
+\dontrun{
 data(cmr_dat)
 mindate<-"2010-01-01"
 maxdate<-"2015-01-01"
@@ -75,4 +76,5 @@ n.burnin=100
 warn.thresh=100
 
 Rs<-DatastreamPermSpat(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.id,n.swaps,n.rand,burnin=TRUE,n.burnin,warn.thresh,nextonly=TRUE,iter=FALSE)
+}
 }

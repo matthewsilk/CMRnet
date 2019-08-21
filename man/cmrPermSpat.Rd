@@ -32,22 +32,3 @@ A randomised dataset with the same dimensions as the original input dataset
 \description{
 An internal function that operate within CMRnet::DatastreamPermSpat
 }
-\examples{
-data(cmr_dat)
-mindate<-"2010-01-01"
-maxdate<-"2015-01-01"
-intwindow<-60
-netwindow<-12
-overlap<-0
-movenetdat<-MoveNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,nextonly=TRUE)
-
-same.time=FALSE
-time.restrict=6
-same.id=FALSE
-n.swaps=10
-n.rand=100
-n.burnin=100
-warn.thresh=100
-
-Rs<-DatastreamPermSpat(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,same.time,time.restrict,same.id,n.swaps,n.rand,burnin=TRUE,n.burnin,warn.thresh)
-}

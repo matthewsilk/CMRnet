@@ -14,6 +14,7 @@
 #'@return A list of length 3 containing: 1) the edgelist for the network in each of the netwindows as an array; 2) the adjacency matrix for the network in each of the netwindows as an array; 3) a matrix indicating which individuals occurred in each netwindow;
 
 #'@examples
+#'\dontrun{
 #'data(cmr_dat)
 #'mindate<-"2010-01-01"
 #'maxdate<-"2015-01-01"
@@ -21,7 +22,7 @@
 #'netwindow<-12
 #'overlap<-0
 #'movenetdat<-MoveNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,nextonly=TRUE)
-#'
+#'}
 #'@export
 
 
@@ -105,7 +106,7 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
   EDGE.EXIST<-matrix(0,nrow=length(EDGES[,1,1]),ncol=Ws)
 
   # this is the longest step - set up a progress bar
-  pb <- progress::progress_bar$new(total = Ws, clear = FALSE)
+  pb <- progress::progress_bar$new(total = nrow(D2), clear = FALSE)
   pb$tick(0)
 
   #Less than ends
@@ -123,6 +124,10 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
     }
 
     for (i in 1:n.Caps2){
+
+      # add progress update
+      pb$tick()
+
       range<-seq(D3$Jdays[i],D3$Jdays[i]+X)
       timematch<-which(D3$Jdays%in%range==TRUE)
       idmatch<-which(D3$id%in%D3$id[i]==TRUE)
@@ -145,8 +150,6 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
 
     #end loop over ts/Ws
 
-    # time updates at the end of the set
-    pb$tick()
   }
 
   NODE.EXIST<-data.frame(locs,NODE.EXIST)
