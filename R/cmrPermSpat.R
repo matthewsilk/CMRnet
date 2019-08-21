@@ -1,4 +1,4 @@
-#'cmrperm.spat
+#'cmrPermSpat
 #'
 #'An internal function that operate within CMRnet::DatastreamPermSpat
 #'
@@ -35,7 +35,7 @@
 
 #'@export
 
-cmrperm.spat<-function(D,same.time,time.restrict,same.id,n.swaps,n.rand,burnin,n.burnin,warn.thresh){
+cmrPermSpat<-function(D,same.time,time.restrict,same.id,n.swaps,n.rand,burnin,n.burnin,warn.thresh){
 
   D.rand<-list()
 

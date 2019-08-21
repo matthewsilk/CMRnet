@@ -2,6 +2,7 @@
 
 # load in data
 data(cmr_dat)
+data(cmr_dat2)
 
 # set parameters
 mindate <- "2010-01-01"
@@ -11,7 +12,9 @@ netwindow <- 12
 overlap <- 0
 spacewindow <- 0
 
-# create network
+# test all network create functions ####
+
+# Dynamic networks
 netdat <- DynamicNetCreate(
     data = cmr_dat,
     intwindow = intwindow,
@@ -22,7 +25,28 @@ netdat <- DynamicNetCreate(
     spacewindow = spacewindow
   )
 
-# [1] "stopped0days early"
+# movement networks
+movenetdat <- MoveNetCreate(
+  data = cmr_dat,
+  intwindow = intwindow,
+  mindate = mindate,
+  maxdate = maxdate,
+  netwindow = netwindow,
+  overlap = overlap,
+  nextonly = TRUE
+)
+
+# Multiple movement networks
+multimovenetdat <-
+  MultiMoveNetCreate(
+    data = cmr_dat2,
+    intwindow = intwindow,
+    mindate = mindate,
+    maxdate = maxdate,
+    netwindow = netwindow,
+    overlap = overlap,
+    nextonly = TRUE
+  )
 
 # set new params
 same.time = FALSE
@@ -30,8 +54,8 @@ time.restrict = 6
 same.spat = FALSE
 spat.restrict = "n"
 n.swaps = 10
-n.rand = 100
-n.burnin = 100
+n.rand = 10
+n.burnin = 2
 
 # run permutations
 Rs <- DatastreamPermSoc(

@@ -1,4 +1,4 @@
-#'cmrperm.soc
+#'cmrPermSoc
 #'
 #'An internal function that operate within CMRnet::DatastreamPermSoc
 #'
@@ -38,7 +38,7 @@
 
 #'@export
 
-cmrperm.soc<-function(D,locmat,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin,n.burnin){
+cmrPermSoc<-function(D,locmat,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin,n.burnin){
 
   D.rand<-list()
 

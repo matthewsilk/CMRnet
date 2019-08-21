@@ -104,6 +104,10 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
 
   EDGE.EXIST<-matrix(0,nrow=length(EDGES[,1,1]),ncol=Ws)
 
+  # this is the longest step - set up a progress bar
+  pb <- progress::progress_bar$new(total = Ws, clear = FALSE)
+  pb$tick(0)
+
   #Less than ends
   for (ts in 1:Ws){
 
@@ -140,6 +144,9 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
     }
 
     #end loop over ts/Ws
+
+    # time updates at the end of the set
+    pb$tick()
   }
 
   NODE.EXIST<-data.frame(locs,NODE.EXIST)

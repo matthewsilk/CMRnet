@@ -124,6 +124,10 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
 
   rands.out<-list()
 
+  # set up progress bar
+  pb <- progress::progress_bar$new(total = Ws*n.rand, clear = FALSE)
+  pb$tick(0)
+
   #Less than ends
   for (ts in 1:Ws){
 
@@ -159,6 +163,8 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
     if(iter==TRUE){rands.out[[ts]]<-as.data.frame(rands[[1]][,1:5])}
 
     for(r in 1:length(rands)){
+
+      pb$tick()
 
       for (i in 1:n.Caps2){
         D3<-rands[[r]]

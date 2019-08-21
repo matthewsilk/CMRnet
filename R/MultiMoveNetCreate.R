@@ -116,6 +116,10 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
 
   NODE.EXIST<-array(0,dim=c(n.locs,Ws,n.layers))
 
+  # this is the longest step - set up a progress bar
+  pb <- progress::progress_bar$new(total = Ws, clear = FALSE)
+  pb$tick(0)
+
   #Less than ends
   for (ts in 1:Ws){
 
@@ -168,6 +172,8 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
     } #end loop over layers
 
     #end loop over ts/Ws
+    # time updates at the end of the set
+    pb$tick()
   }
 
   rownames(NODE.EXIST)<-locs

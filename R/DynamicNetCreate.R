@@ -65,7 +65,7 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
     print(paste0("Final network window stops ",end-ends[length(ends)]," before the end of the study"))
   }
 
-  #Counts the number of windows over which networks are built
+  # Counts the number of windows over which networks are built
   Ws<-length(starts)
 
   #size of sliding window
@@ -118,6 +118,10 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
 
   EDGE.EXIST<-matrix(0,nrow=length(EDGES[,1,1]),ncol=Ws)
 
+  # this is the longest step - set up a progress bar
+  pb <- progress::progress_bar$new(total = Ws, clear = FALSE)
+  pb$tick(0)
+
   #Less than ends
   for (ts in 1:Ws){
 
@@ -145,7 +149,6 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
       for (j in 1:length(MATCH)){
         EDGES[which(EDGES[,1,ts]%in%as.numeric(D3$id[i])==TRUE&EDGES[,2,ts]%in%as.numeric(D3$id[MATCH[j]])==TRUE),3,ts]<-EDGES[which(EDGES[,1,ts]%in%as.numeric(D3$id[i])==TRUE&EDGES[,2,ts]%in%as.numeric(D3$id[MATCH[j]])==TRUE),3,ts]+1
       }
-
     }
 
     ##and now turn the edge list into an association matrix as well to put network in double format
@@ -157,6 +160,9 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
     }
 
     #end loop over ts/Ws
+
+    # time updates at the end of the set
+    pb$tick()
   }
 
   NODE.EXIST<-data.frame(ids,NODE.EXIST)
