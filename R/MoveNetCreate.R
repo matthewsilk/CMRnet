@@ -53,7 +53,13 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
   ends<-timeDate::julian(as.Date(ends),origin=as.Date("1970-01-01"))
 
   #Provide warning message if the netwindows stop early
-  print(paste0("stopped",end-ends[length(ends)],"days early"))
+  # Provide warning message if the netwindows stop early
+  if(end-ends[length(ends)]==0){
+    print("End of final network window aligns with end of study")
+  }
+  if(end-ends[length(ends)]>0){
+    print(paste0("Final network window stops ",end-ends[length(ends)]," before the end of the study"))
+  }
 
   #Counts the number of windows over which networks are built
   Ws<-length(starts)

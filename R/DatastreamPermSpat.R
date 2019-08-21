@@ -110,7 +110,7 @@ DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
     rownames(NET[[ts]])<-locs
   }
 
-  NODE.EXIST<-matrix(0,nrow=n.ids,ncol=Ws)
+  NODE.EXIST<-matrix(0,nrow=n.locs,ncol=Ws)
 
   rands.out<-list()
 
