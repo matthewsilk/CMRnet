@@ -144,8 +144,10 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
 
     NET.rows<-as.numeric(factor(rownames(NET),levels=levels(D$loc)))
 
-    for (i in 1:length(EDGES[,3,ts])){
-      NET[which(NET.rows%in%EDGES[i,1,ts]==TRUE),which(NET.rows%in%EDGES[i,2,ts]==TRUE),ts]<-NET[which(NET.rows%in%EDGES[i,1,ts]==TRUE),which(NET.rows%in%EDGES[i,2,ts]==TRUE),ts]+EDGES[i,3,ts]
+    EDGES.tmp<-EDGES[which(EDGES[,3,ts]>0),,ts]
+
+    for (i in 1:length(EDGES.tmp[,3])){
+      NET[which(NET.rows%in%EDGES.tmp[i,1]==TRUE),which(NET.rows%in%EDGES.tmp[i,2]==TRUE),ts]<-NET[which(NET.rows%in%EDGES.tmp[i,1]==TRUE),which(NET.rows%in%EDGES.tmp[i,2]==TRUE),ts]+EDGES.tmp[i,3]
     }
 
     #end loop over ts/Ws

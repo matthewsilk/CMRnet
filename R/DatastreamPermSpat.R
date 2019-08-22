@@ -168,9 +168,11 @@ DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
 
       ##and now turn the edge list into an association matrix as well to put network in double format
       NET.rows<-as.numeric(factor(rownames(NET[[ts]]),levels=levels(D$loc)))
+      
+      EDGES.tmp<-EDGES[which(EDGES[,3,r]>0),,r]
 
-      for (i in 1:length(EDGES[,3,r])){
-        NET[[ts]][which(NET.rows%in%EDGES[i,1,r]==TRUE),which(NET.rows%in%EDGES[i,2,r]==TRUE),r]<-NET[[ts]][which(NET.rows%in%EDGES[i,1,r]==TRUE),which(NET.rows%in%EDGES[i,2,r]==TRUE),r]+EDGES[i,3,r]
+      for (i in 1:length(EDGES.tmp[,3])){
+        NET[[ts]][which(NET.rows%in%EDGES.tmp[i,1]==TRUE),which(NET.rows%in%EDGES.tmp[i,2]==TRUE),r]<-NET[[ts]][which(NET.rows%in%EDGES.tmp[i,1]==TRUE),which(NET.rows%in%EDGES.tmp[i,2]==TRUE),r]+EDGES.tmp[i,3]
       }
 
     } #end r loop over randomisations
