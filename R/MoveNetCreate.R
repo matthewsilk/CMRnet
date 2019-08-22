@@ -54,7 +54,6 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
   ends<-timeDate::julian(as.Date(ends),origin=as.Date("1970-01-01"))
 
   #Provide warning message if the netwindows stop early
-  # Provide warning message if the netwindows stop early
   if(end-ends[length(ends)]==0){
     print("End of final network window aligns with end of study")
   }

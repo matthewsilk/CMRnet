@@ -81,8 +81,12 @@ DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
   ends<-julian(as.Date(ends),origin=as.Date("1970-01-01"))
 
   #Provide warning message if the netwindows stop early
-  print(paste0("stopped",end-ends[length(ends)],"days early"))
-
+  if(end-ends[length(ends)]==0){
+    print("End of final network window aligns with end of study")
+  }
+  if(end-ends[length(ends)]>0){
+    print(paste0("Final network window stops ",end-ends[length(ends)]," before the end of the study"))
+  }
   #Counts the number of windows over which networks are built
   Ws<-length(starts)
 
@@ -115,6 +119,10 @@ DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
   NODE.EXIST<-matrix(0,nrow=n.locs,ncol=Ws)
 
   rands.out<-list()
+
+  # set up progress bar
+  pb <- progress::progress_bar$new(total = Ws*n.rand, clear = FALSE)
+  pb$tick(0)
 
   #Less than ends
   for (ts in 1:Ws){
@@ -150,6 +158,8 @@ DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
 
     for(r in 1:length(rands)){
 
+      pb$tick()
+
       for (i in 1:n.Caps2){
         D3<-rands[[r]]
         range<-seq(D3$Jdays[i],D3$Jdays[i]+X)
@@ -168,7 +178,7 @@ DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
 
       ##and now turn the edge list into an association matrix as well to put network in double format
       NET.rows<-as.numeric(factor(rownames(NET[[ts]]),levels=levels(D$loc)))
-      
+
       EDGES.tmp<-EDGES[which(EDGES[,3,r]>0),,r]
 
       for (i in 1:length(EDGES.tmp[,3])){

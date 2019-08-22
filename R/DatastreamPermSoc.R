@@ -87,8 +87,12 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
   ends<-julian(as.Date(ends),origin=as.Date("1970-01-01"))
 
   #Provide warning message if the netwindows stop early
-  print(paste0("stopped",end-ends[length(ends)],"days early"))
-
+  if(end-ends[length(ends)]==0){
+    print("End of final network window aligns with end of study")
+  }
+  if(end-ends[length(ends)]>0){
+    print(paste0("Final network window stops ",end-ends[length(ends)]," before the end of the study"))
+  }
   #Counts the number of windows over which networks are built
   Ws<-length(starts)
 
@@ -185,7 +189,7 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
 
       ##and now turn the edge list into an association matrix as well to put network in double format
       NET.rows<-as.numeric(factor(rownames(NET[[ts]]),levels=levels(D$id)))
-      
+
       EDGES.tmp<-EDGES[which(EDGES[,3,r]>0),,r]
 
       for (i in 1:length(EDGES.tmp[,3])){
