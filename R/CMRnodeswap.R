@@ -79,7 +79,7 @@ cmrNodeswap<-function(cmrnet,n.rand,multi=FALSE){
 
           tmp_rnet<-nets[[r]][which(ne[,r,s]==1),which(ne[,r,s]==1),s]
           tmp_rnet<-sna::rmperm(tmp_rnet)
-          tmp_rnet2<-array(0,dim(rnets[[r]])[1:2])
+          tmp_rnet2<-array(0,dim(rnets[[r]][[s]])[1:2])
           tmp_rnet2[which(ne[,r,s]==1),which(ne[,r,s]==1)]<-tmp_rnet
           rnets[[r]][[s]][,,i]<-tmp_rnet2
         }
