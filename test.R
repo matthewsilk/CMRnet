@@ -5,6 +5,8 @@
 # install profvis if not present
 if('profvis' %in% installed.packages() == FALSE){install.packages('profvis')}
 
+devtools::install_github('matthewsilk/CMRnet')
+
 # load profvis
 library(profvis)
 library(CMRnet)
@@ -65,6 +67,7 @@ spat.restrict = "n"
 n.swaps = 5
 n.rand = 2
 n.burnin = 0
+warn.thresh = 100
 
 # run permutations
 Rs <- DatastreamPermSoc(
@@ -86,26 +89,34 @@ Rs <- DatastreamPermSoc(
     iter = FALSE
   )
 
-Rs <-
-  DatastreamPermSpat(
-    data = cmr_dat,
-    intwindow,
-    mindate,
-    maxdate,
-    netwindow,
-    overlap,
-    spacewindow,
-    same.time,
-    time.restrict,
-    same.id,
-    n.swaps,
-    n.rand,
-    burnin = TRUE,
-    n.burnin,
-    warn.thresh,
-    nextonly = TRUE,
-    iter = FALSE
-  )
+same.time=FALSE
+time.restrict=6
+same.id=FALSE
+n.swaps=10
+n.rand=100
+n.burnin=100
+warn.thresh=100
 
+Rs <- DatastreamPermSpat(
+  data = cmr_dat,
+  intwindow,
+  mindate,
+  maxdate,
+  netwindow,
+  overlap,
+  nextonly = FALSE,
+  same.time,
+  time.restrict,
+  same.id,
+  n.swaps,
+  n.rand,
+  burnin = TRUE,
+  n.burnin,
+  warn.thresh,
+  iter = FALSE
+)
+
+# check cmrNodeswap with both multi = TRUE and multi = FALSE
+A <- cmrNodeswap(movenetdat, n.rand = 1000, multi = FALSE)
 B <- cmrNodeswap(multimovenetdat, n.rand = 1000, multi = TRUE)
 #Error in array(0, dim(rnets[[r]])[1:2]) : 'dims' cannot be of length 0
