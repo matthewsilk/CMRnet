@@ -23,19 +23,35 @@ MoveNetCreate(data, intwindow, mindate, maxdate, netwindow, overlap,
 \item{nextonly}{(TRUE/FALSE). Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to FALSE}
 }
 \value{
-A list of length 3 containing: 1) the edgelist for the network in each of the netwindows as an array; 2) the adjacency matrix for the network in each of the netwindows as an array; 3) a matrix indicating which individuals occurred in each netwindow;
+A list of length 3 containing:
+\enumerate{
+   \item the edgelist for the network in each of the netwindows as an array
+   \item the adjacency matrix for the network in each of the netwindows as an array
+   \item a matrix indicating which individuals occurred in each netwindow
+}
 }
 \description{
 This function creates dynamic, directed movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals. Networks connect locations that individuals have moved between within a particular interaction window. The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user
 }
 \examples{
 \dontrun{
+# load example data
 data(cmr_dat)
+
+# set parameters for network creation
 mindate<-"2010-01-01"
 maxdate<-"2015-01-01"
 intwindow<-60
 netwindow<-12
 overlap<-0
-movenetdat<-MoveNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,nextonly=TRUE)
+
+# create network
+movenetdat<-MoveNetCreate(data=cmr_dat,
+intwindow=intwindow,
+mindate=mindate,
+maxdate=maxdate,
+netwindow=netwindow,
+overlap=overlap,
+nextonly=TRUE)
 }
 }

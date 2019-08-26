@@ -44,7 +44,13 @@
 #' spacewindow<-0
 #'
 #' # create network
-#' netdat<-DynamicNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,spacewindow=spacewindow)
+#' netdat<-DynamicNetCreate(data=cmr_dat,
+#' intwindow=intwindow,
+#' mindate=mindate,
+#' maxdate=maxdate,
+#' netwindow=netwindow,
+#' overlap=overlap,
+#' spacewindow=spacewindow)
 #'
 #'same.time=FALSE
 #'time.restrict=6
@@ -54,7 +60,22 @@
 #'n.rand=100
 #'n.burnin=100
 #'
-#'Rs <- DatastreamPermSoc(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin=TRUE,n.burnin,iter=FALSE)
+#'Rs <- DatastreamPermSoc(data=cmr_dat,
+#'intwindow,
+#'mindate,
+#'maxdate,
+#'netwindow,
+#'overlap,
+#'spacewindow,
+#'same.time,
+#'time.restrict,
+#'same.spat,
+#'spat.restrict,
+#'n.swaps,
+#'n.rand,
+#'burnin=TRUE,
+#'n.burnin,
+#'iter=FALSE)
 #'}
 
 #'@export

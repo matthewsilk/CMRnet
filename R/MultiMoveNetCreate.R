@@ -11,17 +11,32 @@
 #'@param overlap The amount of overlap between netwindows in months (i.e. overlap=2 would result in a second network window starting 2 months before the end of the first). Overlap=0 ensures no overlap between successive network windows
 #'@param nextonly (TRUE/FALSE). Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to FALSE
 
-#'@return A list of length 3 containing: 1) A list of edgelists (the same length as the number of network windows) containing the multiplex network for each of the netwindows as an array; 2) a list of adjacency matrices (the same length as the number of ntwork windows) containing the multiplex network for each of the netwindows as an array; 3) a matrix indicating which individuals occurred in each netwindow
-
+#'@return A list of length 3 containing:
+#'\enumerate{
+#'    \item A list of edgelists (the same length as the number of network windows) containing the multiplex network for each of the netwindows as an array
+#'    \item a list of adjacency matrices (the same length as the number of ntwork windows) containing the multiplex network for each of the netwindows as an array
+#'    \item a matrix indicating which individuals occurred in each netwindow
+#'}
 #'@examples
 #'\dontrun{
+#'# load in data
 #'data(cmr_dat2)
+#'
+#'# set parameters
 #'mindate<-"2010-01-01"
 #'maxdate<-"2015-01-01"
 #'intwindow<-60
 #'netwindow<-12
 #'overlap<-0
-#'multimovenetdat<-MultiMoveNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,nextonly=TRUE)
+#'
+#'# create network
+#'multimovenetdat<-MultiMoveNetCreate(data=cmr_dat,
+#'intwindow=intwindow,
+#'mindate=mindate,
+#'maxdate=maxdate,
+#'netwindow=netwindow,
+#'overlap=overlap,
+#'nextonly=TRUE)
 #'}
 #'@export
 
@@ -168,7 +183,7 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
 
       ##and now turn the edge list into an association matrix as well to put network in double format
       NET.rows<-as.numeric(factor(rownames(NET[[ts]]),levels=levels(D$loc)))
-      
+
       EDGES.tmp<-EDGES[[ts]][which(EDGES[[ts]][,3,ls]>0),,ls]
 
       for (i in 1:length(EDGES.tmp[,3])){

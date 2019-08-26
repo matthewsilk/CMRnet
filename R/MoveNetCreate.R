@@ -11,17 +11,32 @@
 #'@param overlap The amount of overlap between netwindows in months (i.e. overlap=2 would result in a second network window starting 2 months before the end of the first). Overlap=0 ensures no overlap between successive network windows
 #'@param nextonly (TRUE/FALSE). Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to FALSE
 
-#'@return A list of length 3 containing: 1) the edgelist for the network in each of the netwindows as an array; 2) the adjacency matrix for the network in each of the netwindows as an array; 3) a matrix indicating which individuals occurred in each netwindow;
-
+#'@return A list of length 3 containing:
+#'\enumerate{
+#'    \item the edgelist for the network in each of the netwindows as an array
+#'    \item the adjacency matrix for the network in each of the netwindows as an array
+#'    \item a matrix indicating which individuals occurred in each netwindow
+#'}
 #'@examples
 #'\dontrun{
+#'# load example data
 #'data(cmr_dat)
+#'
+#'# set parameters for network creation
 #'mindate<-"2010-01-01"
 #'maxdate<-"2015-01-01"
 #'intwindow<-60
 #'netwindow<-12
 #'overlap<-0
-#'movenetdat<-MoveNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,nextonly=TRUE)
+#'
+#'# create network
+#'movenetdat<-MoveNetCreate(data=cmr_dat,
+#'intwindow=intwindow,
+#'mindate=mindate,
+#'maxdate=maxdate,
+#'netwindow=netwindow,
+#'overlap=overlap,
+#'nextonly=TRUE)
 #'}
 #'@export
 

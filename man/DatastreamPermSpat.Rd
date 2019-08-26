@@ -59,14 +59,26 @@ This function creates randomised movement networks for each network window using
 }
 \examples{
 \dontrun{
+# load example data
 data(cmr_dat)
+
+# set parameters
 mindate<-"2010-01-01"
 maxdate<-"2015-01-01"
 intwindow<-60
 netwindow<-12
 overlap<-0
-movenetdat<-MoveNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,nextonly=TRUE)
 
+# create networks
+movenetdat<-MoveNetCreate(data=cmr_dat,
+intwindow=intwindow,
+mindate=mindate,
+maxdate=maxdate,
+netwindow=netwindow,
+overlap=overlap,
+nextonly=TRUE)
+
+# set additional parameters
 same.time=FALSE
 time.restrict=6
 same.id=FALSE
@@ -75,6 +87,23 @@ n.rand=100
 n.burnin=100
 warn.thresh=100
 
-Rs<-DatastreamPermSpat(data=cmr_dat,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,same.time,time.restrict,same.id,n.swaps,n.rand,burnin=TRUE,n.burnin,warn.thresh,nextonly=TRUE,iter=FALSE)
+# perform permutations
+Rs<-DatastreamPermSpat(data=cmr_dat,
+intwindow,
+mindate,
+maxdate,
+netwindow,
+overlap,
+spacewindow,
+same.time,
+time.restrict,
+same.id,
+n.swaps,
+n.rand,
+burnin=TRUE,
+n.burnin,
+warn.thresh,
+nextonly=TRUE,
+iter=FALSE)
 }
 }

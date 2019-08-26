@@ -19,14 +19,25 @@
 #'}
 #'@examples
 #'\dontrun{
+#'# load example data
 #'data(cmr_dat)
+#'
+#'# set parameters for network creation
 #'mindate<-"2010-01-01"
 #'maxdate<-"2015-01-01"
 #'intwindow<-60
 #'netwindow<-12
 #'overlap<-0
 #'spacewindow<-0
-#'netdat<-DynamicNetCreate(data=cmr_dat,intwindow=intwindow,mindate=mindate,maxdate=maxdate,netwindow=netwindow,overlap=overlap,spacewindow=spacewindow)
+#'
+#'# create dynamic network
+#'netdat<-DynamicNetCreate(data=cmr_dat,
+#'intwindow=intwindow,
+#'mindate=mindate,
+#'maxdate=maxdate,
+#'netwindow=netwindow,
+#'overlap=overlap,
+#'spacewindow=spacewindow)
 #'}
 #'@export
 
