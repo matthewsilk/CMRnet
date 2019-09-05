@@ -215,7 +215,7 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
 
       for (i in 1:length(EDGES.tmp[,3])){
         NET[[ts]][which(NET.rows%in%EDGES.tmp[i,1]==TRUE),which(NET.rows%in%EDGES.tmp[i,2]==TRUE),r]<-NET[[ts]][which(NET.rows%in%EDGES.tmp[i,1]==TRUE),which(NET.rows%in%EDGES.tmp[i,2]==TRUE),r]+EDGES.tmp[i,3]
-        NET[[ts]][which(NET.rows%in%EDGES.tmp[i,2]==TRUE),which(NET.rows%in%EDGES.tmp[i,1]==TRUE),ts]<-NET[[ts]][which(NET.rows%in%EDGES.tmp[i,2]==TRUE),which(NET.rows%in%EDGES.tmp[i,1]==TRUE),r]+EDGES.tmp[i,3]
+        NET[[ts]][which(NET.rows%in%EDGES.tmp[i,2]==TRUE),which(NET.rows%in%EDGES.tmp[i,1]==TRUE),r]<-NET[[ts]][which(NET.rows%in%EDGES.tmp[i,2]==TRUE),which(NET.rows%in%EDGES.tmp[i,1]==TRUE),r]+EDGES.tmp[i,3]
       }
 
     } #end r loop over randomisations

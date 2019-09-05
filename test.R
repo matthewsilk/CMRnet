@@ -12,8 +12,8 @@ library(profvis)
 library(CMRnet)
 
 # load in data
-data(cmr_dat)
-data(cmr_dat2)
+data(cmrData)
+data(cmrData2)
 
 # set parameters
 mindate <- "2010-01-01"
