@@ -63,7 +63,7 @@ This function creates randomised social networks for each network window using d
 \examples{
 \dontrun{
 # load in data
-data(cmr_dat)
+data(cmrData)
 
 # set parameters
 mindate<-"2010-01-01"
@@ -74,7 +74,7 @@ overlap<-0
 spacewindow<-0
 
 # create network
-netdat<-DynamicNetCreate(data=cmr_dat,
+netdat<-DynamicNetCreate(data=cmrData,
 intwindow=intwindow,
 mindate=mindate,
 maxdate=maxdate,

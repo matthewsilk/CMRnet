@@ -37,7 +37,7 @@ The time period for each network, together with the temporal and spatial restric
 \examples{
 \dontrun{
 # load example data
-data(cmr_dat)
+data(cmrData)
 
 # set parameters for network creation
 mindate<-"2010-01-01"
@@ -48,7 +48,7 @@ overlap<-0
 spacewindow<-0
 
 # create dynamic network
-netdat<-DynamicNetCreate(data=cmr_dat,
+netdat<-DynamicNetCreate(data=cmrData,
 intwindow=intwindow,
 mindate=mindate,
 maxdate=maxdate,

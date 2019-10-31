@@ -27,7 +27,7 @@ This function conducts network permutations of CMRnet objects, acting as a wrapp
 # example without multiple layers ####
 
 # load in data
-data(cmr_dat)
+data(cmrData)
 
 # set parameters
 mindate<-"2010-01-01"
@@ -37,7 +37,7 @@ netwindow<-12
 overlap<-0
 
 # create network
-movenetdat<-MoveNetCreate(data=cmr_dat,
+movenetdat<-MoveNetCreate(data=cmrData,
 intwindow=intwindow,
 mindate=mindate,
 maxdate=maxdate,
@@ -51,7 +51,7 @@ A<-cmrNodeswap(movenetdat,n.rand=1000)
 # example with multiple layered networks ####
 
 # load in data
-data(cmr_dat2)
+data(cmrData2)
 
 # set parameters
 mindate<-"2010-01-01"
@@ -61,7 +61,7 @@ netwindow<-12
 overlap<-0
 
 # create network
-multimovenetdat<-MultiMoveNetCreate(data=cmr_dat,
+multimovenetdat<-MultiMoveNetCreate(data=cmrData2,
 intwindow=intwindow,
 mindate=mindate,
 maxdate=maxdate,
