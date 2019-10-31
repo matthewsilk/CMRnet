@@ -56,7 +56,7 @@ cmrPermSoc<-function(D,locmat,same.time,time.restrict,same.spat,spat.restrict,n.
     #check that tmp.id1 is not trapped on the same day that it will be swapped to already (or within a buffer number of days)
     #check that tmp.id2 is not trapped on the same day that it will be swapped to already (or within a buffer number of days)
 
-    check<-NA
+    check<-0
 
     tmp.date1<-D$Jdays[tmp1]
     tmp.date2<-D$Jdays[tmp2]

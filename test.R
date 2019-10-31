@@ -86,7 +86,8 @@ Rs <- DatastreamPermSoc(
     n.rand,
     burnin = FALSE,
     n.burnin,
-    iter = FALSE
+    iter = FALSE,
+    buffer=0
   )
 
 same.time=FALSE

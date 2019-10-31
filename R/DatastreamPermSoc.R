@@ -82,7 +82,7 @@
 
 #'@export
 
-DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overlap, spacewindow, same.time, time.restrict, same.spat, spat.restrict, n.swaps, n.rand, burnin, n.burnin, iter,buffer=0){
+DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overlap, spacewindow, same.time, time.restrict, same.spat, spat.restrict, n.swaps, n.rand, burnin, n.burnin, iter, buffer=0){
 
   D<-data
   names(D)<-c("id","loc","x","y","date")
