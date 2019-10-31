@@ -5,7 +5,7 @@
 \title{cmrPermSoc}
 \usage{
 cmrPermSoc(D, locmat, same.time, time.restrict, same.spat, spat.restrict,
-  n.swaps, n.rand, burnin, n.burnin)
+  n.swaps, n.rand, burnin, n.burnin, buffer = 0)
 }
 \arguments{
 \item{D}{The input dataset to be randomised}
@@ -27,6 +27,8 @@ cmrPermSoc(D, locmat, same.time, time.restrict, same.spat, spat.restrict,
 \item{burnin}{(TRUE/FALSE) Whether burnin is required}
 
 \item{n.burnin}{The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand}
+
+\item{buffer}{The number of days around a capture event that an individual can't be swapped into. Defaults to zero. This exists for when trapping schedules would prevent an individual trapped on one day being trapped on adjacent days}
 }
 \value{
 A randomised dataset with the same dimensions as the original input dataset

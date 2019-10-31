@@ -5,7 +5,7 @@
 #'
 #' @format A data frame with five variables: \code{id}, \code{loc},
 #'   \code{x}, \code{y} and \code{date}. \code{cmrData} is an example of how dataframes should be created to feed into CMRnet.
-"cmrData"
+NULL
 
 #' cmrData2
 #'
@@ -13,4 +13,4 @@
 #'
 #' @format A data frame with six variables: \code{id}, \code{loc},
 #'   \code{x}, \code{y}, \code{date} and \code{layer}. \code{cmrData2} is an example of how dataframes should be created to feed into CMRnet when there are multiple layered movement networks (i.e. a separate network for males and females).
-"cmrData2"
+NULL

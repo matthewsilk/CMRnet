@@ -6,7 +6,7 @@
 \usage{
 DatastreamPermSoc(data, intwindow, mindate, maxdate, netwindow, overlap,
   spacewindow, same.time, time.restrict, same.spat, spat.restrict, n.swaps,
-  n.rand, burnin, n.burnin, iter)
+  n.rand, burnin, n.burnin, iter, buffer = 0)
 }
 \arguments{
 \item{data}{A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture}
@@ -40,6 +40,8 @@ DatastreamPermSoc(data, intwindow, mindate, maxdate, netwindow, overlap,
 \item{n.burnin}{The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand}
 
 \item{iter}{(TRUE/FALSE) Whether iterative randomisations are being used. If TRUE then D.rand is also returned}
+
+\item{buffer}{The number of days around a capture event that an individual can't be swapped into. Defaults to zero. This exists for when trapping schedules would prevent an individual trapped on one day being trapped on adjacent days}
 }
 \value{
 If \code{iter=TRUE} then a list of length 3 with elements corresponding to: \cr
@@ -103,6 +105,7 @@ n.swaps,
 n.rand,
 burnin=TRUE,
 n.burnin,
-iter=FALSE)
+iter=FALSE,
+buffer=0)
 }
 }
