@@ -20,7 +20,7 @@
 #'@examples
 #'\dontrun{
 #'# load in data
-#'data(cmr_dat2)
+#'data(cmrData2)
 #'
 #'# set parameters
 #'mindate<-"2010-01-01"
@@ -30,7 +30,7 @@
 #'overlap<-0
 #'
 #'# create network
-#'multimovenetdat<-MultiMoveNetCreate(data=cmr_dat,
+#'multimovenetdat<-MultiMoveNetCreate(data=cmrData2,
 #'intwindow=intwindow,
 #'mindate=mindate,
 #'maxdate=maxdate,

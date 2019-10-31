@@ -34,7 +34,7 @@
 #'@examples
 #'\dontrun{
 #' # load in data
-#' data(cmr_dat)
+#' data(cmrData)
 #'
 #' # set parameters
 #' mindate<-"2010-01-01"
