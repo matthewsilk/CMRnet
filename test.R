@@ -27,7 +27,7 @@ spacewindow <- 0
 
 # Dynamic networks
 netdat <- DynamicNetCreate(
-    data = cmr_dat,
+    data = cmrData,
     intwindow = intwindow,
     mindate = mindate,
     maxdate = maxdate,
@@ -38,7 +38,7 @@ netdat <- DynamicNetCreate(
 
 # movement networks
 movenetdat <- MoveNetCreate(
-  data = cmr_dat,
+  data = cmrData,
   intwindow = intwindow,
   mindate = mindate,
   maxdate = maxdate,
@@ -50,7 +50,7 @@ movenetdat <- MoveNetCreate(
 # Multiple movement networks
 multimovenetdat <-
   MultiMoveNetCreate(
-    data = cmr_dat2,
+    data = cmrData2,
     intwindow = intwindow,
     mindate = mindate,
     maxdate = maxdate,
@@ -71,7 +71,7 @@ warn.thresh = 100
 
 # run permutations
 Rs <- DatastreamPermSoc(
-    data = cmr_dat,
+    data = cmrData,
     intwindow,
     mindate,
     maxdate,
@@ -99,7 +99,7 @@ n.burnin=100
 warn.thresh=100
 
 Rs <- DatastreamPermSpat(
-  data = cmr_dat,
+  data = cmrData,
   intwindow,
   mindate,
   maxdate,
