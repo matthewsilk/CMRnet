@@ -120,4 +120,3 @@ Rs <- DatastreamPermSpat(
 # check cmrNodeswap with both multi = TRUE and multi = FALSE
 A <- cmrNodeswap(movenetdat, n.rand = 1000, multi = FALSE)
 B <- cmrNodeswap(multimovenetdat, n.rand = 1000, multi = TRUE)
-#Error in array(0, dim(rnets[[r]])[1:2]) : 'dims' cannot be of length 0
