@@ -45,7 +45,7 @@
 #' spacewindow<-0
 #'
 #' # create network
-#' netdat<-DynamicNetCreate(data=cmr_dat,
+#' netdat<-DynamicNetCreate(data=cmrData,
 #' intwindow=intwindow,
 #' mindate=mindate,
 #' maxdate=maxdate,
