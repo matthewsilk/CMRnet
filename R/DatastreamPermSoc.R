@@ -18,6 +18,7 @@
 #'@param burnin (TRUE/FALSE) Whether burnin is required
 #'@param n.burnin The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand
 #'@param iter (TRUE/FALSE) Whether iterative randomisations are being used. If TRUE then D.rand is also returned
+#'@param buffer The number of days around a capture event that an individual can't be swapped into. Defaults to zero. This exists for when trapping schedules would prevent an individual trapped on one day being trapped on adjacent days
 #'@return If \code{iter=TRUE} then a list of length 3 with elements corresponding to: \cr
 #'\enumerate{
 #'    \item The randomised dataset (for feeding back into the next permutation)
@@ -75,12 +76,13 @@
 #'n.rand,
 #'burnin=TRUE,
 #'n.burnin,
-#'iter=FALSE)
+#'iter=FALSE,
+#'buffer=0)
 #'}
 
 #'@export
 
-DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overlap, spacewindow, same.time, time.restrict, same.spat, spat.restrict, n.swaps, n.rand, burnin, n.burnin, iter){
+DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overlap, spacewindow, same.time, time.restrict, same.spat, spat.restrict, n.swaps, n.rand, burnin, n.burnin, iter,buffer=0){
 
   D<-data
   names(D)<-c("id","loc","x","y","date")
@@ -185,7 +187,7 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
       #print(paste(ts,"-",i,"-tickB"))
     }
 
-    rands<-CMRnet::cmrPermSoc(D=D3,locmat=locmat2,same.time=same.time,time.restrict=time.restrict,same.spat=same.spat,spat.restrict=spat.restrict,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin)
+    rands<-CMRnet::cmrPermSoc(D=D3,locmat=locmat2,same.time=same.time,time.restrict=time.restrict,same.spat=same.spat,spat.restrict=spat.restrict,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin,buffer=buffer)
 
     if(iter==TRUE){rands.out[[ts]]<-as.data.frame(rands[[1]][,1:5])}
 

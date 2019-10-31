@@ -12,12 +12,13 @@
 #'@param n.rand The number of randomised networks to be generated
 #'@param burnin (TRUE/FALSE) Whether burnin is required
 #'@param n.burnin The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand
+#'@param buffer The number of days around a capture event that an individual can't be swapped into. Defaults to zero. This exists for when trapping schedules would prevent an individual trapped on one day being trapped on adjacent days
 #'
 
 #'@return A randomised dataset with the same dimensions as the original input dataset
 #'@export
 
-cmrPermSoc<-function(D,locmat,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin,n.burnin){
+cmrPermSoc<-function(D,locmat,same.time,time.restrict,same.spat,spat.restrict,n.swaps,n.rand,burnin,n.burnin,buffer=0){
 
   D.rand<-list()
 
@@ -52,8 +53,36 @@ cmrPermSoc<-function(D,locmat,same.time,time.restrict,same.spat,spat.restrict,n.
     tmp.id1<-D$id[tmp1]
     tmp.id2<-D$id[tmp2]
 
-    D$id[tmp1]<-tmp.id2
-    D$id[tmp2]<-tmp.id1
+    #check that tmp.id1 is not trapped on the same day that it will be swapped to already (or within a buffer number of days)
+    #check that tmp.id2 is not trapped on the same day that it will be swapped to already (or within a buffer number of days)
+
+    check<-NA
+
+    tmp.date1<-D$Jdays[tmp1]
+    tmp.date2<-D$Jdays[tmp2]
+    tmp.days1<-D$Jdays[D$id==tmp.id1]
+    tmp.days2<-D$Jdays[D$id==tmp.id2]
+
+    if(buffer>0){
+      extra.days<-seq(-buffer,buffer,1)
+      tmp.days1b<-tmp.days1-buffer
+      tmp.days2b<-tmp.days2-buffer
+      for(ii in 2:length(extra.days)){
+        tmp.days1b<-c(tmp.days1b,tmp.days1+extra.days[ii])
+        tmp.days2b<-c(tmp.days2b,tmp.days2+extra.days[ii])
+      }
+      tmp.days1<-sort(unique(tmp.days1b))
+      tmp.days2<-sort(unique(tmp.days2b))
+    }
+
+    if((sum(tmp.days1%in%tmp.date2)>0|sum(tmp.days2%in%tmp.date1)>0)==FALSE){check<-1}
+
+    if(check==1){
+
+      D$id[tmp1]<-tmp.id2
+      D$id[tmp2]<-tmp.id1
+
+    }
 
     if(ctr>n.burnin){
       if((ctr-n.burnin)%%n.swaps==0){
