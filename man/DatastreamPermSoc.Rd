@@ -90,7 +90,7 @@ n.swaps=10
 n.rand=100
 n.burnin=100
 
-Rs <- DatastreamPermSoc(data=cmr_dat,
+Rs <- DatastreamPermSoc(data=cmrData,
 intwindow,
 mindate,
 maxdate,

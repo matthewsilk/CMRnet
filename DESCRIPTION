@@ -8,6 +8,7 @@ Authors@R: c(
     )
 Maintainer: Matthew Silk <matthewsilk@outlook.com>
 Description: Construct and analyse social and movement networks from spatio-temporally referenced capture-mark recapture data.
+Depends: R (>= 2.10)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
