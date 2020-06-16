@@ -7,7 +7,7 @@ if('profvis' %in% installed.packages() == FALSE){install.packages('profvis')}
 
 devtools::install_github('matthewsilk/CMRnet')
 
-# load profvis
+3# load profvis
 library(profvis)
 library(CMRnet)
 
