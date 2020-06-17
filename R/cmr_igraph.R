@@ -90,13 +90,14 @@ cmr_igraph<-function(cmrnet,type=c("social","movement","multiplex")){
   if(type=="multiplex"){
 
     nt<-length(cmrnet[[2]])
-    ly<-
-    Fmatrix<-array(0,dim=c(dim(cmrnet[[3]])[1],dim(cmrnet[[3]])[1],dim(cmrnet[[3]])[3]))
+    ly<-dim(cmrnet[[3]])[3]
+    Fmatrix<-array(0,dim=c(dim(cmrnet[[3]])[1],dim(cmrnet[[3]])[1],ly))
 
     for(i in 1:nt){
-      for(j in 1:ly){}
-      Fmatrix[,,1]<-Fmatrix[,,1]+cmrnet[[2]][[i]][,,1]
-      Fmatrix[,,2]<-Fmatrix[,,2]+cmrnet[[2]][[i]][,,2]
+      for(j in 1:ly){
+        Fmatrix[,,j]<-Fmatrix[,,j]+cmrnet[[2]][[i]][,,j]
+        Fmatrix[,,j]<-Fmatrix[,,j]+cmrnet[[2]][[i]][,,j]
+      }
     }
     rownames(Fmatrix)<-colnames(Fmatrix)<-rownames(cmrnet[[3]])
 
@@ -105,10 +106,10 @@ cmr_igraph<-function(cmrnet,type=c("social","movement","multiplex")){
     networks<-list()
     for(i in 1:nt){
       networks[[i]]<-list()
-      tmat1<-cmrnet[[2]][[i]][cmrnet[[3]][,i,1]==1,cmrnet[[3]][,i,1]==1,1]
-      tmat2<-cmrnet[[2]][[i]][cmrnet[[3]][,i,2]==1,cmrnet[[3]][,i,2]==1,2]
-      networks[[i]][[1]]<-igraph::graph.adjacency(tmat1,mode="directed",weighted=TRUE)
-      networks[[i]][[2]]<-igraph::graph.adjacency(tmat2,mode="directed",weighted=TRUE)
+      for(j in 1:ly){
+        tmat1<-cmrnet[[2]][[i]][cmrnet[[3]][,i,j]==1,cmrnet[[3]][,i,j]==1,j]
+        networks[[i]][[j]]<-igraph::graph.adjacency(tmat1,mode="directed",weighted=TRUE)
+      }
     }
 
     output<-list(networks,networksF)
