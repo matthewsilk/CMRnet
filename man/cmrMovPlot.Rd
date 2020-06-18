@@ -19,9 +19,44 @@ cmrMovPlot(nets, fixed_locs = c(TRUE, FALSE), locs = NULL,
 \item{dynamic}{(TRUE/FALSE). If true this function will plot networks for the different network windows sequentially in the same plot window with a delay. If false then this function will plot the networks in a single, multipanel figure}
 
 \item{rows}{Sets the number of rows in the multipanel figure is dynamic=FALSE}
+
+\item{\dots}{Extra arguments from \code{\link[igraph]{plot.igraph}} if desired}
+}
+\value{
+A series of network plots showing the movement network from each network window
 }
 \description{
 cmrMovPlot
 #'
 igraph plotting for CMRnet object
+}
+\details{
+This function plots movement networks produced by CMRnet. As well as the arguments detailed above, additional arguments from plot.igraph can be used to produce plots desired by the user
+}
+\examples{
+\dontrun{
+
+# load in data
+data(cmrData)
+
+# set parameters
+mindate<-"2010-01-01"
+maxdate<-"2015-01-01"
+intwindow<-60
+netwindow<-12
+overlap<-0
+
+# create network
+movenetdat<-MoveNetCreate(data=cmrData,
+intwindow=intwindow,
+mindate=mindate,
+maxdate=maxdate,
+netwindow=netwindow,
+overlap=overlap,
+nextonly=TRUE)
+
+# convert to networks
+networks<-cmr_igraph(movenetdat,type="movement")
+cmrSocPlot(nets=networks,fixed_locs=TRUE,dynamic=FALSE,rows=2)
+}
 }
