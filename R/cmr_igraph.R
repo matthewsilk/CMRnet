@@ -31,7 +31,7 @@
 #'overlap=overlap,
 #'nextonly=TRUE)
 #'
-#'# run permutations
+#'# convert to networks
 #'networks<-cmr_igraph(movenetdat,type="movement")
 #'
 #'# example with multiplex networks ####
@@ -55,7 +55,7 @@
 #'overlap=overlap,
 #'nextonly=TRUE)
 #'
-#'# run permutations
+#'# convert to networks
 #'networks<-cmr_igraph(multimovenetdat,type="multiplex")
 #'}
 #'@export

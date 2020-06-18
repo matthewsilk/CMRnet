@@ -19,4 +19,5 @@ Imports:
     timeDate,
     sna,
     progress,
-    igraph
+    igraph,
+    graphics

@@ -47,7 +47,7 @@ netwindow=netwindow,
 overlap=overlap,
 nextonly=TRUE)
 
-# run permutations
+# convert to networks
 networks<-cmr_igraph(movenetdat,type="movement")
 
 # example with multiplex networks ####
@@ -71,7 +71,7 @@ netwindow=netwindow,
 overlap=overlap,
 nextonly=TRUE)
 
-# run permutations
+# convert to networks
 networks<-cmr_igraph(multimovenetdat,type="multiplex")
 }
 }
