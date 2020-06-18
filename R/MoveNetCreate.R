@@ -10,7 +10,7 @@
 #'@param netwindow The period of time over which each network is built in months (i.e. netwindow=12 would correspond to yearly networks)
 #'@param overlap The amount of overlap between netwindows in months (i.e. overlap=2 would result in a second network window starting 2 months before the end of the first). Overlap=0 ensures no overlap between successive network windows
 #'@param nextonly (TRUE/FALSE). Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to FALSE
-
+#'@param index Defaults to FALSE. If FALSE edges are weighted by the number of movements. If TRUE then edges are weighted by the number of movements divided by the number of captures in a group
 #'@return A list of length 3 containing:
 #'\enumerate{
 #'    \item the edgelist for the network in each of the netwindows as an array
@@ -36,12 +36,13 @@
 #'maxdate=maxdate,
 #'netwindow=netwindow,
 #'overlap=overlap,
-#'nextonly=TRUE)
+#'nextonly=TRUE,
+#'index=FALSE)
 #'}
 #'@export
 
 
-MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonly=FALSE){
+MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonly=FALSE,index=FALSE){
 
   D<-data
   names(D)<-c("id","loc","x","y","date")
@@ -154,6 +155,14 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
         EDGES[which(EDGES[,1,ts]%in%as.numeric(D3$loc[i])==TRUE&EDGES[,2,ts]%in%as.numeric(D3$loc[MATCH[j]])==TRUE),3,ts]<-EDGES[which(EDGES[,1,ts]%in%as.numeric(D3$loc[i])==TRUE&EDGES[,2,ts]%in%as.numeric(D3$loc[MATCH[j]])==TRUE),3,ts]+1
       }
 
+    }
+
+    if(index==TRUE){
+      for(i in 1:nrow(EDGES[,,ts])){
+        if(EDGES[i,3,ts]>0){
+          EDGES[i,3,ts]<-EDGES[i,3,ts]/(sum(as.numeric(D3$loc)==EDGES[i,1,ts])+sum(as.numeric(D3$loc)==EDGES[i,2,ts])-EDGES[i,3,ts])
+        }
+      }
     }
 
     NET.rows<-as.numeric(factor(rownames(NET),levels=levels(D$loc)))
