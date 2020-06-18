@@ -10,7 +10,7 @@
 #'@param netwindow The period of time over which each network is built in months (i.e. netwindow=12 would correspond to yearly networks)
 #'@param overlap The amount of overlap between netwindows in months (i.e. overlap=2 would result in a second network window starting 2 months before the end of the first). Overlap=0 ensures no overlap between successive network windows
 #'@param nextonly (TRUE/FALSE). Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to FALSE
-
+#'@param index Defaults to FALSE. If FALSE edges are weighted by the number of movements. If TRUE then edges are weighted by the number of movements divided by the number of captures in a group
 #'@return A list of length 3 containing:
 #'\enumerate{
 #'    \item A list of edgelists (the same length as the number of network windows) containing the multiplex network for each of the netwindows as an array
@@ -36,11 +36,12 @@
 #'maxdate=maxdate,
 #'netwindow=netwindow,
 #'overlap=overlap,
-#'nextonly=TRUE)
+#'nextonly=TRUE,
+#'index=FALSE)
 #'}
 #'@export
 
-MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonly=FALSE){
+MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonly=FALSE,index=FALSE){
 
   #Add a column with Julian Dates
   D<-data
@@ -180,6 +181,14 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
         }
 
       } #end loop over captures
+
+      if(index==TRUE){
+        for(i in 1:nrow(EDGES[,,ts])){
+          if(EDGES[i,3,ts]>0){
+            EDGES[[ts]][i,3,ls]<-EDGES[[ts]][i,3,ls]/(sum(as.numeric(D3$loc)==EDGES[[ts]][i,1,ls])+sum(as.numeric(D3$loc)==EDGES[[ts]][i,2,ls])-EDGES[[ts]][i,3,ls])
+          }
+        }
+      }
 
       ##and now turn the edge list into an association matrix as well to put network in double format
       NET.rows<-as.numeric(factor(rownames(NET[[ts]]),levels=levels(D$loc)))

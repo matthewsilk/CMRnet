@@ -5,7 +5,7 @@
 \title{MultiMoveNetCreate}
 \usage{
 MultiMoveNetCreate(data, intwindow, mindate, maxdate, netwindow, overlap,
-  nextonly = FALSE)
+  nextonly = FALSE, index = FALSE)
 }
 \arguments{
 \item{data}{A 6 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, the date of capture and information to define multiplex network layers. The "Layers" column can consist of any unique identifiers (e.g. if layers representing movements by males and females are used then they could be represented by "M" and "F" or 1 and 2). If the user wants a layer per individual then the "Layers" column can simply be a copy of the individual ID column.}
@@ -21,6 +21,8 @@ MultiMoveNetCreate(data, intwindow, mindate, maxdate, netwindow, overlap,
 \item{overlap}{The amount of overlap between netwindows in months (i.e. overlap=2 would result in a second network window starting 2 months before the end of the first). Overlap=0 ensures no overlap between successive network windows}
 
 \item{nextonly}{(TRUE/FALSE). Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to FALSE}
+
+\item{index}{Defaults to FALSE. If FALSE edges are weighted by the number of movements. If TRUE then edges are weighted by the number of movements divided by the number of captures in a group}
 }
 \value{
 A list of length 3 containing:
@@ -52,6 +54,7 @@ mindate=mindate,
 maxdate=maxdate,
 netwindow=netwindow,
 overlap=overlap,
-nextonly=TRUE)
+nextonly=TRUE,
+index=FALSE)
 }
 }

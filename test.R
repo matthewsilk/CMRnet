@@ -45,7 +45,8 @@ movenetdat <- MoveNetCreate(
   maxdate = maxdate,
   netwindow = netwindow,
   overlap = overlap,
-  nextonly = TRUE
+  nextonly = TRUE,
+  index=FALSE
 )
 
 # Multiplex movement networks
@@ -57,7 +58,8 @@ multimovenetdat <-
     maxdate = maxdate,
     netwindow = netwindow,
     overlap = overlap,
-    nextonly = TRUE
+    nextonly = TRUE,
+    index=FALSE
   )
 
 # set new params
