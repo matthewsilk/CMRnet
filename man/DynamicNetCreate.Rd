@@ -5,7 +5,7 @@
 \title{DynamicNetCreate}
 \usage{
 DynamicNetCreate(data, intwindow, mindate, maxdate, netwindow, overlap,
-  spacewindow)
+  spacewindow, index = FALSE)
 }
 \arguments{
 \item{data}{A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture}
@@ -21,6 +21,8 @@ DynamicNetCreate(data, intwindow, mindate, maxdate, netwindow, overlap,
 \item{overlap}{The amount of overlap between netwindows in months (i.e. \code{overlap = 2} would result in a second network window starting 2 months before the end of the first). When \code{overlap=0}, there is no overlap between successive network windows}
 
 \item{spacewindow}{The maximum distance between locations that can be classed as a co-capture (calculated using the coordinate system provided in in the input data). Best used when multiple capture locations occur very close together}
+
+\item{index}{Defaults to FALSE. If FALSE edges are weighted by the number of co-captures. If TRUE then edges are weighted by the number by an association index (no. co-captures / (total captures of A + total captures of B - no. of captures))}
 }
 \value{
 A list of length 3 containing: \cr
@@ -54,6 +56,7 @@ mindate=mindate,
 maxdate=maxdate,
 netwindow=netwindow,
 overlap=overlap,
-spacewindow=spacewindow)
+spacewindow=spacewindow,
+index=FALSE)
 }
 }

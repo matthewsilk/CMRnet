@@ -11,6 +11,7 @@
 #'@param netwindow The period of time over which each network is built in months (i.e. \code{netwindow=12} would correspond to yearly networks)
 #'@param overlap The amount of overlap between netwindows in months (i.e. \code{overlap = 2} would result in a second network window starting 2 months before the end of the first). When \code{overlap=0}, there is no overlap between successive network windows
 #'@param spacewindow The maximum distance between locations that can be classed as a co-capture (calculated using the coordinate system provided in in the input data). Best used when multiple capture locations occur very close together
+#'@param index Defaults to FALSE. If FALSE edges are weighted by the number of co-captures. If TRUE then edges are weighted by the number by an association index (no. co-captures / (total captures of A + total captures of B - no. of captures))
 #'@return A list of length 3 containing: \cr
 #'\enumerate{
 #'    \item The edgelist for the social network in each of the netwindows as an array
@@ -37,11 +38,12 @@
 #'maxdate=maxdate,
 #'netwindow=netwindow,
 #'overlap=overlap,
-#'spacewindow=spacewindow)
+#'spacewindow=spacewindow,
+#'index=FALSE)
 #'}
 #'@export
 
-DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spacewindow){
+DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spacewindow,index=FALSE){
 
   #Add a column with Julian Dates
   D<-data
@@ -163,6 +165,14 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
 
       for (j in 1:length(MATCH)){
         EDGES[which(EDGES[,1,ts]%in%as.numeric(D3$id[i])==TRUE&EDGES[,2,ts]%in%as.numeric(D3$id[MATCH[j]])==TRUE),3,ts]<-EDGES[which(EDGES[,1,ts]%in%as.numeric(D3$id[i])==TRUE&EDGES[,2,ts]%in%as.numeric(D3$id[MATCH[j]])==TRUE),3,ts]+1
+      }
+    }
+
+    if(index==TRUE){
+      for(i in 1:nrow(EDGES[,,ts])){
+        if(EDGES[i,3,ts]>0){
+          EDGES[i,3,ts]<-EDGES[i,3,ts]/(sum(D3$id==EDGES[i,1,ts])+sum(D3$id==EDGES[i,2,ts])-EDGES[i,3,ts])
+        }
       }
     }
 

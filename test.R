@@ -7,7 +7,7 @@ if('profvis' %in% installed.packages() == FALSE){install.packages('profvis')}
 
 devtools::install_github('matthewsilk/CMRnet')
 
-3# load profvis
+# load profvis
 library(profvis)
 library(CMRnet)
 
@@ -33,7 +33,8 @@ netdat <- DynamicNetCreate(
     maxdate = maxdate,
     netwindow = netwindow,
     overlap = overlap,
-    spacewindow = spacewindow
+    spacewindow = spacewindow,
+    index=FALSE
   )
 
 # movement networks
