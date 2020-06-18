@@ -20,4 +20,6 @@ Imports:
     sna,
     progress,
     igraph,
-    graphics
+    graphics,
+    grDevices,
+    scatterplot3d

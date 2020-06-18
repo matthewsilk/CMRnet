@@ -47,7 +47,7 @@ movenetdat <- MoveNetCreate(
   nextonly = TRUE
 )
 
-# Multiple movement networks
+# Multiplex movement networks
 multimovenetdat <-
   MultiMoveNetCreate(
     data = cmrData2,
