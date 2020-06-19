@@ -10,6 +10,6 @@
 cmrData2
 }
 \description{
-cmrData2 to test the multiplex movement network function.It contains six columns: the ID column provides the identity of the individual captured, loc is the named capture location, x and y provide the geographic location of a capture event, date provides the capture time and layer provide information used to define the layers of the multiplex network.
+cmrData2 to test the multiplex movement network function.It contains six columns: the ID column provides the identity of the individual captured, loc is the named capture location, x and y provide the geographic location of a capture event, date provides the capture date and layer provide information used to define the layers of the multiplex network.
 }
 \keyword{datasets}

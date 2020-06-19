@@ -11,6 +11,6 @@ cmrData}
 cmrData
 }
 \description{
-cmrData can be used to test social and movement ntwork functions of CMRnet. It contains five columns: the ID column provides the identity of the individual captured, loc is the named capture location, x and y provide the geographic location of a capture event, and date provide the capture time.
+cmrData can be used to test social and movement ntwork functions of CMRnet. It contains five columns: the ID column provides the identity of the individual captured, loc is the named capture location, x and y provide the geographic location of a capture event, and date provide the capture date.
 }
 \keyword{datasets}
