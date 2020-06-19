@@ -3,6 +3,7 @@
 export(DatastreamPermSoc)
 export(DatastreamPermSpat)
 export(DynamicNetCreate)
+export(DynamicNetCreateHi)
 export(MoveNetCreate)
 export(MultiMoveNetCreate)
 export(cmrMovPlot)
