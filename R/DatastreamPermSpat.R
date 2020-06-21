@@ -8,8 +8,9 @@
 #'@param maxdate The end date (format = \code{"YYYY-MM-DD"}) of the study (i.e. when you want to build networks until). Please provide as the day after the last day of the study.
 #'@param netwindow The period of time over which each network is built in months (i.e. \code{netwindow=12} would correspond to yearly networks)
 #'@param overlap The amount of overlap between netwindows in months (i.e. \code{overlap=2} would result in a second network window starting 2 months before the end of the first). When \code{overlap=0}, there is no overlap between successive network windows
-#'@param same.time (TRUE/FALSE) Whether swaps should be restricted to only occur betwen individuals trapped on the same date or not
-#'@param time.restrict Provided as a number of months. Imposes time restrictions on when swaps can take place so that individuals can only be swapped with those a fixed time before or after being captured
+#'@param same.time (TRUE/FALSE) Whether swaps should be restricted to only occur trapping events on the same date or not
+#'@param time.restrict Provided as a number of months. Imposes time restrictions on when swaps can take place so that locations can only be swapped with those a fixed time before or after being captured
+#'#'@param spat.restrict Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that locations can only be swapped with those captued within a fixed distance
 #'@param same.id (TRUE/FALSE) Whether swaps should be restricted to only be between captures of the same individual
 #'@param n.swaps The number of swaps between each random network being extracted (e.g. \code{n.swaps = 10} would equate to 10 swaps taking place between each random network being saved)
 #'@param n.rand The number of randomised networks to be generated
@@ -70,6 +71,7 @@
 #'spacewindow,
 #'same.time,
 #'time.restrict,
+#'spat.restrict="n"
 #'same.id,
 #'n.swaps,
 #'n.rand,
@@ -82,7 +84,7 @@
 
 #'@export
 
-DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonly=FALSE,same.time,time.restrict,same.id,n.swaps,n.rand,burnin,n.burnin,warn.thresh,iter){
+DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonly=FALSE,same.time,time.restrict,spat.restrict,same.id,n.swaps,n.rand,burnin,n.burnin,warn.thresh,iter){
 
   D<-data
   names(D)<-c("id","loc","x","y","date")
@@ -134,6 +136,13 @@ DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
   locs<-sort(unique(D2$loc))
   n.locs<-length(locs)
 
+  locdat<-stats::aggregate(D2[,2:4],by=list(D2$loc),unique)[,2:4]
+  locmat<-as.matrix(stats::dist(locdat[,2:3]))
+  if(spat.restrict!="n"){
+    locmat2<-locmat<spat.restrict
+    rownames(locmat2)<-colnames(locmat2)<-locs
+  }
+
   n.caps<-length(D2[,1])
 
   NET<-list()
@@ -181,7 +190,7 @@ DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
       #print(paste(ts,"-",i,"-tickB"))
     }
 
-    rands<-cmrPermSpat(D=D3,same.time=same.time,time.restrict=time.restrict,same.id=same.id,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin,warn.thresh=warn.thresh)
+    rands<-cmrPermSpat(D=D3,same.time=same.time,time.restrict=time.restrict,spat.restrict=spat.restrict,same.id=same.id,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin,warn.thresh=warn.thresh)
 
     if(iter==TRUE){rands.out[[ts]]<-as.data.frame(rands[[1]][,1:5])}
 

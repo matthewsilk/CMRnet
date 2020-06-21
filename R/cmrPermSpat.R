@@ -3,10 +3,11 @@
 #'An internal function that operate within CMRnet::DatastreamPermSpat
 #'
 #'@param D The input dataset to be randomised
-#'@param same.time (TRUE/FALSE) Whether swaps should be restricted to only occur betwen individuals trapped on the same date or not
-#'@param time.restrict Provided as a number of months. Imposes time restrictions on when swaps can take place so that individuals can only be swapped with those a fixed time before or after being captured
+#'@param same.time (TRUE/FALSE) Whether swaps should be restricted to only occur trapping events on the same date or not
+#'@param time.restrict Provided as a number of months. Imposes time restrictions on when swaps can take place so that locations can only be swapped with those a fixed time before or after being captured
+#'#'@param spat.restrict Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that locations can only be swapped with those captued within a fixed distance
 #'@param n.swaps The number of swaps between each random network being extracted (e.g. n.swaps = 10 would equate to 10 swaps taking place between each random network being saved)
-#'@param same.id I dont know what this does!
+#'@param same.id (TRUE/FALSE) Whether swaps should be restricted to only be between captures of the same individual
 #'@param n.rand The number of randomised networks to be generated
 #'@param burnin (TRUE/FALSE) Whether burnin is required
 #'@param n.burnin The number of swaps to discard as burn-in before the first random network is created. The total number of swaps conducted is thus n.burnin+n.swaps*n.rand
@@ -15,7 +16,7 @@
 #'@return A randomised dataset with the same dimensions as the original input dataset
 #'@export
 
-cmrPermSpat<-function(D,same.time,time.restrict,same.id,n.swaps,n.rand,burnin,n.burnin,warn.thresh){
+cmrPermSpat<-function(D,same.time,time.restrict,spat.restrict,same.id,n.swaps,n.rand,burnin,n.burnin,warn.thresh){
 
   D.rand<-list()
 
@@ -41,8 +42,12 @@ cmrPermSpat<-function(D,same.time,time.restrict,same.id,n.swaps,n.rand,burnin,n.
     } else{
       tmpids<-sort(unique(D$id))
     }
+    tmplocs<-rownames(locmat)
+    if(spat.restrict!="n"){
+      tmplocs<-rownames(locmat)[which(locmat[,which(colnames(locmat)==D$loc[tmp1])]==TRUE)]
+    }
 
-    poss<-which(D$id%in%tmpids&D$Jdays%in%tmpdays)
+    poss<-which(D$id%in%tmpids&D$Jdays%in%tmpdays&D$locs%in%tmplocs)
     poss<-poss[which(poss%in%tmp1==FALSE)]
 
     if(length(poss)>0){
