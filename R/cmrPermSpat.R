@@ -3,9 +3,10 @@
 #'An internal function that operate within CMRnet::DatastreamPermSpat
 #'
 #'@param D The input dataset to be randomised
+#'@param locmat A matrix indicating whether distance between the capture locations is less than spat.restrict if not "n"
 #'@param same.time (TRUE/FALSE) Whether swaps should be restricted to only occur trapping events on the same date or not
 #'@param time.restrict Provided as a number of months. Imposes time restrictions on when swaps can take place so that locations can only be swapped with those a fixed time before or after being captured
-#'#'@param spat.restrict Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that locations can only be swapped with those captued within a fixed distance
+#'@param spat.restrict Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that locations can only be swapped with those captued within a fixed distance
 #'@param n.swaps The number of swaps between each random network being extracted (e.g. n.swaps = 10 would equate to 10 swaps taking place between each random network being saved)
 #'@param same.id (TRUE/FALSE) Whether swaps should be restricted to only be between captures of the same individual
 #'@param n.rand The number of randomised networks to be generated
@@ -16,7 +17,7 @@
 #'@return A randomised dataset with the same dimensions as the original input dataset
 #'@export
 
-cmrPermSpat<-function(D,same.time,time.restrict,spat.restrict,same.id,n.swaps,n.rand,burnin,n.burnin,warn.thresh){
+cmrPermSpat<-function(D,locmat,same.time,time.restrict,spat.restrict,same.id,n.swaps,n.rand,burnin,n.burnin,warn.thresh){
 
   D.rand<-list()
 

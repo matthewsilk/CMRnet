@@ -10,7 +10,7 @@ cmrPermSoc(D, locmat, same.time, time.restrict, same.spat, spat.restrict,
 \arguments{
 \item{D}{The input dataset to be randomised}
 
-\item{locmat}{A distance matrix between the capture locations}
+\item{locmat}{A matrix indicating whether distance between the capture locations is less than spat.restrict if not "n"}
 
 \item{same.time}{(TRUE/FALSE) Whether swaps should be restricted to only occur betwen individuals trapped on the same date or not}
 

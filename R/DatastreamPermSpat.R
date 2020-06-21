@@ -10,7 +10,7 @@
 #'@param overlap The amount of overlap between netwindows in months (i.e. \code{overlap=2} would result in a second network window starting 2 months before the end of the first). When \code{overlap=0}, there is no overlap between successive network windows
 #'@param same.time (TRUE/FALSE) Whether swaps should be restricted to only occur trapping events on the same date or not
 #'@param time.restrict Provided as a number of months. Imposes time restrictions on when swaps can take place so that locations can only be swapped with those a fixed time before or after being captured
-#'#'@param spat.restrict Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that locations can only be swapped with those captued within a fixed distance
+#'@param spat.restrict Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that locations can only be swapped with those captued within a fixed distance
 #'@param same.id (TRUE/FALSE) Whether swaps should be restricted to only be between captures of the same individual
 #'@param n.swaps The number of swaps between each random network being extracted (e.g. \code{n.swaps = 10} would equate to 10 swaps taking place between each random network being saved)
 #'@param n.rand The number of randomised networks to be generated
@@ -190,7 +190,7 @@ DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
       #print(paste(ts,"-",i,"-tickB"))
     }
 
-    rands<-cmrPermSpat(D=D3,same.time=same.time,time.restrict=time.restrict,spat.restrict=spat.restrict,same.id=same.id,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin,warn.thresh=warn.thresh)
+    rands<-cmrPermSpat(D=D3,locmat=locmat2,same.time=same.time,time.restrict=time.restrict,spat.restrict=spat.restrict,same.id=same.id,n.swaps=n.swaps,n.rand=n.rand,burnin=burnin,n.burnin=n.burnin,warn.thresh=warn.thresh)
 
     if(iter==TRUE){rands.out[[ts]]<-as.data.frame(rands[[1]][,1:5])}
 

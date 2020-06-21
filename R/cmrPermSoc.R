@@ -3,7 +3,7 @@
 #'An internal function that operate within CMRnet::DatastreamPermSoc
 #'
 #'@param D The input dataset to be randomised
-#'@param locmat A distance matrix between the capture locations
+#'@param locmat A matrix indicating whether distance between the capture locations is less than spat.restrict if not "n"
 #'@param same.time (TRUE/FALSE) Whether swaps should be restricted to only occur betwen individuals trapped on the same date or not
 #'@param time.restrict Provided as a number of months. Imposes time restrictions on when swaps can take place so that individuals can only be swapped with those a fixed time before or after being captured
 #'@param same.spat (TRUE/FALSE) Whether swaps should be restricted to only occur between individuals trapped at the same location

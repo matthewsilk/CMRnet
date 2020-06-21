@@ -4,17 +4,21 @@
 \alias{cmrPermSpat}
 \title{cmrPermSpat}
 \usage{
-cmrPermSpat(D, same.time, time.restrict, same.id, n.swaps, n.rand, burnin,
-  n.burnin, warn.thresh)
+cmrPermSpat(D, locmat, same.time, time.restrict, spat.restrict, same.id,
+  n.swaps, n.rand, burnin, n.burnin, warn.thresh)
 }
 \arguments{
 \item{D}{The input dataset to be randomised}
 
-\item{same.time}{(TRUE/FALSE) Whether swaps should be restricted to only occur betwen individuals trapped on the same date or not}
+\item{locmat}{A matrix indicating whether distance between the capture locations is less than spat.restrict if not "n"}
 
-\item{time.restrict}{Provided as a number of months. Imposes time restrictions on when swaps can take place so that individuals can only be swapped with those a fixed time before or after being captured}
+\item{same.time}{(TRUE/FALSE) Whether swaps should be restricted to only occur trapping events on the same date or not}
 
-\item{same.id}{I dont know what this does!}
+\item{time.restrict}{Provided as a number of months. Imposes time restrictions on when swaps can take place so that locations can only be swapped with those a fixed time before or after being captured}
+
+\item{spat.restrict}{Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that locations can only be swapped with those captued within a fixed distance}
+
+\item{same.id}{(TRUE/FALSE) Whether swaps should be restricted to only be between captures of the same individual}
 
 \item{n.swaps}{The number of swaps between each random network being extracted (e.g. n.swaps = 10 would equate to 10 swaps taking place between each random network being saved)}
 

@@ -5,8 +5,8 @@
 \title{DatastreamPermSpat}
 \usage{
 DatastreamPermSpat(data, intwindow, mindate, maxdate, netwindow, overlap,
-  nextonly = FALSE, same.time, time.restrict, same.id, n.swaps, n.rand,
-  burnin, n.burnin, warn.thresh, iter)
+  nextonly = FALSE, same.time, time.restrict, spat.restrict, same.id,
+  n.swaps, n.rand, burnin, n.burnin, warn.thresh, iter)
 }
 \arguments{
 \item{data}{A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture}
@@ -23,9 +23,11 @@ DatastreamPermSpat(data, intwindow, mindate, maxdate, netwindow, overlap,
 
 \item{nextonly}{(TRUE/FALSE). Determines whether a network edge is only created to the next capture of an individual or all captures within the intwindow. Defaults to FALSE}
 
-\item{same.time}{(TRUE/FALSE) Whether swaps should be restricted to only occur betwen individuals trapped on the same date or not}
+\item{same.time}{(TRUE/FALSE) Whether swaps should be restricted to only occur trapping events on the same date or not}
 
-\item{time.restrict}{Provided as a number of months. Imposes time restrictions on when swaps can take place so that individuals can only be swapped with those a fixed time before or after being captured}
+\item{time.restrict}{Provided as a number of months. Imposes time restrictions on when swaps can take place so that locations can only be swapped with those a fixed time before or after being captured}
+
+\item{spat.restrict}{Provided on the same scale as the coordinates in the input dataset. Imposes space restrictions on when swaps can take place so that locations can only be swapped with those captued within a fixed distance}
 
 \item{same.id}{(TRUE/FALSE) Whether swaps should be restricted to only be between captures of the same individual}
 
@@ -97,6 +99,7 @@ overlap,
 spacewindow,
 same.time,
 time.restrict,
+spat.restrict="n"
 same.id,
 n.swaps,
 n.rand,
