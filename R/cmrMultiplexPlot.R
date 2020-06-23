@@ -53,6 +53,7 @@ cmrMultiplexPlot<-function(nets,fixed_locs=c(TRUE,FALSE),locs=NULL,dynamic=c(TRU
 
 
   if(fixed_locs==TRUE&length(locs)==0){
+    los<-list()
     tn<-nets[[2]][[1]]
     for(i in 1:l){
       tn<-igraph::union(tn,nets[[2]][[i]])
