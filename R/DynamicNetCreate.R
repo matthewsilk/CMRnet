@@ -151,7 +151,7 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
       #print(paste(ts,"-",i,"-tickB"))
     }
 
-    if(nrow(D3>0)){
+    if(nrow(D3)>0){
 
     for (i in 1:n.Caps2){
 
