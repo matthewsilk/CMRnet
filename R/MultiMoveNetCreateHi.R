@@ -165,7 +165,7 @@ MultiMoveNetCreateHi<-function(data,intwindow,mindate,maxdate,netwindow,overlap,
       if(index==TRUE){
         for(i in 1:nrow(EDGES[,,ts])){
           if(EDGES[i,3,ts]>0){
-            EDGES[[ts]][i,3,ls]<-EDGES[[ts]][i,3,ls]/(sum(as.numeric(D3$loc)==EDGES[[ts]][i,1,ls])+sum(as.numeric(D3$loc)==EDGES[[ts]][i,2,ls])-EDGES[[ts]][i,3,ls])
+            EDGES[[ts]][i,3,ls]<-EDGES[[ts]][i,3,ls]/(sum(as.numeric(D3$loc)==EDGES[[ts]][i,1,ls]))
           }
         }
       }
