@@ -151,6 +151,7 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
       #print(paste(ts,"-",i,"-tickB"))
     }
 
+    if(nrow(D3>0)){
 
     for (i in 1:n.Caps2){
 
@@ -166,6 +167,8 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
       for (j in 1:length(MATCH)){
         EDGES[which(EDGES[,1,ts]%in%as.numeric(D3$id[i])==TRUE&EDGES[,2,ts]%in%as.numeric(D3$id[MATCH[j]])==TRUE),3,ts]<-EDGES[which(EDGES[,1,ts]%in%as.numeric(D3$id[i])==TRUE&EDGES[,2,ts]%in%as.numeric(D3$id[MATCH[j]])==TRUE),3,ts]+1
       }
+    }
+
     }
 
     if(index==TRUE){

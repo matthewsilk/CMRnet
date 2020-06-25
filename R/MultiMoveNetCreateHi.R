@@ -144,6 +144,8 @@ MultiMoveNetCreateHi<-function(data,intwindow,mindate,maxdate,netwindow,overlap,
 
       }
 
+      if(nrow(D3>0)){
+
       for (i in 1:n.Caps2){
 
         pb$tick()
@@ -161,6 +163,8 @@ MultiMoveNetCreateHi<-function(data,intwindow,mindate,maxdate,netwindow,overlap,
         }
 
       } #end loop over captures
+
+      }
 
       if(index==TRUE){
         for(i in 1:nrow(EDGES[,,ts])){

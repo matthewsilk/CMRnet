@@ -138,6 +138,8 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
 
     }
 
+    if(nrow(D3>0)){
+
     for (i in 1:n.Caps2){
 
       # add progress update
@@ -154,6 +156,8 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
       for (j in 1:length(MATCH)){
         EDGES[which(EDGES[,1,ts]%in%as.numeric(D3$loc[i])==TRUE&EDGES[,2,ts]%in%as.numeric(D3$loc[MATCH[j]])==TRUE),3,ts]<-EDGES[which(EDGES[,1,ts]%in%as.numeric(D3$loc[i])==TRUE&EDGES[,2,ts]%in%as.numeric(D3$loc[MATCH[j]])==TRUE),3,ts]+1
       }
+
+    }
 
     }
 
