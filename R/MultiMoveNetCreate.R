@@ -193,6 +193,8 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
       ##and now turn the edge list into an association matrix as well to put network in double format
       NET.rows<-as.numeric(factor(rownames(NET[[ts]]),levels=levels(D$loc)))
 
+      if(sum(EDGES[[ts]][,3,ls])>0){
+
       EDGES.tmp<-EDGES[[ts]][which(EDGES[[ts]][,3,ls]>0),,ls]
 
       if(is.matrix(EDGES.tmp)){
@@ -205,6 +207,8 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
 
       if(is.vector(EDGES.tmp)){
         NET[[ts]][which(NET.rows%in%EDGES.tmp[1]==TRUE),which(NET.rows%in%EDGES.tmp[2]==TRUE),ls]<-NET[[ts]][which(NET.rows%in%EDGES.tmp[1]==TRUE),which(NET.rows%in%EDGES.tmp[2]==TRUE),ls]+EDGES.tmp[3]
+      }
+
       }
 
     } #end loop over layers

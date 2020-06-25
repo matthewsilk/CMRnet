@@ -167,6 +167,8 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
 
     NET.rows<-as.numeric(factor(rownames(NET),levels=levels(D$loc)))
 
+    if(sum(EDGES[,3,ts])>0){
+
     EDGES.tmp<-EDGES[which(EDGES[,3,ts]>0),,ts]
 
     if(is.matrix(EDGES.tmp)){
@@ -179,6 +181,8 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
 
     if(is.vector(EDGES.tmp)){
       NET[which(NET.rows%in%EDGES.tmp[1]==TRUE),which(NET.rows%in%EDGES.tmp[2]==TRUE),ts]<-NET[which(NET.rows%in%EDGES.tmp[1]==TRUE),which(NET.rows%in%EDGES.tmp[2]==TRUE),ts]+EDGES.tmp[3]
+    }
+
     }
 
     #end loop over ts/Ws
