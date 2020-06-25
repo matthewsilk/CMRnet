@@ -87,7 +87,7 @@ cmrMultiplexPlot<-function(nets,fixed_locs=c(TRUE,FALSE),locs=NULL,dynamic=c(TRU
         lo2<-los[[j]][igraph::vertex_attr(nets[[2]][[j]])$name%in%igraph::vertex_attr(nets[[1]][[i]][[j]])$name,]
         if(j==1){
           cD<-cbind(lo2,rep(heights[j],nrow(lo2)))
-          C<-scatterplot3d::scatterplot3d(cD,xlim=c(min(lo2[,1]),max(lo2[,1])),ylim=c(min(lo2[,2]),max(lo2[,2])),zlim=c(0,max(heights)+3),color=layer_colours[j],pch=16,box=F,grid=F,cex.symbols=1.5,angle=70,axis=F,scale.y=0.5)
+          C<-scatterplot3d::scatterplot3d(cD,xlim=c(min(lo2[,1])-1,max(lo2[,1])+1),ylim=c(min(lo2[,2])-1,max(lo2[,2])+1),zlim=c(0,max(heights)+3),color=layer_colours[j],pch=16,box=F,grid=F,cex.symbols=1.5,angle=70,axis=F,scale.y=0.5)
           theta<-seq(0,2*pi,length=1000)
           alpha<-pi/10
           ell.top.x<- (max(lo2[,1])+1)*cos(theta)*cos(alpha)-(min(lo2[,1])-1)*sin(theta)*sin(alpha)

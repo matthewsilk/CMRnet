@@ -160,7 +160,7 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
     if(index==TRUE){
       for(i in 1:nrow(EDGES[,,ts])){
         if(EDGES[i,3,ts]>0){
-          EDGES[i,3,ts]<-EDGES[i,3,ts]/(sum(as.numeric(D3$loc)==EDGES[i,1,ts])+sum(as.numeric(D3$loc)==EDGES[i,2,ts])-EDGES[i,3,ts])
+          EDGES[i,3,ts]<-EDGES[i,3,ts]/(sum(as.numeric(D3$loc)==EDGES[i,1,ts]))
         }
       }
     }
