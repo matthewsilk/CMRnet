@@ -143,7 +143,7 @@ MultiMoveNetCreateHi<-function(data,intwindow,mindate,maxdate,netwindow,overlap,
       if(nrow(D3)>0){
 
       # this is the longest step - set up a progress bar
-      pb <- progress::progress_bar$new(total = nrow(D2), clear = FALSE)
+      pb <- progress::progress_bar$new(total = n.Caps2, clear = FALSE)
       pb$tick(0)
 
       for (i in 1:n.Caps2){
