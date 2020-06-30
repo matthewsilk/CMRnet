@@ -160,7 +160,7 @@ MultiMoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
 
       }
 
-      if(nrow(D3)>0){
+      if(nrow(D4)>0){
 
       # this is the longest step - set up a progress bar
       pb <- progress::progress_bar$new(total = n.Caps2, clear = FALSE)
