@@ -76,7 +76,7 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
     print("End of final network window aligns with end of study")
   }
   if(end-ends[length(ends)]>0){
-    print(paste0("Final network window stops ",end-ends[length(ends)]," before the end of the study"))
+    print(paste0("Final network window stops ",end-ends[length(ends)]," days before the end of the study"))
   }
 
   # Counts the number of windows over which networks are built
@@ -132,10 +132,6 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
 
   EDGE.EXIST<-matrix(0,nrow=length(EDGES[,1,1]),ncol=Ws)
 
-  # this is the longest step - set up a progress bar
-  pb <- progress::progress_bar$new(total = nrow(D2), clear = FALSE)
-  pb$tick(0)
-
   #Less than ends
   for (ts in 1:Ws){
 
@@ -152,6 +148,10 @@ DynamicNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,spac
     }
 
     if(nrow(D3)>0){
+
+    # this is the longest step - set up a progress bar
+    pb <- progress::progress_bar$new(total = nrow(D2), clear = FALSE)
+    pb$tick(0)
 
     for (i in 1:n.Caps2){
 

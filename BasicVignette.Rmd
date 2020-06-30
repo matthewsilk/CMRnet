@@ -1,0 +1,217 @@
+---
+title: "Using CMRnet"
+author: "Matthew Silk"
+date: "30/06/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Here we provide a quick overview of how to use CMRnet
+
+***
+
+First we need to install the package from GitHub
+
+```{r install package}
+
+devtools::install_github('matthewsilk/CMRnet')
+
+```
+
+***
+
+we can load the package
+
+```{load required packages}
+
+library(profvis)
+library(CMRnet)
+
+```
+
+***
+***
+
+CMRnet comes with three test datasets loaded into it, and in this initial vignette we will use these dataset to demonstrate the functionality of the package
+
+```{r load datasets}
+
+data(cmrData)
+data(cmrData2)
+data(cmrData3)
+
+```
+
+***
+***
+***
+
+#### 1. Creating networks from mark-recpature data
+
+A principal aim of the package is to facilitate the construction of networks from mark-recapture data. CMRnet can be used to construct two types of social network.
+
+***
+
+1. Co-capture (social) networks: These networks connect two individuals that have been captured at the same location (or close by) within a pre-defined time interval
+
+***
+
+2. Movement networks: These networks connect two locations that an individual has been trapped at with a directed edge.
+
+***
+
+The package enables movement networks to be constructed as multiplex networks in which different layers represent the movements of different types of individual (female vs. male, different age classes etc.)
+
+***
+
+Finally the package allows the use of either date or date/time information to construct social networks. The former will be applicable to most types of mark-recapture data, but the latter will be useful when capture events occur at much higher resolutions.
+
+***
+
+First we construct co-capture networks using the the normal and high resolution versions of the co-capture network function. Within each code chunk we briefly explain what we are doing.
+
+```{r cocap net}
+
+## Set parameters for the function
+#Start Date
+mindate <- "2010-01-01"
+#End Date
+maxdate <- "2015-01-01"
+#Length of time in days within which individuals are considered to be co-captured
+intwindow <- 60
+#Length of each network window in months. We will use 5 12-month windows in this example
+netwindow <- 12
+#Overlap between network windows in months (we have no overlap in this example)
+overlap <- 0
+#Spatial tolerance for defining co-captures. Captures within a threshold distance (rather than simply at the same location) are considered when this is set to be greater than zero
+spacewindow <- 0
+
+## Create co-capture (social) networks
+#index=FALSE indicates that we want edges to be weighted by the number of movements (see help pages for the alternative)
+netdat <- DynamicNetCreate(
+    data = cmrData,
+    intwindow = intwindow,
+    mindate = mindate,
+    maxdate = maxdate,
+    netwindow = netwindow,
+    overlap = overlap,
+    spacewindow = spacewindow,
+    index=FALSE
+  )
+
+```
+
+```{r cocap net hi}
+
+## Set parameters for the function
+mindate<-"2019-12-01 00:00:00"
+maxdate<-"2020-07-01 00:00:00"
+#The interaction window is now in minutes. We set it to be one day here.
+intwindow<-24*60
+#The network window is now in days
+netwindow<-20
+#The overlap is now also in days
+overlap<-2
+spacewindow<-0
+
+## Create high-resolution co-capture (social) networks
+netdat_hi<-DynamicNetCreateHi(
+  data=cmrData3,
+  intwindow=intwindow,
+  mindate=mindate,
+  maxdate=maxdate,
+  netwindow=netwindow,
+  overlap=overlap,
+  spacewindow=spacewindow,
+  index=FALSE)
+
+```
+
+***
+***
+
+Now we do the same for the creation of single layer movement networks. Within each code chunk we briefly explain what we are doing.
+
+```{r movement net}
+
+## Set parameters for the function
+#Start Date
+mindate <- "2010-01-01"
+#End Date
+maxdate <- "2015-01-01"
+#Length of time in days within which individuals are considered to be co-captured
+intwindow <- 60
+#Length of each network window in months. We will use 5 12-month windows in this example
+netwindow <- 12
+#Overlap between network windows in months (we have no overlap in this example)
+overlap <- 0
+
+## Generate movement network
+# nextonly=TRUE indicates that only direct movements between groups should be considered (see help pages)
+movenetdat <- MoveNetCreate(
+  data = cmrData,
+  intwindow = intwindow,
+  mindate = mindate,
+  maxdate = maxdate,
+  netwindow = netwindow,
+  overlap = overlap,
+  nextonly = TRUE,
+  index=FALSE
+)
+
+```
+
+```{r movement net hi}
+
+## Set parameters for the function
+mindate<-"2019-12-01 00:00:00"
+maxdate<-"2020-07-01 00:00:00"
+#Interaction window is now in minutes
+intwindow<-30*24*60
+#The network window is now in days
+netwindow<-60
+#The overlap is now also in days
+overlap<-0
+spacewindow<-0
+
+## Generate movement network
+# nextonly=TRUE indicates that only direct movements between groups should be considered (see help pages)
+movenetdat <- MoveNetCreateHi(
+  data = cmrData3,
+  intwindow = intwindow,
+  mindate = mindate,
+  maxdate = maxdate,
+  netwindow = netwindow,
+  overlap = overlap,
+  nextonly = TRUE,
+  index=FALSE
+)
+
+```
+
+
+***
+***
+
+Now we construct multiplex movement networks using the standard function to show how to use the alternative data format
+
+```{r multiplex}
+
+## Generate multiplex movement network
+multimovenetdat <-
+  MultiMoveNetCreate(
+    data = cmrData2,
+    intwindow = intwindow,
+    mindate = mindate,
+    maxdate = maxdate,
+    netwindow = netwindow,
+    overlap = overlap,
+    nextonly = TRUE,
+    index=FALSE
+  )
+
+
+```

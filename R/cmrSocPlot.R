@@ -61,7 +61,12 @@ cmrSocPlot<-function(nets,fixed_locs=c(TRUE,FALSE),locs=NULL,dynamic=c(TRUE,FALS
         lo2<-igraph::layout_with_fr(nets[[1]][[i]])
       }
       lo2<-lo[igraph::vertex_attr(nets[[2]])$name%in%igraph::vertex_attr(nets[[1]][[i]])$name,]
-      igraph::plot.igraph(nets[[1]][[i]],layout=lo2,main=paste("Network Window",i), ...)
+      if(nrow(lo2)>0){
+        igraph::plot.igraph(nets[[1]][[i]],layout=lo2,main=paste("Network Window",i), ...)
+      }
+      if(nrow(lo2)==0){
+        graphics::plot(NULL,xlim=c(0,1),ylim=c(0,1),xaxt="n",yaxt="n",bty="n",main=paste("Network Window",i))
+      }
     }
   }
   if(dynamic==TRUE){
@@ -72,7 +77,12 @@ cmrSocPlot<-function(nets,fixed_locs=c(TRUE,FALSE),locs=NULL,dynamic=c(TRUE,FALS
         lo2<-igraph::layout_with_fr(nets[[1]][[i]])
       }
       lo2<-lo[igraph::vertex_attr(nets[[2]])$name%in%igraph::vertex_attr(nets[[1]][[i]])$name,]
-      igraph::plot.igraph(nets[[1]][[i]],layout=lo2,main=paste("Network Window",i), ...)
+      if(nrow(lo2)>0){
+        igraph::plot.igraph(nets[[1]][[i]],layout=lo2,main=paste("Network Window",i), ...)
+      }
+      if(nrow(lo2)==0){
+        graphics::plot(NULL,xlim=c(0,1),ylim=c(0,1),xaxt="n",yaxt="n",bty="n",main=paste("Network Window",i))
+      }
       Sys.sleep(1)
     }
   }

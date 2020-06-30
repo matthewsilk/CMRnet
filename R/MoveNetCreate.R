@@ -120,10 +120,6 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
 
   EDGE.EXIST<-matrix(0,nrow=length(EDGES[,1,1]),ncol=Ws)
 
-  # this is the longest step - set up a progress bar
-  pb <- progress::progress_bar$new(total = nrow(D2), clear = FALSE)
-  pb$tick(0)
-
   #Less than ends
   for (ts in 1:Ws){
 
@@ -139,6 +135,10 @@ MoveNetCreate<-function(data,intwindow,mindate,maxdate,netwindow,overlap,nextonl
     }
 
     if(nrow(D3)>0){
+
+    # this is the longest step - set up a progress bar
+    pb <- progress::progress_bar$new(total = nrow(D2), clear = FALSE)
+    pb$tick(0)
 
     for (i in 1:n.Caps2){
 
