@@ -139,7 +139,7 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
   if(spat.restrict!="n"){
     locmat2<-locmat<spat.restrict
     rownames(locmat2)<-colnames(locmat2)<-locs
-  }
+  } else{locmat2<-locmat}
 
   n.caps<-length(D2[,1])
 
