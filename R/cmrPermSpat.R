@@ -48,7 +48,7 @@ cmrPermSpat<-function(D,locmat,same.time,time.restrict,spat.restrict,same.id,n.s
       tmplocs<-rownames(locmat)[which(locmat[,which(colnames(locmat)==D$loc[tmp1])]==TRUE)]
     }
 
-    poss<-which(D$id%in%tmpids&D$Jdays%in%tmpdays&D$locs%in%tmplocs)
+    poss<-which(D$id%in%tmpids&D$Jdays%in%tmpdays&D$loc%in%tmplocs)
     poss<-poss[which(poss%in%tmp1==FALSE)]
 
     if(length(poss)>0){

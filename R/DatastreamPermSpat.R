@@ -138,6 +138,7 @@ DatastreamPermSpat<-function(data,intwindow,mindate,maxdate,netwindow,overlap,ne
 
   locdat<-stats::aggregate(D2[,2:4],by=list(D2$loc),unique)[,2:4]
   locmat<-as.matrix(stats::dist(locdat[,2:3]))
+  rownames(locmat)<-colnames(locmat)<-locs
   if(spat.restrict!="n"){
     locmat2<-locmat<spat.restrict
     rownames(locmat2)<-colnames(locmat2)<-locs
