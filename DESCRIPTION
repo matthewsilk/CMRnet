@@ -23,3 +23,8 @@ Imports:
     graphics,
     grDevices,
     scatterplot3d
+Suggests: 
+    knitr,
+    rmarkdown,
+    profvis
+VignetteBuilder: knitr

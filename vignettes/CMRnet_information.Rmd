@@ -1,0 +1,89 @@
+---
+title: "Detailed information on using CMRnet"
+author: "Matthew Silk"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{CMRnet_information}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+#### Detailed descriptions of aspects of organising data for using CMRnet, creating networks and downstream plotting and analysis
+
+
+#### Data input
+
+The data requirements are well described in the main text of the paper. The functions `DynamicNetCreate()`, `DynamicNetCreateHi()`, `MoveNetCreate()` and `MoveNetCreateHi()` require a dataframe with columns for individual ID, capture location, the XY coordinates of the capture location and the date of capture. The functions `MultiMoveNetCreate()` and `MultiMoveNetCreateHi()` require an additional `layer` column that can be used to construct multiplex movement networks separated according to phenotypic characteristics of individuals in the population. The regular versions of the functions to generate networks use dates in the format `YYYY-MM-DD` while the high resolution versions (`...Hi`)  of all functions use dates and times (see help pages). The order of the columns in these datasets is fixed (including columns out of the correct order will produce errors). The advantage of the latter approach is that it makes it possible to consider the role of different phenotypes (such as sex), life-history stages or even among-individual variation in structuring the movement network.
+
+#### Arguments used in the network generation functions
+
+Alongside the input data, both network construction functions require a number of other arguments in order to construct networks. It is necessary to provide a start date (using the `mindate` argument) and an equivalent end date (using the `maxdate` argument) to define the period of time that co-capture networks should be constructed over. It is also necessary to set the length of time (in months for the normal version of the function and days for the high-resolution version of the function) that each network should be constructed over using the `netwindow`. Whether there is any overlap between the time periods that networks are constructed over is defined by the `overlap` argument (also in months and days respectively). For example, with `netwindow=12` and `overlap=6` (and the normal version of the function) the first network window would run for the first year of the study, and the second network window would run from the beginning of month 7 to the end of month 18. The `intwindow` argument defines the amount of time that can elapse between two individuals being captured at a location (co-capture networks) or the same individual being captured at different locations (movement networks) before an edge is no longer added to the network. It is provided in days in the normal version of the function and minutes in the high-resolution version of the function. For example, if `intwindow=20` then two individuals captured at the same location 19 days apart will be connected in the co-capture network but two individuals captured at the same location 21 days apart would not. Finally, the index argument determines whether edges are weighted using count of co-captures/movements or using association indices. The association indices used in the package are detailed below.
+
+#### Co-capture network construction
+
+**CMRnet** constructs co-capture (social) networks using the assumption that two individuals captured at the same location on the same or similar dates are likely to have had the opportunity to associate or come into contact with each other. The temporal tolerance in defining a co-capture is provided by the `intwindow` argument of the function as introduced previously. The spatial tolerance used to define a co-capture is provided by an additional `spacewindow` argument that uses the coordinate system provided to calculate any capture locations that are closer than the threshold provided, whereby individuals captured at locations within the `spacewindow` and `intwindow` are considered co-captured. Decisions about appropriate spatial and temporal windows should be made with based on the research question (Carter, Lee, & Marshall, 2015) and using existing knowledge of the study system.
+
+The co-capture networks are initially constructed as weighted undirected networks. It would be possible to generate an undirected network using this co-capture information by calculating either the minimum, mean or maximum recorded edge weight for each dyad. Once constructed, co-capture networks are outputted in both edge list (an array containing the edge list for each network window in each slice of the array) and adjacency matrix (with the stack of adjacency matrices also as an array) format alongside a dataframe recording the network windows that each individual was captured in (binary values for captured and not captured). For an example of co-capture network generation, see `vignette("CaseStudyOne")`.	
+
+#### Movement network construction
+
+**CMRnet** constructs movement networks using the movement of individuals (the edges) to connect between different capture locations (the nodes). Movement networks are constructed as weighted, directed networks. The key differences from the generation of co-capture networks are that there is no option for to set the `spacewindow` argument (i.e. the locations in the input dataset are used as the nodes in the final network), and there is an additional `nextonly` argument. When this is set to be true (the default) then, if there are multiple captures of an individual at different locations within the interaction window, an edge is only drawn to the location of the next capture and not to any subsequent captures that are still within the interaction window. The output for single-layer movement networks is similar to that for co-capture networks; an array containing the edge lists of the networks for all network windows, an array containing the adjacency matrices of the networks for all network windows and a dataframe recording whether any captures occurred at each location within each network window.
+
+The multiplex movement networks constructed by **CMRnet** use the same arguments as single layer movement networks, and are also weighted and directed. The key difference is in the output produced. The edge lists and adjacency matrices that are returned are provided as a list with each element of the list referring to a network window. An array is returned within each element of this sub-list with each slice of the array equating to a layer of the multiplex network. For an example of multiplex movement network generation, see `vignette("CaseStudyTwo")`.
+
+#### Edge weights
+
+By default **CMRnet** returns edge weights as counts of the number of co-captures or movements recorded (`index=FALSE`). However, if desired a user can instead choose to construct networks with edges weighted by association indices (`index=TRUE`).
+
+For co-capture networks the association index is similar to the widely used simple ratio index. It is $\frac{N_ab}{(N_a+N_b-N_{ab})}$ where $N_{ab}$ is the number of co-captures, $N_a$ is the total number of capture of individual $a$, and $N_b$ is the total number of capture of individual $b$. We subtract the co-captures so that they are not counted separately within the total captures of $a$ and $b$. If the individuals were always co-captured then the value of this index is 1.
+
+For movement and multiplex movement networks the association index is given as the number of movements from group _A_ to group _B_ divided by the total number of captures in group _A_. This provides a method to control for variation in capture effort between trapping locations. Other approaches might be preferable in which case researchers can calculate their own association indices using the data contained in the networks generated and original capture dataset.
+
+#### Onward analysis and plotting
+
+The `cmr_igraph()` function converts output into a list of igraph network objects. For co-capture and single layer movement networks this is a nested list with two levels in the hierarchy. The first element is itself a list of igraph network objects corresponding to each network window. The second element is an igraph network object of the full, aggregated network for the entire study period. These lists can facilitate the use the use of igraph functions on **CMRnet** output as demonstrated in `vignette("CaseStudyTwo")`.
+
+Three functions enable the basic plotting of the output returned by the `cmr_igraph` function. The `cmrSocPlot()` and `cmrMovPlot()` functions are wrappers for the `plot.igraph()` function in **igraph**. As well as providing the list of network objects to be plotted, there are four additional arguments provided: `fixed_locs` (`TRUE/FALSE`) determines whether nodes take fixed positions in every network plot produced; `locs` (defaults to `NULL`) provides the coordinates of nodes if the researcher wishes to set them themselves (e.g. for spatial locations); `dynamic` (`TRUE/FALSE`) indicates whether networks should be plotted sequentially in the same window or as a single multi-panelled figure; and rows defines the number of rows desired in the multi-panelled figure produced. Additional arguments can be provided to be used in the [`plot.igraph`](https://www.rdocumentation.org/packages/igraph/versions/0.2.1/topics/plot.igraph). 
+
+Plotting multiplex networks is more challenging. The `cmrMultiplexPlot()` function provides basic functionality for plots of multiplex networks produced by **CMRnet** and its use is demonstrated in `vignette("CaseStudyTwo")`. It uses the same arguments as the previous two functions with an additional `layer_colour` argument in which the user specifies the colour of each layer of the network. There is limited flexibility currently provided by the package in these plots but the code is available for users to customise to produce more sophisticated multiplex network plots.
+
+#### Permutation approaches
+
+The package includes functions that enable two broad types of permutation for use in subsequent statistical analyses (for an example see `vignette("CaseStudyOne")`). The `cmrNodeswap()` and `cmrRestrictedNodeSwap()` functions swap rows and columns of the adjacency matrices produced to shuffle edges between different nodes. In contrast, the `DatastreamPermSoc()` and `DataStreamPermSpat()` functions make swaps in the capture dataset itself to generate different networks that are randomised within the constraints provided. These different approaches can be useful in tackling different hypotheses about the network as detailed in the main text.
+
+The `cmrNodeswap()` function is a wrapper for applying the function `rmperm()` from the package **sna** (Butts, 2016) to outputs from **CMRnet** network construction functions. Only two arguments are required, the number of permuted networks to produce (`n.rand`) and whether the network is multiplex or not (`multi=TRUE/FALSE`). The swaps conducted are unrestrained meaning that this approach does not control well for spatial variation in sampling effort, edge effects etc.
+
+Consequently, **CMRnet*** also contains the `cmrRestrictedNodeSwap()` function. This function conducts swaps iteratively, producing a Markov chain (similarly to the datastream permutation functions detailed below). Swaps are restricted by an array with the same dimensions as the adjacency matrix array (or identical to the structure of the input list for multiplex movement networks). This array (or list) contains binary indicators: 1 for a swap being permitted and 0 for not. If a swap is not possible and rejected, then the existing network is re-sampled in the Markov chain to ensure uniform sampling. This input requires some prior data manipulation but offers maximum flexibility for the constraints that can be included. We provide an example in Supplementary Material 1 Case Study 1. Additional arguments are an indicator of whether the network is multiplex or not (`multi=TRUE/FALSE`), a length of the burn-in period (`n.burnin`) describing the number of swaps to conduct before the Markov chain is sampled, the number of permutations to be saved (`n.rand`), and the number of swaps to be conducted between each saved network after the burn-in period is complete (`n.swaps`). When swaps are more restricted (fewer 1s in the restrict array/list) then a higher value of `n.swaps` will improve mixing in the Markov chain of permuted networks (e.g. see `vignette("CaseStudyOne")`).
+
+For both of the node swap functions the package returns a list of the permuted adjacency matrices. For co-capture and single layer movement networks each element of the list corresponds to a network window and contains an array containing all the permuted adjacency matrices. For multiplex movement networks the list is nested so that each element of the first list corresponds to a network window and each element of the second (nested) list corresponds to a layer of the network. Each element of the nested list then contains an array containing the permutations of each layer.
+
+The datastream permutations functions instead make swaps to the mark-recapture data itself rather than the network that has already been constructed. The function `DatastreamPermSoc()` generates randomised networks using an algorithm that swaps individuals between capture events (see Bejder, Fletcher, & Bräger, 1998; Farine, 2017). It also uses an iterative approach generating a Markov chain of permuted datasets. After a period of burn-in (defined using the `n.burnin`  argument) as the randomised dataset becomes increasingly dissimilar to the observed dataset, the algorithm calculates social networks after a set number of swaps (defined using the `n.swaps` argument). The algorithm proceeds until the pre-defined (`n.rand`) number of permuted networks have been generated. The total number of swaps therefore equals `n.burnin + n.swaps × n.rand`. Swaps can be restricted so that they can only occur within in a particular time window (using `same.time` or `time.restrict`) or geographic area (using `same.spat` or `spat.restrict`). The `same.time` and `same.spat` restrict swaps to occur only between captures on the same day or at the same location, while the time.restrict and spat.restrict arguments provide the user some flexibility in the strength of these constraints.
+
+Datastream permutations for movement networks are conducted using the `DatastreamOermSpat()` function, and the algorithm used is very similar apart from that locations rather than individual identities are swapped between capture events. It possible to constrain permutations so that swaps only occur between different captures of the same individual (`same.id`), with time-based restrictions (`same.time` and `time.restrict`) and spatial limitations (`spat.restrict`). With this number of constraints possible on swaps it can lead to situations where very few swaps are possible and there are limitations imposed by the rate at which the Markov chain mixes. Setting warn.thresh helps alleviate this by stopping the function and providing a warning once the threshold number of rejected swaps is met. In both datastream permutation functions the parameter `iter=TRUE/FALSE` sets whether all permutations are conducted in one go (`iter=FALSE`) or permutations are conducted one at a time (`iter=TRUE`). Taking the latter approach can be useful when there are computational limitations (see below).
+
+#### Computational limitations
+
+Constructing networks from mark-recapture data can be time consuming and computationally demanding under certain conditions. For convenience (especially for subsequent input into some network analyses), the approach includes all individuals recorded in the matrix generated for every time-step, as well as including a separate indicator matrix of whether a node was recorded or not in that time step.  Therefore, if the time period over which networks are constructed is long, or there is a rapid turnover of individuals (or, perhaps less likely, locations) then sizeable edgelists and adjacency matrices are returned by the network generating functions. This can place an upper limit on the length of a time series that can be analysed in one go, especially if each network window is short and/or there is considerable overlap between network windows, although there is no reason this couldn’t be split into smaller time windows if required. The problem is exacerbated for the datastream permutation functions. As a result, an option is provided to generate randomised networks using these functions iteratively (`iter=TRUE`) to avoid having to store the full set of randomised networks as a single object.
+      
+***
+
+#### References
+
+- Bejder, L., Fletcher, D., & Bräger, S. (1998). A method for testing association patterns of social animals. Animal Behaviour, 56(3), 719–725.
+Butts, C.T. (2016). “sna: Tools for Social Network Analysis.” R package version 2.4.
+- Carter, A. J., Lee, A. E. G., & Marshall, H. H. (2015). Research questions should drive edge definitions in social network studies.
+- Carter, A.J., Lee, A.E.G., & Marshall, H.H. (2015). Research questions should drive edge definitions in social network studies. Animal Behaviour, 104, e7-11.
+- Csardi, G. & Nepusz, T. (2006). The igraph software package for complex network research. InterJournal, Complex Systems, 1695, 1-9/
+- Farine, D. R. (2017). A guide to null models for animal social network analysis. Methods in Ecology and Evolution, 8(10), 1309–1320.
+
+
+
+
