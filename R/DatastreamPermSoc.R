@@ -215,11 +215,23 @@ DatastreamPermSoc<-function(data, intwindow, mindate, maxdate, netwindow, overla
       ##and now turn the edge list into an association matrix as well to put network in double format
       NET.rows<-as.numeric(factor(rownames(NET[[ts]]),levels=levels(D$id)))
 
+      if(sum(EDGES[,3,r])>0){
+
       EDGES.tmp<-EDGES[which(EDGES[,3,r]>0),,r]
 
-      for (i in 1:length(EDGES.tmp[,3])){
-        NET[[ts]][which(NET.rows%in%EDGES.tmp[i,1]==TRUE),which(NET.rows%in%EDGES.tmp[i,2]==TRUE),r]<-NET[[ts]][which(NET.rows%in%EDGES.tmp[i,1]==TRUE),which(NET.rows%in%EDGES.tmp[i,2]==TRUE),r]+EDGES.tmp[i,3]
-        NET[[ts]][which(NET.rows%in%EDGES.tmp[i,2]==TRUE),which(NET.rows%in%EDGES.tmp[i,1]==TRUE),r]<-NET[[ts]][which(NET.rows%in%EDGES.tmp[i,2]==TRUE),which(NET.rows%in%EDGES.tmp[i,1]==TRUE),r]+EDGES.tmp[i,3]
+      if(is.matrix(EDGES.tmp)){
+
+        for (i in 1:length(EDGES.tmp[,3])){
+          NET[[ts]][which(NET.rows%in%EDGES.tmp[i,1]==TRUE),which(NET.rows%in%EDGES.tmp[i,2]==TRUE),r]<-NET[[ts]][which(NET.rows%in%EDGES.tmp[i,1]==TRUE),which(NET.rows%in%EDGES.tmp[i,2]==TRUE),r]+EDGES.tmp[i,3]
+          NET[[ts]][which(NET.rows%in%EDGES.tmp[i,2]==TRUE),which(NET.rows%in%EDGES.tmp[i,1]==TRUE),r]<-NET[[ts]][which(NET.rows%in%EDGES.tmp[i,2]==TRUE),which(NET.rows%in%EDGES.tmp[i,1]==TRUE),r]+EDGES.tmp[i,3]
+        }
+      }
+
+      if(is.vector(EDGES.tmp)){
+        NET[[ts]][which(NET.rows%in%EDGES.tmp[1]==TRUE),which(NET.rows%in%EDGES.tmp[2]==TRUE),r]<-NET[[ts]][which(NET.rows%in%EDGES.tmp[1]==TRUE),which(NET.rows%in%EDGES.tmp[2]==TRUE),r]+EDGES.tmp[3]
+        NET[[ts]][which(NET.rows%in%EDGES.tmp[2]==TRUE),which(NET.rows%in%EDGES.tmp[1]==TRUE),r]<-NET[[ts]][which(NET.rows%in%EDGES.tmp[2]==TRUE),which(NET.rows%in%EDGES.tmp[1]==TRUE),r]+EDGES.tmp[3]
+      }
+
       }
 
     } #end r loop over randomisations
