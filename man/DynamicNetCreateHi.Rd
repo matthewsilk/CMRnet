@@ -4,8 +4,16 @@
 \alias{DynamicNetCreateHi}
 \title{DynamicNetCreateHi}
 \usage{
-DynamicNetCreateHi(data, intwindow, mindate, maxdate, netwindow, overlap,
-  spacewindow, index = FALSE)
+DynamicNetCreateHi(
+  data,
+  intwindow,
+  mindate,
+  maxdate,
+  netwindow,
+  overlap,
+  spacewindow,
+  index = FALSE
+)
 }
 \arguments{
 \item{data}{A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date and time of capture}
@@ -33,8 +41,10 @@ A list of length 3 containing: \cr
 }
 }
 \description{
-This function creates dynamic social networks from capture-mark-recapture datasets using information on co-capture
-The time period for each network, together with the temporal and spatial restrictions on the co-capture window can be defined by the user. This function includes times and dates and can be used for data with higher temporal resolution than DynamicNetCreate()
+Creates dynamic social networks from capture-mark-recapture datasets using information on co-capture
+}
+\details{
+The time period for each network, together with the temporal and spatial restrictions on the co-capture window can be defined by the user. This function includes times and dates and can be used for data with higher temporal resolution than \code{DynamicNetCreate()}
 }
 \examples{
 \dontrun{

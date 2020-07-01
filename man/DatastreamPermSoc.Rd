@@ -4,9 +4,25 @@
 \alias{DatastreamPermSoc}
 \title{DatastreamPermSoc}
 \usage{
-DatastreamPermSoc(data, intwindow, mindate, maxdate, netwindow, overlap,
-  spacewindow, same.time, time.restrict, same.spat, spat.restrict, n.swaps,
-  n.rand, burnin, n.burnin, iter, buffer = 0)
+DatastreamPermSoc(
+  data,
+  intwindow,
+  mindate,
+  maxdate,
+  netwindow,
+  overlap,
+  spacewindow,
+  same.time,
+  time.restrict,
+  same.spat,
+  spat.restrict,
+  n.swaps,
+  n.rand,
+  burnin,
+  n.burnin,
+  iter,
+  buffer = 0
+)
 }
 \arguments{
 \item{data}{A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture}
@@ -58,7 +74,7 @@ If \code{iter=FALSE} then a list of length 2 with elements corresponding to: \cr
 }
 }
 \description{
-This function creates randomised social networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or spatial windows)
+Creates randomised social networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or spatial windows)
 }
 \examples{
 \dontrun{

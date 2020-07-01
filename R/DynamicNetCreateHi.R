@@ -1,7 +1,7 @@
 #'DynamicNetCreateHi
 #'
-#'This function creates dynamic social networks from capture-mark-recapture datasets using information on co-capture
-#'The time period for each network, together with the temporal and spatial restrictions on the co-capture window can be defined by the user. This function includes times and dates and can be used for data with higher temporal resolution than DynamicNetCreate()
+#'Creates dynamic social networks from capture-mark-recapture datasets using information on co-capture
+#'@details The time period for each network, together with the temporal and spatial restrictions on the co-capture window can be defined by the user. This function includes times and dates and can be used for data with higher temporal resolution than \code{DynamicNetCreate()}
 #'
 #'@param data A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date and time of capture
 #'@param intwindow The maximum period of time (in minutes) between two co-captures (i.e. if \code{intwindow = 60} then two individuals captured 60 minutes apart could be considered co-captured but two individuals captured 61 days apart couldn't)

@@ -6,11 +6,17 @@
 #'
 igraph plotting for CMRnet object}
 \usage{
-cmrMultiplexPlot(nets, fixed_locs = c(TRUE, FALSE), locs = NULL,
-  dynamic = c(TRUE, FALSE), rows = 3, layer_colours)
+cmrMultiplexPlot(
+  nets,
+  fixed_locs = c(TRUE, FALSE),
+  locs = NULL,
+  dynamic = c(TRUE, FALSE),
+  rows = 3,
+  layer_colours
+)
 }
 \arguments{
-\item{nets}{A list of multiplex igraph networks output by cmr_igraph}
+\item{nets}{A list of multiplex igraph networks output by \code{cmr_igraph}}
 
 \item{fixed_locs}{(TRUE/FALSE). Whether to keep the the locations of the nodes fixed between network windows or allow them to change}
 

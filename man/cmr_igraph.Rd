@@ -9,9 +9,9 @@ Converts CMRnet networks to lists of igraph networks}
 cmr_igraph(cmrnet, type = c("social", "movement", "multiplex"))
 }
 \arguments{
-\item{cmrnet}{A cmrnet object from the DynamicNetCreate, MoveNetCreate or MultiMoveNetCreate functions}
+\item{cmrnet}{A CMRnet object from \code{DynamicNetCreate}, \code{MoveNetCreate} or \code{MultiMoveNetCreate} functions}
 
-\item{type}{The type of cmrnet object. Three possible arguments: "social" (object from DynamicNetCreate), "movement" (object from MoveNetCreate) and "multiplex" (object from MultiMoveNetCreate)}
+\item{type}{The type of CMRnet object. Three possible arguments: "social" (object from \code{DynamicNetCreate}), "movement" (object from \code{MoveNetCreate}) and "multiplex" (object from \code{MultiMoveNetCreate})}
 }
 \value{
 igraph networks for onward analysis. For all types of network the function returns a list of two outputs. For social and movement networks the first element is itself a list containing the igraph network corresponding to each network window. The second element of the list is the overall network calculated for all network windows combined. For multiplex movement networks the first list is more complex with an additional layer. The list of networks for different network windows is nested so that for each network window the movement network for each layer is stored separately.
@@ -22,7 +22,7 @@ cmr_igraph
 Converts CMRnet networks to lists of igraph networks
 }
 \details{
-This function converts CMRnet objects into lists of igraph networks for onward analysis and plottting
+This function converts CMRnet objects into lists of igraph networks for onward analysis and plotting
 }
 \examples{
 \dontrun{

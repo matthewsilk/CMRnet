@@ -4,9 +4,25 @@
 \alias{DatastreamPermSpat}
 \title{DatastreamPermSpat}
 \usage{
-DatastreamPermSpat(data, intwindow, mindate, maxdate, netwindow, overlap,
-  nextonly = FALSE, same.time, time.restrict, spat.restrict, same.id,
-  n.swaps, n.rand, burnin, n.burnin, warn.thresh, iter)
+DatastreamPermSpat(
+  data,
+  intwindow,
+  mindate,
+  maxdate,
+  netwindow,
+  overlap,
+  nextonly = FALSE,
+  same.time,
+  time.restrict,
+  spat.restrict,
+  same.id,
+  n.swaps,
+  n.rand,
+  burnin,
+  n.burnin,
+  warn.thresh,
+  iter
+)
 }
 \arguments{
 \item{data}{A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture}
@@ -57,7 +73,7 @@ If \code{iter=FALSE} then a list of length 2 is returned with elements correspon
 }
 }
 \description{
-This function creates randomised movement networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or individual ID-based restrictions)
+Creates randomised movement networks for each network window using datastream permutations with user-defined restrictions (to constrain swaps according to temporal or individual ID-based restrictions)
 }
 \examples{
 \dontrun{

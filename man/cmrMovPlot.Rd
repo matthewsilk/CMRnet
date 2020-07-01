@@ -6,11 +6,17 @@
 #'
 igraph plotting for CMRnet object}
 \usage{
-cmrMovPlot(nets, fixed_locs = c(TRUE, FALSE), locs = NULL,
-  dynamic = c(TRUE, FALSE), rows = 3, ...)
+cmrMovPlot(
+  nets,
+  fixed_locs = c(TRUE, FALSE),
+  locs = NULL,
+  dynamic = c(TRUE, FALSE),
+  rows = 3,
+  ...
+)
 }
 \arguments{
-\item{nets}{A list of igraph networks output by cmr_igraph}
+\item{nets}{A list of igraph networks output by \code{cmr_igraph}}
 
 \item{fixed_locs}{(TRUE/FALSE). Whether to keep the the locations of the nodes fixed between network windows or allow them to change}
 
@@ -31,7 +37,7 @@ cmrMovPlot
 igraph plotting for CMRnet object
 }
 \details{
-This function plots movement networks produced by CMRnet. As well as the arguments detailed above, additional arguments from plot.igraph can be used to produce plots desired by the user
+This function plots movement networks produced by CMRnet. As well as the arguments detailed above, additional arguments from \code{\link[igraph]{plot.igraph}} can help customise plots
 }
 \examples{
 \dontrun{

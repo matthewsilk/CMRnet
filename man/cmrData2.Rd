@@ -4,12 +4,21 @@
 \name{cmrData2}
 \alias{cmrData2}
 \title{cmrData2}
-\format{A data frame with six variables: \code{id}, \code{loc},
-  \code{x}, \code{y}, \code{date} and \code{layer}. \code{cmrData2} is an example of how dataframes should be created to feed into CMRnet when there are multiple layered movement networks (i.e. a separate network for males and females).}
+\format{
+A data frame with 1191 rows and 5 columns variables:
+\itemize{
+\item \code{id} - provides the identity of the individual captured
+\item \code{loc} - the named capture location
+\item \code{x} - geographic location of a capture event (on the horizontal axis)
+\item \code{y} - geographic location of a capture event (on the vertical axis)
+\item \code{date} - the capture date
+\item \code{layer} - provides information used to define the layers of the multiplex network
+}
+}
 \usage{
-cmrData2
+data("cmrData2")
 }
 \description{
-cmrData2 to test the multiplex movement network function.It contains six columns: the ID column provides the identity of the individual captured, loc is the named capture location, x and y provide the geographic location of a capture event, date provides the capture date and layer provide information used to define the layers of the multiplex network.
+A dataset that tests \code{\link{MultiMoveNetCreate}}. \code{cmrData2} is an example of how dataframes should be created to feed into CMRnet when there are multiple layered movement networks (i.e. a separate network for males and females).
 }
 \keyword{datasets}

@@ -1,7 +1,8 @@
 
 #'MoveNetCreate
 #'
-#'This function creates dynamic, directed movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals. Networks connect locations that individuals have moved between within a particular interaction window. The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user
+#'Creates dynamic, directed movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals.
+#' @details Networks connect locations that individuals have moved between within a particular interaction window. The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user
 #'
 #'@param data A 5 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, and the date of capture
 #'@param intwindow The maximum period of time (in days) between the capture of an individual at two different locations for it to be added as an edge to the movemenet network (i.e. if intwindow = 10 then an individual captured at two locations 9 days apart could be considered a movement in the network but two individuals captured 11 days apart could not)

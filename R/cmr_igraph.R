@@ -1,11 +1,10 @@
-
 #'cmr_igraph
 #'#'
 #'Converts CMRnet networks to lists of igraph networks
 #'
-#'@param cmrnet A cmrnet object from the DynamicNetCreate, MoveNetCreate or MultiMoveNetCreate functions
-#'@param type The type of cmrnet object. Three possible arguments: "social" (object from DynamicNetCreate), "movement" (object from MoveNetCreate) and "multiplex" (object from MultiMoveNetCreate)
-#'@details This function converts CMRnet objects into lists of igraph networks for onward analysis and plottting
+#'@param cmrnet A CMRnet object from \code{DynamicNetCreate}, \code{MoveNetCreate} or \code{MultiMoveNetCreate} functions
+#'@param type The type of CMRnet object. Three possible arguments: "social" (object from \code{DynamicNetCreate}), "movement" (object from \code{MoveNetCreate}) and "multiplex" (object from \code{MultiMoveNetCreate})
+#'@details This function converts CMRnet objects into lists of igraph networks for onward analysis and plotting
 #'@return igraph networks for onward analysis. For all types of network the function returns a list of two outputs. For social and movement networks the first element is itself a list containing the igraph network corresponding to each network window. The second element of the list is the overall network calculated for all network windows combined. For multiplex movement networks the first list is more complex with an additional layer. The list of networks for different network windows is nested so that for each network window the movement network for each layer is stored separately.
 
 #'@examples

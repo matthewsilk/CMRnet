@@ -4,12 +4,20 @@
 \name{cmrData3}
 \alias{cmrData3}
 \title{cmrData3}
-\format{A data frame with five variables: \code{id}, \code{loc},
-  \code{x}, \code{y} and \code{date}. \code{cmrData3} is an example of how dataframes should be created to feed into CMRnet when capture times are relevant as well as capture dates.}
+\format{
+A data frame with 1191 rows and 5 columns variables:
+\itemize{
+\item \code{id} - provides the identity of the individual captured
+\item \code{loc} - the named capture location
+\item \code{x} - geographic location of a capture event (on the horizontal axis)
+\item \code{y} - geographic location of a capture event (on the vertical axis)
+\item \code{date} - the capture date in POSIXct format
+}
+}
 \usage{
-cmrData3
+data("cmrData3")
 }
 \description{
-cmrData3 to test short-term social and movement network functions of CMRnet.It contains five columns: the ID column provides the identity of the individual captured, loc is the named capture location, x and y provide the geographic location of a capture event, and date provide the capture date and time.
+cmrData3 to test \code{\link{DynamicNetCreateHi}} and \code{\link{MoveNetCreateHi}}. These functions help create short-term social and movement networks.\code{cmrData3} is an example of how dataframes should be created to feed into CMRnet when capture times are relevant as well as capture dates.
 }
 \keyword{datasets}

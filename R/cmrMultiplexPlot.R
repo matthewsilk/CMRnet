@@ -3,7 +3,7 @@
 #'#'
 #'igraph plotting for CMRnet object
 #'
-#'@param nets A list of multiplex igraph networks output by cmr_igraph
+#'@param nets A list of multiplex igraph networks output by \code{cmr_igraph}
 #'@param fixed_locs (TRUE/FALSE). Whether to keep the the locations of the nodes fixed between network windows or allow them to change
 #'@param locs A matrix or dataframe giving x and y coordinates of all nodes in the full network. Can be used to provide user-defined layouts to the graph - helpful for plotting locations in geographic space
 #'@param dynamic (TRUE/FALSE). If true this function will plot networks for the different network windows sequentially in the same plot window with a delay. If false then this function will plot the networks in a single, multipanel figure

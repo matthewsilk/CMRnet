@@ -4,8 +4,14 @@
 \alias{cmrRestrictedNodeswap}
 \title{cmrRestrictedNodeswap}
 \usage{
-cmrRestrictedNodeswap(cmrnet, restrict, n.rand, n.burnin, n.swaps,
-  multi = FALSE)
+cmrRestrictedNodeswap(
+  cmrnet,
+  restrict,
+  n.rand,
+  n.burnin,
+  n.swaps,
+  multi = FALSE
+)
 }
 \arguments{
 \item{cmrnet}{A cmrnet object from the DynamicNetCreate, MoveNetCreate or MultiMoveNetCreate functions}

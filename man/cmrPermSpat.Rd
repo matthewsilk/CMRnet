@@ -4,8 +4,19 @@
 \alias{cmrPermSpat}
 \title{cmrPermSpat}
 \usage{
-cmrPermSpat(D, locmat, same.time, time.restrict, spat.restrict, same.id,
-  n.swaps, n.rand, burnin, n.burnin, warn.thresh)
+cmrPermSpat(
+  D,
+  locmat,
+  same.time,
+  time.restrict,
+  spat.restrict,
+  same.id,
+  n.swaps,
+  n.rand,
+  burnin,
+  n.burnin,
+  warn.thresh
+)
 }
 \arguments{
 \item{D}{The input dataset to be randomised}

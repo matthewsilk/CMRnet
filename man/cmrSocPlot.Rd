@@ -6,8 +6,14 @@
 #'
 igraph plotting for CMRnet object}
 \usage{
-cmrSocPlot(nets, fixed_locs = c(TRUE, FALSE), locs = NULL,
-  dynamic = c(TRUE, FALSE), rows = 3, ...)
+cmrSocPlot(
+  nets,
+  fixed_locs = c(TRUE, FALSE),
+  locs = NULL,
+  dynamic = c(TRUE, FALSE),
+  rows = 3,
+  ...
+)
 }
 \arguments{
 \item{nets}{A list of igraph networks output by cmr_igraph}

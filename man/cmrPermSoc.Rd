@@ -4,8 +4,19 @@
 \alias{cmrPermSoc}
 \title{cmrPermSoc}
 \usage{
-cmrPermSoc(D, locmat, same.time, time.restrict, same.spat, spat.restrict,
-  n.swaps, n.rand, burnin, n.burnin, buffer = 0)
+cmrPermSoc(
+  D,
+  locmat,
+  same.time,
+  time.restrict,
+  same.spat,
+  spat.restrict,
+  n.swaps,
+  n.rand,
+  burnin,
+  n.burnin,
+  buffer = 0
+)
 }
 \arguments{
 \item{D}{The input dataset to be randomised}

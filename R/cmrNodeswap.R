@@ -3,11 +3,10 @@
 #'
 #'Conducts node-swap randomisations for CMRnet outputs
 #'
-#'@param cmrnet A cmrnet object from the DynamicNetCreate, MoveNetCreate or MultiMoveNetCreate functions
+#'@param cmrnet A CMRnet object from \code{DynamicNetCreate}, \code{MoveNetCreate} or \code{MultiMoveNetCreate}
 #'@param n.rand The number of permuted matrices to be conducted by the rmperm() algorithm
-#'@param multi (TRUE/FALSE). Indicates whether the input object is a monolayer network (from DynamicNetCreate or MoveNetCreate) or multiplex network (MultiMoveNetCreate)
+#'@param multi (TRUE/FALSE). Indicates whether the input object is a monolayer network (from \code{DynamicNetCreate} or \code{MoveNetCreate}) or multiplex network (\code{MultiMoveNetCreate})
 #'@details This function conducts network permutations of CMRnet objects, acting as a wrapper for \code{sna::rmperm()}
-
 #'@return The randomised networks. If multi=FALSE then this consists of a list in which each element of the list corresponds to a particular network window and contains an array consisting of all of the randomised networks. If multi=TRUE then this consists of a nested list arrangement in which each element of the first list corresponds to a particular network window, and each element of the second list a layer of the multiplex for that network window. Each element of the second level contains an array consisting of all of the randommised versions of that layer in that network window
 
 #'@examples

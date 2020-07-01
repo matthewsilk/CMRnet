@@ -4,8 +4,16 @@
 \alias{MultiMoveNetCreateHi}
 \title{MultiMoveNetCreate}
 \usage{
-MultiMoveNetCreateHi(data, intwindow, mindate, maxdate, netwindow, overlap,
-  nextonly = FALSE, index = FALSE)
+MultiMoveNetCreateHi(
+  data,
+  intwindow,
+  mindate,
+  maxdate,
+  netwindow,
+  overlap,
+  nextonly = FALSE,
+  index = FALSE
+)
 }
 \arguments{
 \item{data}{A 6 column dataframe with columns for the ID of the captured individual, the location of its capture (a name or number), the x coordinate of its capture location, the y coordinate of the capture location, the date and time of capture and information to define multiplex network layers. The "Layers" column can consist of any unique identifiers (e.g. if layers representing movements by males and females are used then they could be represented by "M" and "F" or 1 and 2). If the user wants a layer per individual then the "Layers" column can simply be a copy of the individual ID column.}
@@ -33,5 +41,8 @@ A list of length 3 containing:
 }
 }
 \description{
-This function creates dynamic, directed, multiplex movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals. Multiplex networks connect locations that individuals have moved between within a particular interaction window with different layers being defined by the user. The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user
+Creates dynamic, directed, multiplex movement networks from capture-mark-recapture datasets using information on the capture locations and times of individuals.
+}
+\details{
+Multiplex networks connect locations that individuals have moved between within a particular interaction window with different layers being defined by the user. The time period for each network, together with the temporal and spatial restrictions on the capture window used to infer a movement can be defined by the user
 }
