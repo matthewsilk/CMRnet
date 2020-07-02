@@ -1,0 +1,456 @@
+---
+title: "Case Study One: Social behaviour during a badger lifetime"
+author: "Matthew Silk"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{CaseStudyOne}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.align = 'center'
+  
+)
+```
+#### Example of using CMRnet to generate movement networks of European badgers for use in analyses linking deaths caused by collisions with cars to the position of groups within movement networks 
+***
+
+#### Background
+
+
+***
+
+#### Setup and data manipulation
+
+First we set up our environment.
+
+```{r load_packages, message=FALSE, warning=FALSE}
+# load packages
+library(lubridate)
+library(CMRnet)
+library(glmmTMB)
+library(igraph)
+
+```
+
+The data we use here is not documented in the package, but can be accessed to recreate this analyses by using `CMRnet:::capturesData` and `CMRnet:::individualData`. The data is on ... 
+
+```{r load_data, echo=FALSE}
+captures <- CMRnet:::capturesData
+indivdat <- CMRnet:::individualData
+```
+
+```{r show_data}
+# look at dimensions of data
+str(captures)
+str(indivdat)
+```
+
+We then do some data manipulation to fill in data on the age and sex of badgers in the captures data set. We also wrangle the date formats and create a dataframe in the format needed for **CMRnet**. 
+
+```{r data_manipulation}
+# create empty columns for sex and age
+captures$sex<-rep(NA,nrow(captures))
+captures$age<-rep("ADULT",nrow(captures))
+
+# fill in data on the age and sex of badgers in the captures dataset
+for(i in 1:nrow(captures)){
+  if(captures$tattoo[i]%in%indivdat$tattoo){
+    captures$sex[i]<-as.character(indivdat$sex[indivdat$tattoo==as.character(captures$tattoo[i])])
+    if(substr(captures$date[i],7,10)==indivdat$year_fc[indivdat$tattoo==as.character(captures$tattoo[i])]&(is.na(indivdat$age_fc[indivdat$tattoo==as.character(captures$tattoo[i])])==FALSE)&indivdat$age_fc[indivdat$tattoo==as.character(captures$tattoo[i])]=="CUB"){
+      captures$age[i]<-"CUB"
+    }
+    if(substr(captures$date[i],7,10)==indivdat$year_fc[indivdat$tattoo==as.character(captures$tattoo[i])]&(is.na(indivdat$age_fc[indivdat$tattoo==as.character(captures$tattoo[i])])==TRUE)){
+      captures$age[i]<-NA
+    }
+  }
+}
+
+# Convert sex to a factor
+captures$sex <- as.factor(captures$sex)
+
+# Add a date column in correct format
+captures$date2 <- as.Date(paste0(substr(captures$date,7,10),"-",substr(captures$date,4,5),"-",substr(captures$date,1,2)))
+
+# Add year, month and day columns
+captures$year <- lubridate::year(captures$date2)
+captures$month <- lubridate::month(captures$date2)
+captures$day <- lubridate::day(captures$date2)
+
+# Create a year of study column
+captures$year_of_study <- rep(NA,nrow(captures))
+for(i in 1:nrow(captures)){
+  if(captures$month[i]>1){
+    captures$year_of_study[i]<-as.numeric(captures$year[i])-1985
+  }
+  if(captures$month[i]==1){
+    captures$year_of_study[i]<-as.numeric(captures$year[i])-1986
+  }  
+}
+
+# Subset data to only include 30 years - Feb 1986 to Jan 2016
+captures2 <- captures[captures$year_of_study>0&captures$year_of_study<31,]
+
+# Create a dataframe in the correct format for CMRnet
+captures3<-data.frame(captures2$tattoo,captures2$socg,rep(NA,nrow(captures2)),rep(NA,nrow(captures2)),captures2$date2)
+names(captures3)<-c("id","loc","x","y","date")
+
+# Assign fake coordinates to locations using there factor ids as they are not used anyway in this analysis
+captures3$x <- as.numeric(as.factor(captures3$loc))
+captures3$y <- as.numeric(as.factor(captures3$loc))
+
+str(captures3)
+
+```
+
+***
+
+#### Create social networks
+
+We now create the social networks using `DynamicNetCreate` because we have data on co-capture of badgers across the thirty year period.
+
+```{r network_creation, message=FALSE, results=hide}
+
+#Define parameters for first time period
+mindate<-"1986-02-01"
+maxdate<-"1987-02-01"
+intwindow<-30
+netwindow<-12
+overlap<-0
+spacewindow<-0
+
+#Create network for first time period
+netdat1<-DynamicNetCreate(data=captures3,
+                          intwindow=intwindow,
+                          mindate=mindate,
+                          maxdate=maxdate, 
+                          netwindow=netwindow, 
+                          overlap=overlap, 
+                          spacewindow=spacewindow)
+
+#Create lists to store network data
+netdats<-list()
+netdats[[1]]<-netdat1
+
+#Loop to create networks for remaining time periods
+for(i in seq(1987,2015,1)){
+  mindate<-paste0(i,"-02-01")
+  maxdate<-paste0(i+1,"-02-01")
+  intwindow<-30
+  netwindow<-12
+  overlap<-0
+  spacewindow<-0
+  netdats[[i-1985]]<-DynamicNetCreate(data=captures3,  
+                                      intwindow=intwindow, 
+                                      mindate=mindate, 
+                                      maxdate=maxdate, 
+                                      netwindow=netwindow, 
+                                      overlap=overlap, 
+                                      spacewindow=spacewindow)
+
+}
+```
+#### Calculate network metrics
+
+We then calculate network metrics on the observed dataset. The networks calculated are:
+
+- insert
+- metrics
+- here
+
+```{r calculate_network_metrics}
+
+# Create list to store results
+t_net_mets <- list()
+
+# Calculate network metrics to use
+for(i in 1:length(netdats)){
+
+  inet<-graph.adjacency(netdats[[i]][[2]][,,1],weighted=NULL,mode="undirected")
+  ind<-vertex_attr(inet)$name
+  tp<-rep(i,length(vertex_attr(inet)$name))
+
+  t_net_mets[[i]]<-data.frame(ind,tp)
+  t_net_mets[[i]]$deg<-igraph::degree(inet)
+  t_net_mets[[i]]$eig<-igraph::eigen_centrality(inet)$vector
+  t_net_mets[[i]]$bet<-igraph::betweenness(inet)
+  #t_net_mets[[i]]$flo[net_mets$tp==i]<-sna::flowbet(movenet[[2]][,,i])
+  t_net_mets[[i]]$pr<-igraph::page.rank(inet)$vector
+
+}
+
+# Collate results
+net_mets <- do.call("rbind", t_net_mets)
+
+# Create overall results dataframe
+# Add info on age, sex and group id
+net_mets$group <- rep(NA,nrow(net_mets))
+net_mets$sex <- rep(NA,nrow(net_mets))
+net_mets$age <- rep(NA,nrow(net_mets))
+for(i in 1:nrow(net_mets)){
+  net_mets$sex[i] <- unique(as.character(captures2$sex[captures2$tattoo == as.character(net_mets$ind[i])]))
+  if(length(indivdat$age_fc[indivdat$tattoo == as.character(net_mets$ind[i])]) > 0){
+  if(is.na(indivdat$age_fc[indivdat$tattoo == as.character(net_mets$ind[i])]) == FALSE & indivdat$age_fc[indivdat$tattoo == as.character(net_mets$ind[i])] == "CUB"){
+    net_mets$age[i] <- net_mets$tp[i]-(indivdat$year_fc[indivdat$tattoo == as.character(net_mets$ind[i])]-1985)
+  }
+  }
+  t.gr <- captures3[captures3$id==as.character(net_mets$ind[i]),]
+  t.gr2 <- table(t.gr$loc)
+  if(length(names(which.max(t.gr2))) == 1){
+   net_mets$group[i] <- names(which.max(t.gr2))
+  }
+}
+
+#Remove captures with NAs for any of these additional variables
+net_mets2 <- net_mets[!is.na(net_mets$age),]
+net_mets2 <- net_mets2[!is.na(net_mets2$sex),]
+net_mets2 <- net_mets2[!is.na(net_mets2$group),]
+
+#And remove individuals with erroneous ages below 0 
+net_mets2 <- net_mets2[net_mets2$age>-1,]
+
+#Create age squared variable
+net_mets2$agesq <- net_mets2$age^2
+
+#Remove all individuals only recorded once from the analysis
+net_mets3 <- net_mets2[net_mets2$ind%in%names(which(table(net_mets$ind)>1)),]
+
+#Create binary measure of whether individuals have a betweenness or not
+net_mets3$betbin <- sign(net_mets3$bet)
+
+
+```
+
+#### Model the observed dataset
+
+We now conduct the statistical modelling of the observed dataset. This is done using glmmTMB. A bit of a spiel about what this is.
+
+```{r model_observed_data}
+# first model
+mod_deg2<-glmmTMB(deg~sex*age+sex*I(age^2)+(1|ind)+(1|group)+(1|tp),
+                  data=net_mets3[net_mets3$age<11,],
+                  family=nbinom2)
+
+summary(mod_deg2)
+
+# second model
+mod_deg2alt<-glmmTMB(log(deg+1)~sex*age+sex*I(age^2)+(1|ind)+(1|group)+(1|tp),
+                     data=net_mets3[net_mets3$age<11,],
+                     family=gaussian)
+
+summary(mod_deg2alt)
+
+```
+
+#### Create permuted datasets
+
+We now create permuted datasets. These are randomisations of the dataset to see what a random network would look like.
+
+```{r create_perms, eval=FALSE}
+
+# First we create a list of matrices to use to restrict the swaps conducted
+
+restricts <- list()
+
+#Loop to create networks for remaining time periods
+for(i in seq(1986,2015,1)){
+  
+  restricts[[i-1985]] <- array(0,dim=c(nrow(netdats[[i-1985]][[2]]),ncol(netdats[[i-1985]][[2]]),1))
+  rownames(restricts[[i-1985]]) <- rownames(netdats[[i-1985]][[2]])
+  colnames(restricts[[i-1985]]) <- colnames(netdats[[i-1985]][[2]])
+  
+  mindate <- paste0(i,"-02-01")
+  maxdate <- paste0(i+1,"-02-01")
+  D <- captures3
+  
+  names(D) <- c("id","loc","x","y","date")
+  Jdays <- julian(as.Date(D$date),origin=as.Date("1970-01-01"))
+  D <- data.frame(D,Jdays)
+  D <- D[order(D$Jdays, D$loc,D$id),]
+  D$id <- as.factor(D$id)
+  D$loc <- as.factor(D$loc)
+  D$x <- as.numeric(D$x)
+  D$y <- as.numeric(D$y)
+  start <- julian(as.Date(mindate),origin=as.Date("1970-01-01"))
+  end <- julian(as.Date(maxdate),origin=as.Date("1970-01-01"))
+  D2 <- D[which(D$Jdays>=start&D$Jdays<end),]
+  
+  tinds <- rownames(netdats[[i-1985]][[2]])
+  for(ii in 1:length(tinds)){
+    tlocs <- D2[D2$id==tinds[ii],]$loc
+    tinds2 <- unique(D2[D2$loc%in%tlocs,]$id)
+    restricts[[i-1985]][rownames(restricts[[i-1985]])%in%tinds2,tinds[ii],1]<-restricts[[i-1985]][tinds[ii],rownames(restricts[[i-1985]])%in%tinds2,1]<-1
+  }
+  
+}
+
+permuted_nets <- list()
+
+for(i in 1:length(netdats)){
+  permuted_nets[[i]] <- cmrRestrictedNodeswap(cmrnet=netdats[[i]],
+                                              restrict=restricts[[i]],
+                                              n.rand=1000, 
+                                              n.burnin=500, 
+                                              n.swaps=40, 
+                                              multi=FALSE)
+  print(paste(i,"done"))
+}
+
+```
+
+#### Analyse permuted datasets
+
+We can now rebuild the dataframe analysed and refit models for the permuted datasets.
+
+```{r model_perms, eval=FALSE}
+
+n.rand <- 1000
+
+fixefs <- matrix(NA,nr=n.rand,nc=6)
+ranefs <- matrix(NA,nr=n.rand,nc=4)
+
+for(j in 1:n.rand){
+
+# Create list to store results
+t_net_mets <- list()
+
+# Calculate network metrics to use
+for(i in 1:length(netdats)){
+
+  inet <- graph.adjacency(permuted_nets[[i]][[1]][,,j],weighted=NULL,mode="undirected")
+  ind <- vertex_attr(inet)$name
+  tp <- rep(i,length(vertex_attr(inet)$name))
+
+  t_net_mets[[i]] <- data.frame(ind,tp)
+  t_net_mets[[i]]$deg <- igraph::degree(inet)
+
+}
+
+# Collate results
+net_mets <- do.call("rbind", t_net_mets)
+
+# Create overall results dataframe
+# Add info on age, sex and group id
+net_mets$group <- rep(NA,nrow(net_mets))
+net_mets$sex <- rep(NA,nrow(net_mets))
+net_mets$age <- rep(NA,nrow(net_mets))
+
+for(i in 1:nrow(net_mets)){
+  net_mets$sex[i] <- unique(as.character(captures2$sex[captures2$tattoo==as.character(net_mets$ind[i])]))
+  if(length(indivdat$age_fc[indivdat$tattoo == as.character(net_mets$ind[i])])>0){
+  if(is.na(indivdat$age_fc[indivdat$tattoo == as.character(net_mets$ind[i])])== FALSE&indivdat$age_fc[indivdat$tattoo == as.character(net_mets$ind[i])] == "CUB"){
+    net_mets$age[i] <- net_mets$tp[i]-(indivdat$year_fc[indivdat$tattoo == as.character(net_mets$ind[i])]-1985)
+  }
+  }
+  t.gr <- captures3[captures3$id == as.character(net_mets$ind[i]),]
+  t.gr2 <- table(t.gr$loc)
+  if(length(names(which.max(t.gr2))) == 1){
+   net_mets$group[i] <- names(which.max(t.gr2))
+  }
+}
+
+# Remove captures with NAs for any of these additional variables
+net_mets2 <- net_mets[!is.na(net_mets$age),]
+net_mets2 <- net_mets2[!is.na(net_mets2$sex),]
+net_mets2 <- net_mets2[!is.na(net_mets2$group),]
+
+# And remove individuals with erroneous ages below 0 
+net_mets2 <- net_mets2[net_mets2$age>-1,]
+
+# Create age squared variable
+net_mets2$agesq <- net_mets2$age^2
+
+#Remove all individuals only recorded once from the analysis
+net_mets3 <- net_mets2[net_mets2$ind%in%names(which(table(net_mets$ind)>1)),]
+
+tmod <- glmmTMB(log(deg+1)~sex*age+sex*I(age^2)+(1|ind)+(1|group)+(1|tp),
+                data=net_mets3[net_mets3$age<11,],
+                family=gaussian)
+
+ranefs[j,] <- c(unlist(summary(tmod)[9]$varcor),summary(mod_deg2alt)[7]$sigma^2)
+fixefs[j,] <- as.vector(unlist(fixef(tmod)))[1:6]
+
+print(paste(j,"done"))
+
+}
+
+```
+
+```{r load_perm_results, echo = FALSE}
+fixefs <- CMRnet:::fixefs
+ranefs <- CMRnet:::ranefs
+n.rand <- 1000
+```
+
+#### Plot results
+
+We now calculate the quantiles of the reference distribution, calculate p values and produce the plots used in the paper
+
+```{r calc_results}
+# quantiles of reference distribution
+quantile(fixefs[,1],c(0.025,0.975))
+quantile(fixefs[,2],c(0.025,0.975))
+quantile(fixefs[,3],c(0.025,0.975))
+quantile(fixefs[,4],c(0.025,0.975))
+quantile(fixefs[,5],c(0.025,0.975))
+quantile(fixefs[,6],c(0.025,0.975))
+
+# p values
+sum(summary(mod_deg2alt)$coefficients$cond[,1][1]<fixefs[,1])/(n.rand+1)
+sum(summary(mod_deg2alt)$coefficients$cond[,1][2]<fixefs[,2])/(n.rand+1)
+sum(summary(mod_deg2alt)$coefficients$cond[,1][3]<fixefs[,3])/(n.rand+1)
+sum(summary(mod_deg2alt)$coefficients$cond[,1][4]<fixefs[,4])/(n.rand+1)
+sum(summary(mod_deg2alt)$coefficients$cond[,1][5]<fixefs[,5])/(n.rand+1)
+sum(summary(mod_deg2alt)$coefficients$cond[,1][6]<fixefs[,6])/(n.rand+1)
+```
+
+```{r plot_fixefs, fig.width = 7, fig.height = 6}
+# plot of fixed effects
+par(mfrow=c(3,2))
+hist(fixefs[,1],col="light grey",border=NA,xlim=c(2.1,2.6),main="Intercept",xlab="Estimate",cex.lab=1.3,cex.main=1.5)
+lines(x=rep(fixef(mod_deg2alt)[[1]][1],2),y=c(0,1000),lwd=2,col="red")
+hist(fixefs[,2],col="light grey",border=NA,xlim=c(0,0.2),main="Main effect of sex",xlab="Estimate",cex.lab=1.3,cex.main=1.5)
+lines(x=rep(fixef(mod_deg2alt)[[1]][2],2),y=c(0,1000),lwd=2,col="red")
+hist(fixefs[,3],col="light grey",border=NA,xlim=c(-0.15,0.05),main="Main effect of age",xlab="Estimate",cex.lab=1.3,cex.main=1.5)
+lines(x=rep(fixef(mod_deg2alt)[[1]][3],2),y=c(0,1000),lwd=2,col="red")
+hist(fixefs[,4],col="light grey",border=NA,xlim=c(-0.005,0.015),main="Main effect of age squared",xlab="Estimate",cex.lab=1.3,cex.main=1.5)
+lines(x=rep(fixef(mod_deg2alt)[[1]][4],2),y=c(0,1000),lwd=2,col="red")
+hist(fixefs[,5],col="light grey",border=NA,xlim=c(-0.1,0),main="sex * age",xlab="Estimate",cex.lab=1.3,cex.main=1.5)
+lines(x=rep(fixef(mod_deg2alt)[[1]][5],2),y=c(0,1000),lwd=2,col="red")
+hist(fixefs[,6],col="light grey",border=NA,xlim=c(-0.005,0.02),main="sex * age squared",xlab="Estimate",cex.lab=1.3,cex.main=1.5)
+lines(x=rep(fixef(mod_deg2alt)[[1]][6],2),y=c(0,1000),lwd=2,col="red")
+```
+
+```{r plot_random_effs, fig.width=6, fig.height = 2}
+# plot of random effects
+par(mfrow=c(1,3),mar=c(5,5,3,3))
+hist(ranefs[,1],col="light grey",border=NA,xlim=c(0,0.15),main="Individual",xlab="Estimate",cex.lab=1.3,cex.main=1.5)
+lines(x=rep(unlist(summary(mod_deg2alt)[9]$varcor)[1],2),y=c(0,1000),lwd=2,col="red")
+hist(ranefs[,2],col="light grey",border=NA,xlim=c(0,0.15),main="Group",xlab="Estimate",cex.lab=1.3,cex.main=1.5)
+lines(x=rep(unlist(summary(mod_deg2alt)[9]$varcor)[2],2),y=c(0,1000),lwd=2,col="red")
+hist(ranefs[,3],col="light grey",border=NA,xlim=c(0,0.15),main="Time Period",xlab="Estimate",cex.lab=1.3,cex.main=1.5)
+lines(x=rep(unlist(summary(mod_deg2alt)[9]$varcor)[3],2),y=c(0,1000),lwd=2,col="red")
+```
+
+```{r plot_preds, fig.height=4, fig.width=6}
+# plot of predicted change in degree with age
+par(mfrow=c(1,1),mar=c(5,5,3,3))
+x<-seq(0,14,0.01)
+yf<-unlist(fixef(mod_deg2alt))[1]+unlist(fixef(mod_deg2alt))[3]*x+unlist(fixef(mod_deg2alt))[4]*x^2
+ym<-unlist(fixef(mod_deg2alt))[1]+unlist(fixef(mod_deg2alt))[2]+(unlist(fixef(mod_deg2alt))[3]+unlist(fixef(mod_deg2alt))[5])*x+(unlist(fixef(mod_deg2alt))[4]+unlist(fixef(mod_deg2alt))[6])*x^2
+plot(x,exp(yf)+1,col="dodger blue",type="l",lwd=4,ylab="Predicted Degree",xlab="Age",cex.lab=1.5,cex.axis=1.3,las=1,ylim=c(5,15))
+lines(x,exp(ym)+1,col="firebrick",lwd=4)
+
+for(i in 1:50){
+  yf<-fixefs[i,1]+fixefs[i,3]*x+fixefs[i,4]*x^2
+  ym<-fixefs[i,1]+fixefs[i,2]+(fixefs[i,3]+fixefs[i,5])*x+(fixefs[i,4]+fixefs[i,6])*x^2
+  lines(x,exp(yf)+1,col=adjustcolor("dodgerblue",0.05))
+  lines(x,exp(ym)+1,col=adjustcolor("firebrick",0.05))
+}
+
+```
+

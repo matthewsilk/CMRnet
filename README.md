@@ -16,8 +16,8 @@ networks from spatio-temporally referenced capture-mark recapture data.
 
 It is very difficult to develop a package that is robust to all types of
 datasets and user requirements. But we want to help. Please report any
-bugs or suggestions to the
-[Issues](https://github.com/matthewsilk/CMRnet)
+bugs or suggestions in the
+[Issues](https://github.com/matthewsilk/CMRnet/issues).
 
 ## Installation
 
