@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 ```
 
 #### Detailed descriptions of aspects of organising data for using CMRnet, creating networks and downstream plotting and analysis
-
+***
 
 #### Data input
 

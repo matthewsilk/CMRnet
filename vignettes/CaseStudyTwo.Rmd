@@ -1,0 +1,208 @@
+---
+title: "Case Study Two: Example of a multiplex movement network"
+author: "Matthew Silk"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{CaseStudyTwo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.align = 'center'
+)
+```
+#### Example using CMRnet to generate multiplex movement networks of European badgers to provide an example of basic onward analysis and plotting
+
+***
+
+#### Background
+
+
+***
+
+#### Setup and data manipulation
+
+First we set up our environment.
+
+```{r load_packages, message=FALSE, warning=FALSE}
+# load packages
+library(lubridate)
+library(igraph)
+library(CMRnet)
+```
+
+The data we use here is not documented in the package, but can be accessed to recreate this analyses by using `CMRnet:::capturesData` and `CMRnet:::individualData`. The data is on ... briefly explain the data
+
+```{r load_data, echo=FALSE}
+captures <- CMRnet:::capturesData
+indivdat <- CMRnet:::individualData
+```
+
+```{r show_data}
+# look at dimensions of data
+str(captures)
+str(indivdat)
+```
+
+We then do some data manipulation to fill in data on the age and sex of badgers in the captures data set. We also wrangle the date formats and create a dataframe in the format needed for **CMRnet**.
+
+```{r data_manipulation}
+
+captures$sex <- rep(NA,nrow(captures))
+captures$age <- rep("ADULT",nrow(captures))
+
+# Fill in data on the age and sex of badgers in the captures dataset
+for(i in 1:nrow(captures)){
+  if(captures$tattoo[i]%in%indivdat$tattoo){
+    captures$sex[i] <- as.character(indivdat$sex[indivdat$tattoo == as.character(captures$tattoo[i])])
+    if(substr(captures$date[i],7,10) == indivdat$year_fc[indivdat$tattoo == as.character(captures$tattoo[i])] & (is.na(indivdat$age_fc[indivdat$tattoo == as.character(captures$tattoo[i])]) == FALSE)&indivdat$age_fc[indivdat$tattoo == as.character(captures$tattoo[i])] == "CUB"){
+      captures$age[i] <- "CUB"
+    }
+    if(substr(captures$date[i],7,10) == indivdat$year_fc[indivdat$tattoo == as.character(captures$tattoo[i])]&(is.na(indivdat$age_fc[indivdat$tattoo == as.character(captures$tattoo[i])]) == TRUE)){
+      captures$age[i] <- NA
+    }
+  }
+}
+
+# Convert sex as a factor
+captures$sex <- as.factor(captures$sex)
+
+# Add a date column in correct format
+captures$date2 <- as.Date(paste0(substr(captures$date,7,10),"-",substr(captures$date,4,5),"-",substr(captures$date,1,2)))
+
+# Add year, month and day columns
+captures$year <- lubridate::year(captures$date2)
+captures$month <- lubridate::month(captures$date2)
+captures$day <- lubridate::day(captures$date2)
+
+# Create a year of study column
+captures$year_of_study <- rep(NA,nrow(captures))
+for(i in 1:nrow(captures)){
+  if(captures$month[i] > 1){
+    captures$year_of_study[i] <- as.numeric(captures$year[i])-1985
+  }
+  if(captures$month[i] == 1){
+    captures$year_of_study[i] <- as.numeric(captures$year[i])-1986
+  }  
+}
+
+# subset data to only include 30 years - Feb 1986 to Jan 2016
+captures2 <- captures[captures$year_of_study>0&captures$year_of_study<31,]
+
+# Create a dataframe in the correct format for CMRnet
+captures3 <- data.frame(captures2$tattoo,captures2$socg,rep(NA,nrow(captures2)),rep(NA,nrow(captures2)),captures2$date2)
+names(captures3) <- c("id","loc","x","y","date")
+
+# Assign fake coordinates to locations using there factor ids as we are not going to make use of true geographic coordinates
+captures3$x <- as.numeric(as.factor(captures3$loc))
+captures3$y <- as.numeric(as.factor(captures3$loc))
+
+#Add sex as a layer column
+captures3$layer <- as.numeric(captures2$sex)
+
+```
+
+***
+
+#### Create multiplex movement networks
+
+First we define the parameters we are going to use to generate the networks. For the movement networks we are going to use two year (24 month) network windows and allow an interaction window of 365 days (~one year). By setting `nextonly=TRUE` we ensure that only direct (recorded) movements between groups are recorded as edges in the network and by setting `index=FALSE` we set edge weights in the network layers to be counts of the number of movements made.
+
+```{r network_creation}
+
+# Define parameters for first time period
+mindate<-"2006-02-01"
+maxdate<-"2016-02-01"
+intwindow<-365
+netwindow<-24
+overlap<-0
+spacewindow<-0
+
+# Generate Multiplex movement networks
+mmd <-
+  MultiMoveNetCreate(
+    data = captures3,
+    intwindow = intwindow,
+    mindate = mindate,
+    maxdate = maxdate,
+    netwindow = netwindow,
+    overlap = overlap,
+    nextonly = TRUE,
+    index=FALSE
+  )
+
+```
+***
+
+#### Plotting networks
+
+The functionality of **CMRnet** then allows us to convert the output to a list of **igraph** network objects for use in further analyses or plotting
+
+```{r create_igraph_objects}
+# create igraph objects
+nets <- cmr_igraph(mmd,type="multiplex")
+
+```
+
+**CMRnet** includes basic plotting of multiplex movement networks. Plotting multiplex networks is challenging and more sophisticated approaches might require the user to adapt the code presented here or use alternative software such as [MuxViz](http://muxviz.net).
+
+```{r plot_networks, fig.height=5, fig.width=6.5}
+# exploratory plots of multiplex movement networks
+cmrMultiplexPlot(nets=nets,
+                 fixed_locs=TRUE,
+                 dynamic=FALSE,
+                 rows=2,
+                 layer_colours=c("dodger blue","firebrick"))
+
+```
+
+***
+
+#### Calculate network measures
+
+We can also use the **igraph** objects saved to calculate various network measures. We provide a simple example here by calculating the betweenness centrality separately for the different layers, both in the overall network and for each network window independently.
+
+```{r calculate_betweenness}
+
+# calculate betweenness centrality for each layer in the overall network
+betweenness_ovr<-lapply(nets[[2]],igraph::betweenness)
+
+# calculate betweenness centrality separately for each network layer in each network window (you could do this in a loop or using apply if you preferred)
+betweenness1<-lapply(nets[[1]][[1]],igraph::betweenness)
+betweenness2<-lapply(nets[[1]][[2]],igraph::betweenness)
+betweenness3<-lapply(nets[[1]][[3]],igraph::betweenness)
+betweenness4<-lapply(nets[[1]][[4]],igraph::betweenness)
+betweenness5<-lapply(nets[[1]][[5]],igraph::betweenness)
+
+```
+
+These calculations can then be used to go on and test hypotheses or conduct exploratory analyses on the networks generated. For example, here we look at the association between betweenness centrality in the female layer and male layer of the overall network. We use a 1:1 line to show that badger setts or groups tend to have higher betweenness in the male rather than female layer of the movement network. There is perhaps some indication as well that setts or groups that have high betweenness in one layer tend also to have higher betweenness in the other layer, although clearly this would require an appropriate analysis to test formally.
+
+```{r plot_betweenness, fig.width=6, fig.height=4}
+
+# test relationship in betweenness centrality between layers in the overall network
+
+par(mar=c(5,5,3,3))
+plot(betweenness_ovr[[1]],betweenness_ovr[[2]],
+     xlab="Betweenness in female movement layer",
+     ylab="Betweenness in\nmale movement layer",
+     pch=16,
+     cex=1.5,
+     col="dark blue",
+     cex.axis=1.3,
+     cex.lab=1.1,
+     xlim=c(0,300),
+     ylim=c(0,300),
+     las=1)
+lines(x=seq(-200,500,1),y=seq(-200,500,1),lty=2)
+
+```
+
+***
+
+#### References

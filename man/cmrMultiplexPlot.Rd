@@ -24,7 +24,7 @@ cmrMultiplexPlot(
 
 \item{dynamic}{(TRUE/FALSE). If true this function will plot networks for the different network windows sequentially in the same plot window with a delay. If false then this function will plot the networks in a single, multipanel figure}
 
-\item{rows}{Sets the number of rows in the multipanel figure is dynamic=FALSE}
+\item{rows}{Sets the number of rows in the multipanel figure if dynamic=FALSE}
 
 \item{layer_colours}{Set the colour of the plane and nodes for each layer of the multiplex network. Needs to be a vector the same length as the number of layers in the network}
 }

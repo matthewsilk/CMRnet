@@ -25,6 +25,6 @@ Imports:
     scatterplot3d
 Suggests: 
     knitr,
-    rmarkdown,
-    profvis
+    rmarkdown
+    lubridate
 VignetteBuilder: knitr

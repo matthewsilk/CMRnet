@@ -7,7 +7,7 @@
 #'@param fixed_locs (TRUE/FALSE). Whether to keep the the locations of the nodes fixed between network windows or allow them to change
 #'@param locs A matrix or dataframe giving x and y coordinates of all nodes in the full network. Can be used to provide user-defined layouts to the graph - helpful for plotting locations in geographic space
 #'@param dynamic (TRUE/FALSE). If true this function will plot networks for the different network windows sequentially in the same plot window with a delay. If false then this function will plot the networks in a single, multipanel figure
-#'@param rows Sets the number of rows in the multipanel figure is dynamic=FALSE
+#'@param rows Sets the number of rows in the multipanel figure if dynamic=FALSE
 #'@param layer_colours Set the colour of the plane and nodes for each layer of the multiplex network. Needs to be a vector the same length as the number of layers in the network
 #'@details This function plots multiplex movement networks produced by CMRnet. It is developmental and it has fairly basic functionality currently. Networks can be plotted sequentially (dynamic=TRUE) or in a single multi-panelled figure (dynamic=FALSE)
 #'@return A series of network plots showing the multiplex movement network from each network window

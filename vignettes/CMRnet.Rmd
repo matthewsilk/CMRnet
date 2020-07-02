@@ -22,7 +22,6 @@ knitr::opts_chunk$set(
 
 ```{r load_packages}
 # load packages
-library(profvis)
 library(CMRnet)
 
 ```
