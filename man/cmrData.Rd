@@ -3,8 +3,7 @@
 \docType{data}
 \name{cmrData}
 \alias{cmrData}
-\title{cmrData
-cmrData}
+\title{cmrData}
 \format{
 A data frame with 1191 rows and 5 columns variables:
 \itemize{

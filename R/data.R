@@ -1,5 +1,4 @@
 #' cmrData
-#' cmrData
 #'
 #'cmrData can be used to test social and movement network functions of CMRnet. It is an example of how dataframes should be organised to feed into CMRnet
 #'
