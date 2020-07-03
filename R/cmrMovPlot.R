@@ -1,5 +1,5 @@
 #'cmrMovPlot
-#'#'
+#'
 #'igraph plotting for CMRnet object
 #'
 #'@param nets A list of igraph networks output by \code{cmr_igraph}

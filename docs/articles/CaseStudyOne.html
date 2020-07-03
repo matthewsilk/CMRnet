@@ -118,7 +118,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">CMRnet</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">glmmTMB</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">igraph</span>)</pre></body></html></div>
-<p>The data we use here is not documented in the package, but can be accessed to recreate this analyses by using <code>CMRnet:::capturesData</code> and <code>CMRnet:::individualData</code>. The data is on …</p>
+<p>The data we use here is not documented in the package, but can be accessed to recreate this analyses by using <code>CMRnet:::capturesData</code> and <code>CMRnet:::individualData</code>.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># look at dimensions of data</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">captures</span>)
 <span class="co">#&gt; 'data.frame':    14461 obs. of  6 variables:</span>
@@ -198,7 +198,11 @@
 <h4 class="hasAnchor">
 <a href="#create-social-networks" class="anchor"></a>Create social networks</h4>
 <p>We now create the social networks using <code>DynamicNetCreate</code> because we have data on co-capture of badgers across the thirty year period.</p>
-<p>-We choose a 12 month network window that runfs from February-January to correspond with badger life-history (cubs are born in later winter) and trapping strategy. -We choose a 30 day interaction window. As trapping is (approximately) quarterly this ensures that all individuals captured in the same trapping event at the same location are considered to be co-captured. -We set the space window to zero so that individuals have to be captured at the same location to be co-captured.</p>
+<ul>
+<li>We choose a 12 month network window that runfs from February-January to correspond with badger life-history (cubs are born in later winter) and trapping strategy.</li>
+<li>We choose a 30 day interaction window. As trapping is (approximately) quarterly this ensures that all individuals captured in the same trapping event at the same location are considered to be co-captured.</li>
+<li>We set the space window to zero so that individuals have to be captured at the same location to be co-captured.</li>
+</ul>
 <div class="sourceCode" id="cb4"><html><body><pre class="r">
 <span class="co">#Define parameters for first time period</span>
 <span class="no">mindate</span><span class="kw">&lt;-</span><span class="st">"1986-02-01"</span>
@@ -238,6 +242,7 @@
                                       <span class="kw">spacewindow</span><span class="kw">=</span><span class="no">spacewindow</span>)
 
 }</pre></body></html></div>
+<hr>
 </div>
 <div id="calculate-network-metrics" class="section level4">
 <h4 class="hasAnchor">
@@ -307,6 +312,7 @@
 
 <span class="co">#Create binary measure of whether individuals have a betweenness or not</span>
 <span class="no">net_mets3</span>$<span class="no">betbin</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sign.html">sign</a></span>(<span class="no">net_mets3</span>$<span class="no">bet</span>)</pre></body></html></div>
+<hr>
 </div>
 <div id="model-the-observed-dataset" class="section level4">
 <h4 class="hasAnchor">
@@ -384,6 +390,7 @@
 <span class="co">#&gt; sexMALE:I(age^2)  0.001649   0.002810   0.587  0.55726    </span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></pre></body></html></div>
+<hr>
 </div>
 <div id="create-permuted-datasets" class="section level4">
 <h4 class="hasAnchor">
@@ -437,6 +444,7 @@
                                               <span class="kw">multi</span><span class="kw">=</span><span class="fl">FALSE</span>)
   <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="no">i</span>,<span class="st">"done"</span>))
 }</pre></body></html></div>
+<hr>
 </div>
 <div id="analyse-permuted-datasets" class="section level4">
 <h4 class="hasAnchor">
@@ -512,6 +520,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="no">j</span>,<span class="st">"done"</span>))
 
 }</pre></body></html></div>
+<hr>
 </div>
 <div id="plot-results" class="section level4">
 <h4 class="hasAnchor">

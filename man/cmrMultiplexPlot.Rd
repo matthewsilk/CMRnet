@@ -2,9 +2,7 @@
 % Please edit documentation in R/cmrMultiplexPlot.R
 \name{cmrMultiplexPlot}
 \alias{cmrMultiplexPlot}
-\title{cmrMultiplexPlot
-#'
-igraph plotting for CMRnet object}
+\title{cmrMultiplexPlot}
 \usage{
 cmrMultiplexPlot(
   nets,
@@ -32,8 +30,6 @@ cmrMultiplexPlot(
 A series of network plots showing the multiplex movement network from each network window
 }
 \description{
-cmrMultiplexPlot
-#'
 igraph plotting for CMRnet object
 }
 \details{

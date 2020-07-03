@@ -1,6 +1,6 @@
 
 #'cmrMultiplexPlot
-#'#'
+#'
 #'igraph plotting for CMRnet object
 #'
 #'@param nets A list of multiplex igraph networks output by \code{cmr_igraph}

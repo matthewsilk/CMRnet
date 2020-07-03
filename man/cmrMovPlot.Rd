@@ -2,9 +2,7 @@
 % Please edit documentation in R/cmrMovPlot.R
 \name{cmrMovPlot}
 \alias{cmrMovPlot}
-\title{cmrMovPlot
-#'
-igraph plotting for CMRnet object}
+\title{cmrMovPlot}
 \usage{
 cmrMovPlot(
   nets,
@@ -32,8 +30,6 @@ cmrMovPlot(
 A series of network plots showing the movement network from each network window
 }
 \description{
-cmrMovPlot
-#'
 igraph plotting for CMRnet object
 }
 \details{

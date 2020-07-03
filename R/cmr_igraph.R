@@ -1,5 +1,5 @@
 #'cmr_igraph
-#'#'
+#'
 #'Converts CMRnet networks to lists of igraph networks
 #'
 #'@param cmrnet A CMRnet object from \code{DynamicNetCreate}, \code{MoveNetCreate} or \code{MultiMoveNetCreate} functions

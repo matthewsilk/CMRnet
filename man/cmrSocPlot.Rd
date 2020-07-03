@@ -2,9 +2,7 @@
 % Please edit documentation in R/cmrSocPlot.R
 \name{cmrSocPlot}
 \alias{cmrSocPlot}
-\title{cmrSocPlot
-#'
-igraph plotting for CMRnet object}
+\title{cmrSocPlot}
 \usage{
 cmrSocPlot(
   nets,
@@ -32,8 +30,6 @@ cmrSocPlot(
 A series of network plots showing the co-capture (social) network from each network window
 }
 \description{
-cmrSocPlot
-#'
 igraph plotting for CMRnet object
 }
 \details{

@@ -2,9 +2,7 @@
 % Please edit documentation in R/cmr_igraph.R
 \name{cmr_igraph}
 \alias{cmr_igraph}
-\title{cmr_igraph
-#'
-Converts CMRnet networks to lists of igraph networks}
+\title{cmr_igraph}
 \usage{
 cmr_igraph(cmrnet, type = c("social", "movement", "multiplex"))
 }
@@ -17,8 +15,6 @@ cmr_igraph(cmrnet, type = c("social", "movement", "multiplex"))
 igraph networks for onward analysis. For all types of network the function returns a list of two outputs. For social and movement networks the first element is itself a list containing the igraph network corresponding to each network window. The second element of the list is the overall network calculated for all network windows combined. For multiplex movement networks the first list is more complex with an additional layer. The list of networks for different network windows is nested so that for each network window the movement network for each layer is stored separately.
 }
 \description{
-cmr_igraph
-#'
 Converts CMRnet networks to lists of igraph networks
 }
 \details{

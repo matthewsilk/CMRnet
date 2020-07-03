@@ -1,6 +1,6 @@
 
 #'cmrSocPlot
-#'#'
+#'
 #'igraph plotting for CMRnet object
 #'
 #'@param nets A list of igraph networks output by cmr_igraph
