@@ -2,4 +2,3 @@
 
 language: R
 cache: packages
-install: travis_wait 60 mvn install
