@@ -22,6 +22,9 @@ knitr::opts_chunk$set(
 
 #### Background
 
+This case study is based on a long-term CMR dataset from a high-density population of European badgers in the United Kingdom (Delahay et al., 2013; McDonald, Robertson, & Silk, 2018). Badgers in medium to high-density populations live in territorial social groups centred on a main sett (refuge/burrow system). The study population is trap-sampled four times per year (in May-June, July-August, September-October and December-January) using baited cage traps deployed at all know active sett locations (see  McDonald et al., 2018 for more detail). Badgers give birth in late-winter (the date of birth of all cubs is assumed to be 1st February) and no trapping takes place while females have dependent cubs.
+
+Here we demonstrate the multiplex movement network construction features of CMRnet using a subset badger capture dataset. We construct multiplex movement networks with layers that depict the movements of females and males separately. In this example we are not testing a particular hypothesis so much as demonstrating the use of the package in a visual exploration of movement network structure.
 
 ***
 
@@ -36,7 +39,7 @@ library(igraph)
 library(CMRnet)
 ```
 
-The data we use here is not documented in the package, but can be accessed to recreate this analyses by using `CMRnet:::capturesData` and `CMRnet:::individualData`. The data is on ... briefly explain the data
+The data we use here is not documented in the package, but can be accessed to recreate this analyses by using `CMRnet:::capturesData` and `CMRnet:::individualData`.
 
 ```{r load_data, echo=FALSE}
 captures <- CMRnet:::capturesData
@@ -151,7 +154,7 @@ nets <- cmr_igraph(mmd,type="multiplex")
 
 **CMRnet** includes basic plotting of multiplex movement networks. Plotting multiplex networks is challenging and more sophisticated approaches might require the user to adapt the code presented here or use alternative software such as [MuxViz](http://muxviz.net).
 
-```{r plot_networks, fig.height=5, fig.width=6.5}
+```{r plot_networks, fig.height=6.5, fig.width=6.5}
 # exploratory plots of multiplex movement networks
 cmrMultiplexPlot(nets=nets,
                  fixed_locs=TRUE,
@@ -183,7 +186,7 @@ betweenness5<-lapply(nets[[1]][[5]],igraph::betweenness)
 
 These calculations can then be used to go on and test hypotheses or conduct exploratory analyses on the networks generated. For example, here we look at the association between betweenness centrality in the female layer and male layer of the overall network. We use a 1:1 line to show that badger setts or groups tend to have higher betweenness in the male rather than female layer of the movement network. There is perhaps some indication as well that setts or groups that have high betweenness in one layer tend also to have higher betweenness in the other layer, although clearly this would require an appropriate analysis to test formally.
 
-```{r plot_betweenness, fig.width=6, fig.height=4}
+```{r plot_betweenness, fig.width=6, fig.height=6}
 
 # test relationship in betweenness centrality between layers in the overall network
 
@@ -196,8 +199,8 @@ plot(betweenness_ovr[[1]],betweenness_ovr[[2]],
      col="dark blue",
      cex.axis=1.3,
      cex.lab=1.1,
-     xlim=c(0,300),
-     ylim=c(0,300),
+     xlim=c(0,350),
+     ylim=c(0,350),
      las=1)
 lines(x=seq(-200,500,1),y=seq(-200,500,1),lty=2)
 
@@ -206,3 +209,7 @@ lines(x=seq(-200,500,1),y=seq(-200,500,1),lty=2)
 ***
 
 #### References
+
+- Delahay, R. J., Walker, N., Smith, G. S., Wilkinson, D., Clifton-Hadley, R. S., Cheeseman, C. L., … Chambers, M. A. (2013). Long-term temporal trends and estimated transmission rates for Mycobacterium bovis infection in an undisturbed high-density badger (Meles meles) population. Epidemiology and Infection, 141(07), 1445–1456.
+- McDonald, J. L., Robertson, A., & Silk, M. J. (2018). Wildlife disease ecology from the individual to the population: Insights from a long-term study of a naturally infected European badger population. Journal of Animal Ecology, 87(1). doi:10.1111/1365-2656.12743
+- Weber, N., Carter, S. P., Dall, S. R. X., Delahay, R. J., McDonald, J. L., Bearhop, S., & McDonald, R. A. (2013). Badger social networks correlate with tuberculosis infection. Current Biology, 23(20), R915–R916.

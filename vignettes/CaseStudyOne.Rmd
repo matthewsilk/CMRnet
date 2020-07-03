@@ -16,11 +16,16 @@ knitr::opts_chunk$set(
   
 )
 ```
-#### Example of using CMRnet to generate movement networks of European badgers for use in analyses linking deaths caused by collisions with cars to the position of groups within movement networks 
+
+#### Example of using CMRnet to generate movement networks of European badgers for use in analyses linking deaths caused by collisions with cars to the position of groups within movement networks
+
 ***
 
 #### Background
 
+This case study is based on a long-term CMR dataset from a high-density population of European badgers in the United Kingdom (Delahay et al., 2013; McDonald, Robertson, & Silk, 2018). Badgers in medium to high-density populations live in territorial social groups centred on a main sett (refuge/burrow system), resulting in modular social networks in which they interact frequently with other group members but much less often with individuals from other groups (Weber et al., 2013). The study population is trap-sampled four times per year (in May-June, July-August, September-October and December-January) using baited cage traps deployed at all know active sett locations (see  McDonald et al., 2018 for more detail). Badgers give birth in late-winter (the date of birth of all cubs is assumed to be 1st February) and no trapping takes place while females have dependent cubs.
+
+Here we use the co-capture network construction features of CMRnet to examine how the social network position of badgers changes during their lifetime. Individuals that are more strongly connected to those in other groups will be more central to the population network. We expect that the centrality of individuals in social networks peaks when levels of reproductive behaviour as this drives many between-group movements and interactions. Badgers in our study population demonstrate body mass and immune senescence, and so we would expect network centrality to peak in early adulthood, subsequent to maturity but prior to condition beginning to decline. We would also predict that this peak will be higher in males than females, due to differences in social and spatial behaviour.
 
 ***
 
@@ -113,7 +118,11 @@ str(captures3)
 
 We now create the social networks using `DynamicNetCreate` because we have data on co-capture of badgers across the thirty year period.
 
-```{r network_creation, message=FALSE, results=hide}
+-We choose a 12 month network window that runfs from February-January to correspond with badger life-history (cubs are born in later winter) and trapping strategy.
+-We choose a 30 day interaction window. As trapping is (approximately) quarterly this ensures that all individuals captured in the same trapping event at the same location are considered to be co-captured.
+-We set the space window to zero so that individuals have to be captured at the same location to be co-captured.
+
+```{r network_creation, message=FALSE, results="hide"}
 
 #Define parameters for first time period
 mindate<-"1986-02-01"
@@ -158,9 +167,12 @@ for(i in seq(1987,2015,1)){
 
 We then calculate network metrics on the observed dataset. The networks calculated are:
 
-- insert
-- metrics
-- here
+- Degree
+- Eigenvector Centrality
+- Betweenness
+- PageRank Centrality
+
+In this analysis we use (unweighted) Degree.
 
 ```{r calculate_network_metrics}
 
@@ -178,7 +190,6 @@ for(i in 1:length(netdats)){
   t_net_mets[[i]]$deg<-igraph::degree(inet)
   t_net_mets[[i]]$eig<-igraph::eigen_centrality(inet)$vector
   t_net_mets[[i]]$bet<-igraph::betweenness(inet)
-  #t_net_mets[[i]]$flo[net_mets$tp==i]<-sna::flowbet(movenet[[2]][,,i])
   t_net_mets[[i]]$pr<-igraph::page.rank(inet)$vector
 
 }
@@ -227,7 +238,7 @@ net_mets3$betbin <- sign(net_mets3$bet)
 
 #### Model the observed dataset
 
-We now conduct the statistical modelling of the observed dataset. This is done using glmmTMB. A bit of a spiel about what this is.
+We now conduct the statistical modelling of the observed dataset. This is done using glmmTMB. We first fit a generalised linear mixed effects model using a negative binomial error distribution. Degree is the response variable. We have fixed effects of sex, age and age squared, and consider interactions between sex and age and sex and age-squared. We have random effects of individual, capture group and network window. We confirm that parameters esttimates from a linear mixed-effects model after a log-normal transformation are very similar, and so use these in subsequent analyses (due to computational limitations when using permutation-based methods).
 
 ```{r model_observed_data}
 # first model
@@ -453,4 +464,13 @@ for(i in 1:50){
 }
 
 ```
+
+
+***
+
+#### References
+
+- Delahay, R. J., Walker, N., Smith, G. S., Wilkinson, D., Clifton-Hadley, R. S., Cheeseman, C. L., … Chambers, M. A. (2013). Long-term temporal trends and estimated transmission rates for Mycobacterium bovis infection in an undisturbed high-density badger (Meles meles) population. Epidemiology and Infection, 141(07), 1445–1456.
+- McDonald, J. L., Robertson, A., & Silk, M. J. (2018). Wildlife disease ecology from the individual to the population: Insights from a long-term study of a naturally infected European badger population. Journal of Animal Ecology, 87(1). doi:10.1111/1365-2656.12743
+- Weber, N., Carter, S. P., Dall, S. R. X., Delahay, R. J., McDonald, J. L., Bearhop, S., & McDonald, R. A. (2013). Badger social networks correlate with tuberculosis infection. Current Biology, 23(20), R915–R916.
 

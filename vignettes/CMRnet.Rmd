@@ -191,7 +191,7 @@ spacewindow <- 0
 
 # Generate movement network
 # nextonly=TRUE indicates that only direct movements between groups should be considered (see help pages)
-movenetdat <- MoveNetCreateHi(
+movenetdat_hi <- CMRnet::MoveNetCreateHi(
   data = cmrData3,
   intwindow = intwindow,
   mindate = mindate,
@@ -226,7 +226,7 @@ overlap <- 0
 
 # Generate multiplex movement network
 multimovenetdat <-
-  MultiMoveNetCreate(
+  CMRnet::MultiMoveNetCreate(
     data = cmrData2,
     intwindow = intwindow,
     mindate = mindate,
@@ -237,5 +237,262 @@ multimovenetdat <-
     index=FALSE
   )
 
+
+```
+
+
+***
+***
+***
+
+Above we have demonstrated how to generate networks using CMRnet. Next we demonstrate the package's functionality for onward analysis and plotting.
+
+***
+
+#### 2. Conversion to igraph objects and plotting
+
+To faciliate analysis we provide a function that can convert CMRnet objects into lists of igraph objects. This is a commonly-used network analysis package in R that provides various functions to calculate individual and network-level measures of network structure.
+
+***
+
+We also provide functions that can produce plots of these lists of igraph networks to enable basic visualisation of the networks produced.
+
+***
+
+Here is an example where plot a social network.
+
+```{r igraph_conv_and_plotting_soc, fig.height=5,fig.width=8}
+
+##Convert social networks into a list of igraph networks
+cc_nets<-CMRnet::cmr_igraph(netdat_hi,type="social")
+
+#Look at the structure of the object generated
+print(cc_nets)
+#Note that cc_nets[[1]] is a list of the networks for each network window and cc_nets[[2]] is the overall (aggregated) network
+
+##Now we can plot the networks produced
+#Setting fixed_locs to TRUE means nodes have the same coordinates in each plot
+#Setting dynamic to FALSE and rows to 2 means we produce a multipanelled figure with 2 rows
+#We can use additional arguments from the plot.igraph function. Here we suppress node labels as an example.
+CMRnet::cmrSocPlot(nets=cc_nets,fixed_locs=TRUE,dynamic=FALSE,rows=4,vertex.label=NA)
+
+```
+
+***
+
+And here is an example where plot a movement network.
+
+```{r igraph_conv_and_plotting_mov, fig.height=5,fig.width=8}
+
+##Convert social networks into a list of igraph networks
+m_nets<-CMRnet::cmr_igraph(movenetdat_hi,type="movement")
+
+##Now we can plot the networks produced
+#Setting fixed_locs to TRUE means nodes have the same coordinates in each plot
+#Setting dynamic to FALSE and rows to 2 means we produce a multipanelled figure with 2 rows
+#We can use additional arguments from the plot.igraph function. Here we suppress node labels as an example.
+CMRnet::cmrMovPlot(nets=m_nets,fixed_locs=TRUE,dynamic=FALSE,rows=2,edge.arrow.size=0.5)
+
+```
+
+***
+***
+
+The cmr_igraph function can be used in much the same way for multiplex network objects, but the plotting is rather different using a 3d scatterplot to show the layers together.
+
+```{r igraph_conv_and_plotting_multi, fig.height=10,fig.width=8}
+
+##Convert social networks into a list of igraph networks
+mm_nets<-CMRnet::cmr_igraph(multimovenetdat,type="multiplex")
+
+##Now we can plot the networks produced
+#Setting fixed_locs to TRUE means nodes have the same coordinates in each plot
+#Setting dynamic to FALSE and rows to 2 means we produce a multipanelled figure with 2 rows
+#We can use additional arguments from the plot.igraph function. Here we suppress node labels as an example.
+CMRnet::cmrMultiplexPlot(nets=mm_nets,fixed_locs=TRUE,dynamic=FALSE,rows=2,layer_colours=c("dodgerblue","firebrick"))
+
+```
+
+Please note that the functionality for plotting multiplex networks in this way is rather limited and intended to provide basic visualisations. If more sophisticated plots are required then the function can be adjusted by the user to suit their preferences
+
+***
+***
+***
+
+We now demonstrate how CMRnet can be used to conduct premutations of networks generated using the package. These permutations can  be used for statistical inference.
+
+***
+
+#### 3. Permutation approaches in CMRnet
+
+***
+
+Two broad types of permutations are possible within CMRnet. 
+
+***
+
+1. Post-network permutations are node swaps that result in different node IDs being shuffled around the network. These permutations break the correlation between particular node traits and network properties and so are excellent for testing hypotheses focussed on the association between particular traits and social network measures. For example, if a reasearcher hypothesises that females have higher degree (more connections) in a network than males, then post-network permutations randomise the network with respect to this relationship and so provide an excellent reference model to test whether it is different to that expected by  chance.
+
+***
+
+2. Pre-network or datastream permutations shuffle the raw capture data, swapping the identity of individual captured (for co-capture/social networks) or the location of the capture (for movement networks) between different capture events. These types of permutations provide an excellent tool for assessing whether a network is different to random within the particular set of constraints imposed by the permutation, and can control for sampling effects (e.g. some individuals being captured more often or more captures occurring at particular locations).
+
+***
+***
+
+Post-network permutations can be conducted in two ways in CMRnet. Unrestricted swaps are conducted using the function cmrNodeswap() which is demonstrated here. Swaps can also be restricted to only occur between particular pairs of individuals (e.g. those captured at the same locations) and are demonstrated in one of the empirical case studies.
+
+```{r node_swaps}
+
+##Unrestricted node swaps
+#Note that you can set the desired number of permuted networks and need to indicate whether the network is multiplex or not
+ns_nets <- CMRnet::cmrNodeswap(netdat, n.rand = 1000, multi = FALSE)
+
+#Show dimensions of output object
+lapply(ns_nets,dim)
+
+```
+
+The output of the post-network permutations is a list, where each element of the list corresponds to a particular network window and contains an array of the permuted networks for that window. For multiplex networks this list is nested (see manual pages).
+
+***
+***
+
+Pre-network permutations have separate functions for co-capture (social) networks and movement networks and we demonstrate both below. They differ through the DatastreamPermSoc() function swapping individual identities between capture events and the DatastreamPermSpat() function swapping locations instead
+
+***
+
+First co-capture networks
+
+```{r datastream_soc}
+
+## Reset parameters for co-capture network generation
+mindate <- "2010-01-01"
+maxdate <- "2015-01-01"
+intwindow <- 60
+netwindow <- 12
+overlap <- 0
+spacewindow <- 0
+
+## Set new parameter for the permutations
+#Whether swaps should be constrained to occur only between capture events at the same time
+same.time = FALSE
+#An upper limit for the number of days between capture events for swaps to be allowed
+time.restrict = 6
+#Whether swaps should be constrained to occur only between capture events at the same location
+same.spat = FALSE
+#Whether swaps should be constrained to occur within a threshold distance (setting to "n" means this argument is ignored)
+spat.restrict = "n"
+#The length of the burn-in period before networks are saved
+n.burnin = 10
+#The number  of swaps between each saved result
+n.swaps = 5
+#The number of permuted datasets to be saved. Not we have set this to be small so that the function runs quickly (normally it would be 1000, 10,000 etc.)
+n.rand = 2
+#The number of days around a capture event that an individual can't be swapped into (see manual pages)
+buffer = 0
+
+## Run permutations
+#Note we have set iter=FALSE here. iter=TRUE allows these swaps to be conducted one at a time to help with memory issues
+Rs <- CMRnet::DatastreamPermSoc(
+    data = cmrData,
+    intwindow,
+    mindate,
+    maxdate,
+    netwindow,
+    overlap,
+    spacewindow,
+    same.time,
+    time.restrict,
+    same.spat,
+    spat.restrict,
+    n.swaps,
+    n.rand,
+    burnin = TRUE,
+    n.burnin,
+    iter = FALSE,
+    buffer=buffer
+  )
+
+#The first element of the output is a list where each element corresponds to a network window and contains an array with the permuted networks.
+lapply(Rs[[1]],dim)
+
+#The second element is the new node.exist indicator
+dim(Rs[[2]])
+
+##If instead we set iter=TRUE
+#(not we have changed some of the other arguments too)
+Rs2 <- CMRnet::DatastreamPermSoc(
+    data = cmrData,
+    intwindow,
+    mindate,
+    maxdate,
+    netwindow,
+    overlap,
+    spacewindow,
+    same.time,
+    time.restrict,
+    same.spat,
+    spat.restrict,
+    n.swaps=10,
+    n.rand=1,
+    burnin = FALSE,
+    n.burnin=0,
+    iter = TRUE,
+    buffer=buffer
+  )
+
+#Instead, Rs2[[1]] is the new dataframe after the swaps, Rs2[[2]] are the networks and Rs2[[3]] the new node.exist
+dim(Rs2[[1]])
+
+
+```
+
+***
+
+Now movement networks
+
+```{r datastream_move}
+
+
+## Reset parameters for co-capture network generation
+mindate <- "2010-01-01"
+maxdate <- "2015-01-01"
+intwindow <- 60
+netwindow <- 12
+overlap <- 0
+
+same.time=FALSE
+time.restrict=6
+spat.restrict="n"
+#Whether to restrict swaps by the identity of the individual captured
+same.id=FALSE
+n.swaps=10
+n.rand=100
+n.burnin=100
+warn.thresh=10000
+
+mRs <- CMRnet::DatastreamPermSpat(
+  data = cmrData,
+  intwindow=intwindow,
+  mindate=mindate,
+  maxdate=maxdate,
+  netwindow=netwindow,
+  overlap=overlap,
+  nextonly = TRUE,
+  same.time=same.time,
+  time.restrict=time.restrict,
+  spat.restrict=spat.restrict,
+  same.id=same.id,
+  n.swaps=n.swaps,
+  n.rand=n.rand,
+  burnin = TRUE,
+  n.burnin=n.burnin,
+  warn.thresh=warn.thresh,
+  iter = FALSE
+)
+
+#Demonstrate that the randomised networks have been saved correctly
+lapply(mRs[[1]],dim)
 
 ```
