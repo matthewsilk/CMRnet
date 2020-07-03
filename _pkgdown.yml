@@ -1,0 +1,50 @@
+template:
+  params:
+    bootswatch: yeti
+
+articles:
+- title: Get started
+  navbar: ~
+  contents:
+  - CMRnet
+- title: Information
+  navbar: Information
+  contents:
+  - CMRnet_information
+- title: Case studies
+  navbar: Case studies
+  contents:
+  - CaseStudyOne
+  - CaseStudyTwo
+
+reference:
+- title: Create networks
+  contents:
+  - DynamicNetCreate
+  - DynamicNetCreateHi
+  - MoveNetCreate
+  - MoveNetCreateHi
+  - MultiMoveNetCreate
+  - MultiMoveNetCreateHi
+- title: Permutations
+  contents:
+  - cmrNodeswap
+  - cmrRestrictedNodeSwap
+  - DatastreamPermSoc
+  - DatastreamPermSpat
+- title: Plot networks
+  contents:
+  - cmr_igraph
+  - cmrMovPlot
+  - cmrMultiplexPlot
+  - cmrSocPlot
+- title: Data
+  contents:
+  - cmrData
+  - cmrData2
+  - cmrData3
+- title: Internal functions
+  contents:
+  - cmrPermSoc
+  - cmrPermSpat
+

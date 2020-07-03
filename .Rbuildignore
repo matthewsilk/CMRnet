@@ -3,3 +3,6 @@
 ^README\.Rmd$
 ^test.R
 ^\.travis\.yml$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
