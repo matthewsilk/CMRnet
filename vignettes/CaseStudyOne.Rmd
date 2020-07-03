@@ -42,7 +42,7 @@ library(igraph)
 
 ```
 
-The data we use here is not documented in the package, but can be accessed to recreate this analyses by using `CMRnet:::capturesData` and `CMRnet:::individualData`. The data is on ... 
+The data we use here is not documented in the package, but can be accessed to recreate this analyses by using `CMRnet:::capturesData` and `CMRnet:::individualData`.
 
 ```{r load_data, echo=FALSE}
 captures <- CMRnet:::capturesData
@@ -118,9 +118,9 @@ str(captures3)
 
 We now create the social networks using `DynamicNetCreate` because we have data on co-capture of badgers across the thirty year period.
 
--We choose a 12 month network window that runfs from February-January to correspond with badger life-history (cubs are born in later winter) and trapping strategy.
--We choose a 30 day interaction window. As trapping is (approximately) quarterly this ensures that all individuals captured in the same trapping event at the same location are considered to be co-captured.
--We set the space window to zero so that individuals have to be captured at the same location to be co-captured.
+- We choose a 12 month network window that runfs from February-January to correspond with badger life-history (cubs are born in later winter) and trapping strategy.
+- We choose a 30 day interaction window. As trapping is (approximately) quarterly this ensures that all individuals captured in the same trapping event at the same location are considered to be co-captured.
+- We set the space window to zero so that individuals have to be captured at the same location to be co-captured.
 
 ```{r network_creation, message=FALSE, results="hide", eval=FALSE}
 
@@ -163,6 +163,8 @@ for(i in seq(1987,2015,1)){
 
 }
 ```
+
+***
 #### Calculate network metrics
 
 We then calculate network metrics on the observed dataset. The networks calculated are:
@@ -239,7 +241,7 @@ net_mets3$betbin <- sign(net_mets3$bet)
 ```{r load_net_mets, echo=FALSE}
 net_mets3 <- CMRnet:::net_mets3
 ```
-
+***
 #### Model the observed dataset
 
 We now conduct the statistical modelling of the observed dataset. This is done using glmmTMB. We first fit a generalised linear mixed effects model using a negative binomial error distribution. Degree is the response variable. We have fixed effects of sex, age and age squared, and consider interactions between sex and age and sex and age-squared. We have random effects of individual, capture group and network window. We confirm that parameters estimates from a linear mixed-effects model after a log-normal transformation are very similar, and so use these in subsequent analyses (due to computational limitations when using permutation-based methods).
@@ -260,7 +262,7 @@ mod_deg2alt<-glmmTMB(log(deg+1)~sex*age+sex*I(age^2)+(1|ind)+(1|group)+(1|tp),
 summary(mod_deg2alt)
 
 ```
-
+***
 #### Create permuted datasets
 
 We now create permuted datasets. These are randomisations of the dataset to see what a random network would look like.
@@ -316,7 +318,7 @@ for(i in 1:length(netdats)){
 }
 
 ```
-
+***
 #### Analyse permuted datasets
 
 We can now rebuild the dataframe analysed and refit models for the permuted datasets.
@@ -400,7 +402,7 @@ fixefs <- CMRnet:::fixefs
 ranefs <- CMRnet:::ranefs
 n.rand <- 1000
 ```
-
+***
 #### Plot results
 
 We now calculate the quantiles of the reference distribution, calculate p values and produce the plots used in the paper

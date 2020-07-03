@@ -241,23 +241,17 @@ multimovenetdat <-
 ```
 
 
-***
-***
-***
-
-Above we have demonstrated how to generate networks using CMRnet. Next we demonstrate the package's functionality for onward analysis and plotting.
 
 ***
 
 #### 2. Conversion to igraph objects and plotting
 
-To faciliate analysis we provide a function that can convert CMRnet objects into lists of igraph objects. This is a commonly-used network analysis package in R that provides various functions to calculate individual and network-level measures of network structure.
 
-***
+Above we have demonstrated how to generate networks using **CMRnet**. Next we demonstrate the package's functionality for onward analysis and plotting.
+
+To facilitate analysis we provide a function that can convert **CMRnet** objects into lists of **igraph** objects. This is a commonly-used network analysis package in R that provides various functions to calculate individual and network-level measures of network structure.
 
 We also provide functions that can produce plots of these lists of igraph networks to enable basic visualisation of the networks produced.
-
-***
 
 Here is an example where plot a social network.
 
@@ -278,8 +272,6 @@ CMRnet::cmrSocPlot(nets=cc_nets,fixed_locs=TRUE,dynamic=FALSE,rows=4,vertex.labe
 
 ```
 
-***
-
 And here is an example where plot a movement network.
 
 ```{r igraph_conv_and_plotting_mov, fig.height=5,fig.width=8}
@@ -295,10 +287,7 @@ CMRnet::cmrMovPlot(nets=m_nets,fixed_locs=TRUE,dynamic=FALSE,rows=2,edge.arrow.s
 
 ```
 
-***
-***
-
-The cmr_igraph function can be used in much the same way for multiplex network objects, but the plotting is rather different using a 3d scatterplot to show the layers together.
+The `cmr_igraph` function can be used in much the same way for multiplex network objects, but the plotting is rather different using a 3d scatterplot to show the layers together.
 
 ```{r igraph_conv_and_plotting_multi, fig.height=10,fig.width=8}
 
@@ -313,34 +302,19 @@ CMRnet::cmrMultiplexPlot(nets=mm_nets,fixed_locs=TRUE,dynamic=FALSE,rows=2,layer
 
 ```
 
-Please note that the functionality for plotting multiplex networks in this way is rather limited and intended to provide basic visualisations. If more sophisticated plots are required then the function can be adjusted by the user to suit their preferences
-
-***
-***
-***
-
-We now demonstrate how CMRnet can be used to conduct premutations of networks generated using the package. These permutations can  be used for statistical inference.
-
-***
+**NOTE: The functionality for plotting multiplex networks in this way is rather limited and intended to provide basic visualisations. If more sophisticated plots are required then the function can be adjusted by the user to suit their preferences**
 
 #### 3. Permutation approaches in CMRnet
 
-***
+We now demonstrate how **CMRnet** can be used to conduct permutations of networks generated using the package. These permutations can  be used for statistical inference.
 
-Two broad types of permutations are possible within CMRnet. 
+Two broad types of permutations are possible within **CMRnet**. 
 
-***
 
 1. Post-network permutations are node swaps that result in different node IDs being shuffled around the network. These permutations break the correlation between particular node traits and network properties and so are excellent for testing hypotheses focussed on the association between particular traits and social network measures. For example, if a reasearcher hypothesises that females have higher degree (more connections) in a network than males, then post-network permutations randomise the network with respect to this relationship and so provide an excellent reference model to test whether it is different to that expected by  chance.
-
-***
-
 2. Pre-network or datastream permutations shuffle the raw capture data, swapping the identity of individual captured (for co-capture/social networks) or the location of the capture (for movement networks) between different capture events. These types of permutations provide an excellent tool for assessing whether a network is different to random within the particular set of constraints imposed by the permutation, and can control for sampling effects (e.g. some individuals being captured more often or more captures occurring at particular locations).
 
-***
-***
-
-Post-network permutations can be conducted in two ways in CMRnet. Unrestricted swaps are conducted using the function cmrNodeswap() which is demonstrated here. Swaps can also be restricted to only occur between particular pairs of individuals (e.g. those captured at the same locations) and are demonstrated in one of the empirical case studies.
+Post-network permutations can be conducted in two ways in **CMRnet**. Unrestricted swaps are conducted using the function `cmrNodeswap()` which is demonstrated here. Swaps can also be restricted to only occur between particular pairs of individuals (e.g. those captured at the same locations) and are demonstrated in one of the empirical case studies.
 
 ```{r node_swaps}
 
@@ -355,14 +329,9 @@ lapply(ns_nets,dim)
 
 The output of the post-network permutations is a list, where each element of the list corresponds to a particular network window and contains an array of the permuted networks for that window. For multiplex networks this list is nested (see manual pages).
 
-***
-***
+Pre-network permutations have separate functions for co-capture (social) networks and movement networks and we demonstrate both below. They differ through the `DatastreamPermSoc()` function swapping individual identities between capture events and the `DatastreamPermSpat()` function swapping locations instead.
 
-Pre-network permutations have separate functions for co-capture (social) networks and movement networks and we demonstrate both below. They differ through the DatastreamPermSoc() function swapping individual identities between capture events and the DatastreamPermSpat() function swapping locations instead
-
-***
-
-First co-capture networks
+First we will permute co-capture networks.
 
 ```{r datastream_soc}
 
@@ -448,9 +417,7 @@ dim(Rs2[[1]])
 
 ```
 
-***
-
-Now movement networks
+Now movement networks.
 
 ```{r datastream_move}
 
