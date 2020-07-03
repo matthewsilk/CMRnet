@@ -122,7 +122,7 @@ We now create the social networks using `DynamicNetCreate` because we have data 
 -We choose a 30 day interaction window. As trapping is (approximately) quarterly this ensures that all individuals captured in the same trapping event at the same location are considered to be co-captured.
 -We set the space window to zero so that individuals have to be captured at the same location to be co-captured.
 
-```{r network_creation, message=FALSE, results="hide"}
+```{r network_creation, message=FALSE, results="hide", eval=FALSE}
 
 #Define parameters for first time period
 mindate<-"1986-02-01"
@@ -174,7 +174,7 @@ We then calculate network metrics on the observed dataset. The networks calculat
 
 In this analysis we use (unweighted) Degree.
 
-```{r calculate_network_metrics}
+```{r calculate_network_metrics, eval=FALSE}
 
 # Create list to store results
 t_net_mets <- list()
@@ -234,6 +234,10 @@ net_mets3 <- net_mets2[net_mets2$ind%in%names(which(table(net_mets$ind)>1)),]
 net_mets3$betbin <- sign(net_mets3$bet)
 
 
+```
+
+```{r load_net_mets, echo=FALSE}
+net_mets3 <- CMRnet:::net_mets3
 ```
 
 #### Model the observed dataset
