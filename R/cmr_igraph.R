@@ -69,7 +69,12 @@ cmr_igraph<-function(cmrnet,type=c("social","movement","multiplex")){
     matrices<-list()
     for(i in 1:dim(cmrnet[[2]])[3]){
       matrices[[i]]<-cmrnet[[2]][cmrnet[[3]][,i+1]==1,cmrnet[[3]][,i+1]==1,i]
-      rownames(matrices[[i]])<-colnames(matrices[[i]])<-cmrnet[[3]][,1][cmrnet[[3]][,i+1]==1]
+      if(dim(matrices[[i]])[1]>0){
+        rownames(matrices[[i]])<-colnames(matrices[[i]])<-cmrnet[[3]][,1][cmrnet[[3]][,i+1]==1]
+      }
+      if(dim(matrices[[i]])[1]>0){
+        warning(paste("No nodes in network window",i))
+      }
     }
 
     if(type=="social"){
