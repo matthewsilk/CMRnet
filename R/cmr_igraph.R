@@ -112,7 +112,12 @@ cmr_igraph<-function(cmrnet,type=c("social","movement","multiplex")){
       networks[[i]]<-list()
       for(j in 1:ly){
         tmat1<-cmrnet[[2]][[i]][cmrnet[[3]][,i,j]==1,cmrnet[[3]][,i,j]==1,j]
-        networks[[i]][[j]]<-igraph::graph.adjacency(tmat1,mode="directed",weighted=TRUE)
+        if(is.matrix(tmat1)){
+          networks[[i]][[j]]<-igraph::graph.adjacency(tmat1,mode="directed",weighted=TRUE)
+        }
+        if(is.matrix(tmat1)==FALSE){
+          warning("Less than two locations present in network layer")
+        }
       }
     }
 
